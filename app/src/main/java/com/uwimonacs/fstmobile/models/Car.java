@@ -1,4 +1,4 @@
-package com.uwimonacs.fstmobile.model;
+package com.uwimonacs.fstmobile.models;
 
 /**
  * Created by Matthew on 6/20/2016.
