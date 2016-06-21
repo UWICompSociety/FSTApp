@@ -28,9 +28,9 @@ public class FAQ {
 
     //Setters
 
-    public void setId(int newId) { this.id = newId; }
+    public void setId(int id) { this.id = id; }
 
-    public void setQuestion(String query) { this.question = query; }
+    public void setQuestion(String question) { this.question = question; }
 
-    public void setAnswer(String response) { this.answer = response; }
+    public void setAnswer(String answer) { this.answer = answer; }
 }
