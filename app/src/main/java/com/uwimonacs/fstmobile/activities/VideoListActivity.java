@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,7 @@ public class VideoListActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(item.getThumbnailURL()).into(holder.vThumbnail);
                 holder.vTitle.setText(item.getTitle());
                 holder.vId.setText(item.getId());
-                if (!"".equals(item.getDescription())) {
+                if (TextUtils.isEmpty(item.getDescription())) {
                     holder.vDescription.setText(item.getDescription());
                 }
                 else
