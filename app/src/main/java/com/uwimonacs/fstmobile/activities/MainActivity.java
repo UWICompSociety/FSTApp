@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_videos){
+            Intent intent = new Intent(this, VideoListActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
