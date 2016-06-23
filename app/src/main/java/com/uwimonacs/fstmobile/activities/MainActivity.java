@@ -63,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        //navigate to FAQ activity
+        else if (id == R.id.action_faqs){
+            Intent faqIntent = new Intent(this, FAQActivity.class);
+            startActivity(faqIntent);
+        }
+
+        //navigate to FAQ activity
+        else if (id == R.id.action_faqs){
+            Intent faqIntent = new Intent(this, FAQActivity.class);
+            startActivity(faqIntent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

@@ -2,6 +2,10 @@
     <string name="app_name">FST Mobile</string>
     <string name="action_settings">Settings</string>
 
+    <!-- FAQ Related -->
+    <string name="action_faqs">FAQs</string>
+    <string name="title_activity_faq">FAQs</string>
+
     <!-- YouTube Related -->
     <string name="title_activity_player">VideoListActivity</string>
     <string name="no_description">No description</string>

@@ -2,9 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
+
+    <item
+        android:id="@+id/action_faqs"
+        android:orderInCategory="100"
+        android:title="@string/action_faqs"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
@@ -12,5 +19,11 @@
         android:id="@+id/action_videos"
         android:orderInCategory="101"
         android:title="@string/title_activity_player"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_faqs"
+        android:orderInCategory="102"
+        android:title="@string/action_faqs"
         app:showAsAction="never" />
 </menu>
