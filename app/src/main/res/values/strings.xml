@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">FST Mobile</string>
     <string name="action_settings">Settings</string>
+
+    <!-- YouTube Related -->
+    <string name="title_activity_player">VideoListActivity</string>
+    <string name="no_description">No description</string>
+    <string name="videos_activity_title">Videos</string>
 </resources>
