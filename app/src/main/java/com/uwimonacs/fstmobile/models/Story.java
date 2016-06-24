@@ -4,6 +4,12 @@
  * @param description
  * @param storyDetail
  */
+package com.uwimonacs.fstmobile.models;
+
+import com.uwimonacs.fstmobile.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Story{
 	//Variable Declarations
@@ -21,6 +27,8 @@ public class Story{
 	}
 
 	/*Getters*/
+
+
 	public String getTitle(){
 		return title;
 	}
@@ -53,15 +61,17 @@ public class Story{
 	public void setImageId(int newFeatureImage){
 		imageId = newFeatureImage;
 	}
+
+	private List<Story> news;
+
+	/*Array list with three news items*/
+	private void placeHolder(){
+		news = new ArrayList<>();
+		//news.add(new Story(R.drawable.s1,"Title1","Description1","Detail1"));
+		//news.add(new Story(R.drawable.s2,"Title2","Description2","Detail2"));
+		//news.add(new Story(R.drawable.s3,"Title3","Description3","Detail3"));
+	//	news.add(new Story(R.drawable.s4,"Title4","Description4","Detail4"));
+	}
 }
 
-private List<Story> news;
 
-/*Array list with three news items*/
-private void placeHolder(){
-	news = new ArrayList<>();
-	news.add(new Story(R.drawable.s1,"Title1","Description1","Detail1"));
-	news.add(new Story(R.drawable.s2,"Title2","Description2","Detail2"));
-	news.add(new Story(R.drawable.s3,"Title3","Description3","Detail3"));
-	news.add(new Story(R.drawable.s4,"Title4","Description4","Detail4"));
-} 
