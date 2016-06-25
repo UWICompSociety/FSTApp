@@ -4,12 +4,6 @@
     tools:context=".activities.MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_videos"
         android:orderInCategory="101"
         android:title="@string/title_activity_player"
@@ -19,5 +13,17 @@
         android:id="@+id/action_faqs"
         android:orderInCategory="102"
         android:title="@string/action_faqs"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_legal_notices"
+        android:title="@string/action_legal_notices"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="400"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>

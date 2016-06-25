@@ -15,12 +15,11 @@ import android.view.MenuItem;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity {
-
     private TabPagerAdapter tabPagerAdapter;
     private TabLayout tabLayout;
     private ViewPager pager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_faqs:
                 Intent faqIntent = new Intent(this, FAQActivity.class);
                 startActivity(faqIntent);
+                return true;
+
+            // Including legal notices as an independent menu item,
+            // or as part of an "About" menu item, is recommended.
+            case R.id.menu_legal_notices:
+                startActivity(new Intent(this, LegalNoticesActivity.class));
                 return true;
 
             case R.id.action_settings:

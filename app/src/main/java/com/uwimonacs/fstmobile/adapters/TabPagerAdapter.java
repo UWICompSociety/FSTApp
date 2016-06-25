@@ -9,19 +9,16 @@ import com.uwimonacs.fstmobile.fragments.InfoFragment;
 import com.uwimonacs.fstmobile.fragments.MapFragment;
 import com.uwimonacs.fstmobile.fragments.NewsFragment;
 
-/**
- * Created by Matthew on 6/20/2016.
- */
-public class TabPagerAdapter  extends FragmentPagerAdapter{
+public class TabPagerAdapter  extends FragmentPagerAdapter {
 
     private CharSequence[] tabTitles = {   //names of the tabs
             "News",
             "Info",
             "Map"
     };
+
     public TabPagerAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     @Override
