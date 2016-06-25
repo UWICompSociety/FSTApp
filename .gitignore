@@ -1,18 +1,21 @@
-<<<<<<< HEAD
+# IDEA/Android Studio project files, because
+# the project can be imported from settings.gradle
+.idea
 *.iml
-.gradle
-/local.properties
+
+# Old-style IDEA project files
+*.ipr
+*.iws
+
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
-/build
-/captures
-=======
+
 # Built application files
 *.apk
 *.ap_
 
-# Files for the ART/Dalvik VM
+# Files for the Dalvik VM
 *.dex
 
 # Java class files
@@ -42,10 +45,3 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# Intellij
-*.iml
-.idea/workspace.xml
-
-# Keystore files
-*.jks
->>>>>>> d6a2247b46d4578a40da4b54d294c79c3c58524c
