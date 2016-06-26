@@ -53,17 +53,6 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_videos:
-                Intent intent = new Intent(this, VideoListActivity.class);
-                startActivity(intent);
-                return true;
-
-            //navigate to FAQ activity
-            case R.id.action_faqs:
-                Intent faqIntent = new Intent(this, FAQActivity.class);
-                startActivity(faqIntent);
-                return true;
-
             // Including legal notices as an independent menu item,
             // or as part of an "About" menu item, is recommended.
             case R.id.menu_legal_notices:
