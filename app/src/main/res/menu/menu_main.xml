@@ -16,6 +16,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_schol"
+        android:orderInCategory="103"
+        android:title="@string/action_schol"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_legal_notices"
         android:title="@string/action_legal_notices"
         android:orderInCategory="300"

@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return true;
 
+            //navigate to Scholarship activity
+            case R.id.action_schol:
+                Intent scholIntent = new Intent(this, ScholarshipActivity.class);
+                startActivity(scholIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

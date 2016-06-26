@@ -3,10 +3,12 @@
 
     <!-- Activity Titles -->
     <string name="title_activity_legal_info">Legal Notices</string>
+    <string name="title_activity_scholarship">Scholarships and Bursaries</string>
 
     <!-- Menu Option Titles -->
     <string name="action_legal_notices">Legal Notices</string>
     <string name="action_settings">Settings</string>
+    <string name="action_schol">Scholarships and Bursaries</string>
 
     <!-- FAQ Related -->
     <string name="action_faqs">FAQs</string>
@@ -19,4 +21,8 @@
 
     <!-- Map Related -->
     <string name="play_services_not_installed">Google Play Services is not installed on this device</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
