@@ -23,19 +23,27 @@ public class FAQActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faq);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("FAQs");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecyclerView faqList = (RecyclerView)findViewById(R.id.faqlist);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         faqList.setLayoutManager(llm);
 
+        initialize();
+
+        FaqListAdapter adapter = new FaqListAdapter(faqs);
+        faqList.setAdapter(adapter);
+    }
+
+    //Add FAQs to List
+    private void initialize()
+    {
         faqs.add(new FAQ(1,"How Many Credits Do I Need To Graduate?", "A Total of 93 Credits"));
         faqs.add(new FAQ(2,"Where is FST Dean's Office?", "Along The Spine"));
         faqs.add(new FAQ(3,"When does Copy-Works Open?", "8:30 AM Mondays - Friday"));
         faqs.add(new FAQ(4,"Where Can I Buy Books?", "At The Book Store"));
         faqs.add(new FAQ(5,"Where Can I Find The Computing Society?", "Computing Lecture Theatre"));
         faqs.add(new FAQ(6,"How Many First Year Computing Courses Are There?", "There are 5 Of Them"));
-
-        FaqListAdapter adapter = new FaqListAdapter(faqs);
-        faqList.setAdapter(adapter);
     }
 }
