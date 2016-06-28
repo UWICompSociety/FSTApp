@@ -17,6 +17,10 @@
     <string name="title_activity_player">VideoListActivity</string>
     <string name="no_description">No description</string>
     <string name="videos_activity_title">Videos</string>
+    <string name="watch_externally">Watch on YouTube</string>
+    <string name="api_key">AIzaSyDL2ZqeB3uGYmqv8jJgITwS4N9eFyBz4IA</string>
+    <string name="channel_id">UCLSsrbKRNkPZF9_bTds6yAw</string>
+    <string name="required_fields">items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)</string>
 
     <!-- Map Related -->
     <string name="play_services_not_installed">Google Play Services is not installed on this device</string>
