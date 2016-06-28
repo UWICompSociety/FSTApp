@@ -1,7 +1,31 @@
 package com.uwimonacs.fstmobile.models;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.uwimonacs.fstmobile.R;
+
 /**
- * Created by sultanofcardio on 6/27/16.
+ * Models the CardView item used in populating the RecyclerView
+ * in VideoListActivity
  */
-public class VideoViewHolder {
+public class VideoViewHolder extends RecyclerView.ViewHolder {
+
+    public ImageView vThumbnail;
+    public TextView vTitle, vDescription, vId;
+
+    /**
+     * Instantiates references to the sub-views of the CardView
+     * given.
+     * @param cardView the View to be passed to the RecyclerView
+     */
+    public VideoViewHolder(View cardView) {
+        super(cardView);
+        vThumbnail = (ImageView) cardView.findViewById(R.id.video_thumbnail);
+        vTitle = (TextView) cardView.findViewById(R.id.video_title);
+        vDescription = (TextView) cardView.findViewById(R.id.video_description);
+        vId = (TextView) cardView.findViewById(R.id.video_id);
+    }
 }
