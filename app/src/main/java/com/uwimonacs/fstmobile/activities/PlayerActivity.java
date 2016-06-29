@@ -16,7 +16,6 @@ import com.uwimonacs.fstmobile.fragments.VideoFragment;
 public class PlayerActivity extends AppCompatActivity {
 
     private TextView title, description;
-    private VideoFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

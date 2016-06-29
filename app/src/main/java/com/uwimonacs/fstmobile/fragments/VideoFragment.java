@@ -11,6 +11,12 @@ import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
 public class VideoFragment extends YouTubePlayerSupportFragment{
 
+    /**
+     * Creates a new instance of this Fragment and passes the video URL
+     * to YouTube player
+     * @param url YouTube channel id that follows http://www.youtube.com/watch?v=
+     * @return an instance of this VideoFragment
+     */
     public static VideoFragment newInstance(String url) {
 
         VideoFragment fragment = new VideoFragment();
@@ -30,8 +36,7 @@ public class VideoFragment extends YouTubePlayerSupportFragment{
      */
     private void initialize() {
 
-        initialize(getActivity().getApplicationContext()
-                .getResources().getString(R.string.channel_id), new YouTubePlayer.OnInitializedListener() {
+        initialize(getArguments().getString("VIDEO_ID"), new YouTubePlayer.OnInitializedListener() {
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
