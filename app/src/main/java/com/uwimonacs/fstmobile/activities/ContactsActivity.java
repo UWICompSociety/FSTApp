@@ -50,11 +50,11 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void initalizeData()
     {
-        contacts.add(new Contact("Faculty Office","923-6728"));
-        contacts.add(new Contact("Physics Main Ofiice","978-2728"));
-        contacts.add(new Contact("Chemistry Main Office","878-5428"));
-        contacts.add(new Contact("Life Sciences Main Office","748-3407"));
-        contacts.add(new Contact("Engineering Main Office","991-6563"));
+        contacts.add(new Contact("Faculty Office","9236728"));
+        contacts.add(new Contact("Physics Main Ofiice","9782728"));
+        contacts.add(new Contact("Chemistry Main Office","8785428"));
+        contacts.add(new Contact("Life Sciences Main Office","7483407"));
+        contacts.add(new Contact("Engineering Main Office","9916563"));
 
 
     }

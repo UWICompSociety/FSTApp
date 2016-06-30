@@ -1,6 +1,8 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.R;
+
 import com.uwimonacs.fstmobile.models.Contact;
 
 import org.w3c.dom.Text;
@@ -21,7 +24,7 @@ import java.util.List;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactViewHolder> {
 
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder
+    public class ContactViewHolder extends RecyclerView.ViewHolder
     {
         TextView name;
         TextView number;
@@ -30,6 +33,21 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
             name = (TextView)itemView.findViewById(R.id.contact_name);
             number = (TextView) itemView.findViewById(R.id.contact_number);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = ContactViewHolder.this.getAdapterPosition(); //position of element in list
+                    String number = contacts.get(pos).getNumber();
+                    if(number!=null)
+                    {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:"+number ));
+                        ctxt.startActivity(intent);  //start dialer activity
+                    }
+
+                }
+            });
         }
     }
 
