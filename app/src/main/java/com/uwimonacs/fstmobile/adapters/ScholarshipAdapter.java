@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.uwimonacs.fstmobile.activities.ScholarshipDetailsActivity;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.R;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 /**
  * Created by Jhanelle on 6/22/2016.
+ * ScholarshipActivity - not in use
  */
 public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
 
@@ -70,13 +72,19 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
      */
     @Override
     public void onBindViewHolder(ScholarshipViewHolder holder, int position) {
+        final int pos = position;
         holder.scholName.setText(schols.get(position).getTitle());
         holder.scholDescription.setText(schols.get(position).getDescription());
         holder.scholPhoto.setImageResource(R.drawable.scholarship);
+
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mona.uwi.edu/osf/scholarship/list/fst")));
+                //view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mona.uwi.edu/osf/scholarship/list/fst")));
+                Intent intent = new Intent(view.getContext(), ScholarshipDetailsActivity.class);
+                intent.putExtra("scholName", schols.get(pos).getTitle());
+                intent.putExtra("scholDetails", schols.get(pos).getDetail());
+                view.getContext().startActivity(intent);
             }
         });
     }

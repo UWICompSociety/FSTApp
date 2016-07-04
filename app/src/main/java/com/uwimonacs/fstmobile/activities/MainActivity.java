@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             //navigate to Scholarship activity
             case R.id.action_schol:
-                Intent scholIntent = new Intent(this, ScholarshipActivity.class);
+                Intent scholIntent = new Intent(this, ExpandableScholarshipActivity.class);
                 startActivity(scholIntent);
                 return true;
 

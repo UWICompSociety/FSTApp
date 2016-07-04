@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- ScholarshipActivity - not in use-->
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.uwimonacs.fstmobile.activities.ScholarshipActivity">
+    tools:context="com.uwimonacs.fstmobile.activities.ExpandableScholarshipActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_scholarship" />
+    <include layout="@layout/content_expandable_scholarship" />
 
 </android.support.design.widget.CoordinatorLayout>

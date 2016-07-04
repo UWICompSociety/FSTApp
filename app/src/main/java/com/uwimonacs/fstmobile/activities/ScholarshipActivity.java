@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Created by Jhanelle on 6/22/2016.
+ * ScholarshipActivity - not in use
  */
 
 public class ScholarshipActivity extends AppCompatActivity {
@@ -57,14 +58,14 @@ public class ScholarshipActivity extends AppCompatActivity {
      */
     private void init() {
         schols = new ArrayList<>();
-        schols.add(new Scholarship(1, "AFUWI Scholarships", "Description", "detail"));
-        schols.add(new Scholarship(2, "Ambassador Glen A. Holden Bursary", "Description", "detail"));
-        schols.add(new Scholarship(3, "Digicel Scholarships", "Description", "detail"));
-        schols.add(new Scholarship(4, "Douane Henry Memorial Bursary (The)", "Description", "detail"));
-        schols.add(new Scholarship(5, "Jamaica Government Exhibition", "Description", "detail"));
-        schols.add(new Scholarship(6, "Joe Pereira Scholarship (The)", "Description", "detail"));
-        schols.add(new Scholarship(7, "Principal's Scholarship For Excellence (The)Digicel Scholarships", "Description", "detail"));
-        schols.add(new Scholarship(8, "UWI Visa Card Scholarship", "Description", "detail"));
+        schols.add(new Scholarship(1, "AFUWI Scholarships", "Description", "detail-1"));
+        schols.add(new Scholarship(2, "Ambassador Glen A. Holden Bursary", "Description", "detail-2"));
+        schols.add(new Scholarship(3, "Digicel Scholarships", "Description", "detail-3"));
+        schols.add(new Scholarship(4, "Douane Henry Memorial Bursary (The)", "Description", "detail-4"));
+        schols.add(new Scholarship(5, "Jamaica Government Exhibition", "Description", "detail-5"));
+        schols.add(new Scholarship(6, "Joe Pereira Scholarship (The)", "Description", "detail-6"));
+        schols.add(new Scholarship(7, "Principal's Scholarship For Excellence (The)Digicel Scholarships", "Description", "detail-7"));
+        schols.add(new Scholarship(8, "UWI Visa Card Scholarship", "Description", "detail-8"));
     }
 
 }
