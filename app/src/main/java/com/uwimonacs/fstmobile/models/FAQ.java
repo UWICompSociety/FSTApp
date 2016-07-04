@@ -1,14 +1,13 @@
 package com.uwimonacs.fstmobile.models;
 
 /**
- * Created by Brand_000 on 21/06/2016.
  * Model for FAQs
  */
 public class FAQ {
 
-    protected int id;
-    protected String question;
-    protected String answer;
+    private int id;
+    private String question;
+    private String answer;
 
     //Constructor
     public FAQ(int id, String question, String answer)

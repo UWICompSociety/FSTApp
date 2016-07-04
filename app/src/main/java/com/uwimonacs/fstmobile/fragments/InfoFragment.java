@@ -18,8 +18,8 @@ public class InfoFragment extends Fragment {
     private RecyclerView infoRecView;
     private InfoListAdapter infoListAdapter;
 
-    String[] titles = {"FAQ", "Videos", "Scholarships & Bursaries"}; //list of titles for info  fragment
-    int[] images = {R.drawable.faq_image, R.drawable.video, R.drawable.scholarship}; //list of images for info fragment
+    String[] titles = {"FAQ", "Videos", "Scholarships & Bursaries","Contacts"}; //list of titles for info  fragment
+    int[] images = {R.drawable.faq_image, R.drawable.video, R.drawable.scholarship,R.drawable.contacts}; //list of images for info fragment
 
     public InfoFragment()
     {

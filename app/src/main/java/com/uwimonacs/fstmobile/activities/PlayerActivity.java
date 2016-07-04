@@ -16,22 +16,38 @@ import com.uwimonacs.fstmobile.fragments.VideoFragment;
 public class PlayerActivity extends AppCompatActivity {
 
     private TextView title, description;
-    private VideoFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        /*
+        *   Moves the YouTube Player into the view as a fragment, to
+        *   avoid this class having to extend YouTubeBaseActivity and
+        *   extend AppCompatActivity instead
+        * */
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.player_view_holder, VideoFragment.newInstance(getIntent().getStringExtra("VIDEO_ID")))
                 .commit();
         title= (TextView) findViewById(R.id.player_view_title);
         description = (TextView) findViewById(R.id.player_view_description);
+        /*
+        *   Video ID, Title and Description are used to load the video
+        *   and populate the UI respectively
+        * */
         title.setText(getIntent().getStringExtra("VIDEO_TITLE"));
         description.setText(getIntent().getStringExtra("VIDEO_DESC"));
+
+        // Set Menu option to go up to previous activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title.getText().toString());
         CardView watchOnYoutube = (CardView) findViewById(R.id.watch_on_youtube);
+        assert watchOnYoutube != null;
+
+        /*
+        * Launches the video externally in the YouTube app or the
+        * web browser as a fallback
+        * */
         watchOnYoutube.setOnClickListener(new View.OnClickListener() {
 
             @Override

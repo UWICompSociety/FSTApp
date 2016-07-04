@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
+import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
 
 /**
@@ -45,7 +47,14 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoVi
                             break;
                         case 2:
                             //Scholarship Actvity
+                            Intent scholarshipIntent = new Intent(v.getContext(),ScholarshipActivity.class);
+                            v.getContext().startActivity(scholarshipIntent);
                             break;
+                        case 3:
+                            //Contact Actvity
+                            Intent contactIntent = new Intent(v.getContext(),ContactsActivity.class);
+                            v.getContext().startActivity(contactIntent);
+
                     }
                 }
             });
