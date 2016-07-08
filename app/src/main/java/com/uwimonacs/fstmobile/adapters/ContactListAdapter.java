@@ -79,4 +79,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public int getItemCount() {
         return contacts.size(); //returns number of contacts
     }
+
+    public void updateContacts(List<Contact> newContacts)
+    {
+        this.contacts = new ArrayList<>(newContacts);
+        notifyDataSetChanged();
+    }
 }
