@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.FAQ;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,5 +60,11 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void updateFAQs(List<FAQ> newFags)
+    {
+        this.faqs = new ArrayList<>(newFags);
+        notifyDataSetChanged();
     }
 }
