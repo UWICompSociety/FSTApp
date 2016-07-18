@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class MapFragment extends Fragment
+public class PlacesFragment extends Fragment
         implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -133,5 +133,5 @@ public class MapFragment extends Fragment
 
     private View view;
 
-    public MapFragment() { /* required empty constructor */ }
+    public PlacesFragment() { /* required empty constructor */ }
 }
