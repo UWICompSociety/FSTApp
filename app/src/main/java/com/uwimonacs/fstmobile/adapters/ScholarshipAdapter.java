@@ -1,7 +1,6 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import com.uwimonacs.fstmobile.activities.ScholarshipDetailsActivity;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,6 +84,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                 Intent intent = new Intent(view.getContext(), ScholarshipDetailsActivity.class);
                 intent.putExtra("scholName", schols.get(pos).getTitle());
                 intent.putExtra("scholDetails", schols.get(pos).getDetail());
+                intent.putExtra("scholImage", schols.get(pos).getImage());
                 view.getContext().startActivity(intent);
             }
         });
@@ -100,6 +101,12 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
     @Override
     public void onAttachedToRecyclerView(RecyclerView view) {
         super.onAttachedToRecyclerView(view);
+    }
+
+    public void updateSchols(List<Scholarship> newSchols)
+    {
+        this.schols = new ArrayList<>(newSchols);
+        notifyDataSetChanged();
     }
 
 }
