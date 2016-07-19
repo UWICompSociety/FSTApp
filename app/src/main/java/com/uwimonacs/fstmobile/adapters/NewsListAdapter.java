@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.News;
@@ -53,7 +54,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
 
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
-        holder.newsImage.setImageResource(newsList.get(position).getImage());
+       // holder.newsImage.setImageResource(newsList.get(position).getImage());
+        Picasso.with(ctxt).load(newsList.get(position).getImage_url()).into(holder.newsImage);
         holder.newsDesc.setText(newsList.get(position).getDescription());
         holder.newsTitle.setText(newsList.get(position).getTitle());
     }

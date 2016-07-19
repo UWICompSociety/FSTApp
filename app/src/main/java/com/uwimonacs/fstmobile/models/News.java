@@ -10,23 +10,32 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.google.gson.annotations.SerializedName;
 
 
 @Table(name="News")
 public class News extends Model {
     //Variable Declarations
 
+    @SerializedName("id")
     @Column(name="newsId")
     int newsId; //differentiates each news item - do we need an id for each image?
 
+    @SerializedName("title")
     @Column(name="title")
     String title; //Headline
 
+    @SerializedName("description")
     @Column(name="description")
     String description; //Short excerpt of story
 
+    @SerializedName("story")
     @Column(name="story")
     String storyDetail; //Actual news story
+
+    @SerializedName("image_url")
+    @Column(name="image_url")
+    String image_url;
 
 
     int image;
@@ -89,6 +98,21 @@ public class News extends Model {
     }
 
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getStoryDetail() {
+        return storyDetail;
+    }
+
+    public void setStoryDetail(String storyDetail) {
+        this.storyDetail = storyDetail;
+    }
 
     public void setImage(int image) {
         this.image = image;
@@ -97,7 +121,7 @@ public class News extends Model {
     public static News findOrCreateFromJson(News new_news) {
         int newsId = new_news.getNewsId();
         News existingNews =
-                new Select().from(Contact.class).where("newsId = ?", newsId).executeSingle();
+                new Select().from(News.class).where("newsId = ?", newsId).executeSingle();
         if (existingNews != null) {
             // found and return existing
             return existingNews;
