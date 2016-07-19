@@ -4,9 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.fragments.InfoFragment;
-import com.uwimonacs.fstmobile.fragments.MapFragment;
+import com.uwimonacs.fstmobile.fragments.PlacesFragment;
 import com.uwimonacs.fstmobile.fragments.NewsFragment;
 
 public class TabPagerAdapter  extends FragmentPagerAdapter {
@@ -14,7 +13,7 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
     private CharSequence[] tabTitles = {   //names of the tabs
             "News",
             "Info",
-            "Map"
+            "Places"
     };
 
     public TabPagerAdapter(FragmentManager fm) {
@@ -29,7 +28,7 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
             case 1:
                 return new InfoFragment();
             case 2:
-                return new MapFragment();
+                return new PlacesFragment();
         }
         return null;
     }
