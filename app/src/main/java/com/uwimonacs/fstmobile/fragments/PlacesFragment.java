@@ -1,137 +1,86 @@
 package com.uwimonacs.fstmobile.fragments;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
+import com.uwimonacs.fstmobile.adapters.SearchResultsAdapter;
+import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.models.Room;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class PlacesFragment extends Fragment
-        implements
-        OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
-    private AppCompatActivity activity;
-
-    private GoogleApiClient mGoogleApiClient;
-    private GoogleMap mGoogleMap;
-    private Location mLastLocation;
+public class PlacesFragment extends Fragment {
+    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        activity = (AppCompatActivity) getActivity();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(activity)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mGoogleApiClient.connect();
-
-        setUpMapIfNeeded();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        mGoogleApiClient.disconnect();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (view == null) // prevents crash on tab switch
-            view = inflater.inflate(R.layout.frag_map, container, false); //inflates the layout for the view
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        if (view == null) // prevents crash on tab switch
+        view = inflater.inflate(R.layout.frag_places, container, false); //inflates the layout for the view
+        final View resultsView = inflater.inflate(R.layout.frag_places_search_results, container, false);
+        final RecyclerView categories = (RecyclerView) view.findViewById(R.id.frag_places_recyclerview),
+                searchResults = (RecyclerView) resultsView.findViewById(R.id.frag_places_search_results_recyclerview);
+        categories.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchResults.setLayoutManager(new LinearLayoutManager(getContext()));;
+        categories.setAdapter(new PlacesCategoriesAdapter(getContext()));
+        final SearchResultsAdapter adapter = new SearchResultsAdapter(getContext());
+        searchResults.setAdapter(adapter);
+        SearchView searchView = (SearchView) view.findViewById(R.id.frag_places_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do nothing
+                return false;
+            }
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(TextUtils.isEmpty(newText)){
+                    ViewGroup rootView = (ViewGroup) getView();
+                    assert rootView != null;
+                    rootView.removeViewAt(1);
+                    rootView.addView(categories);
+                }
+                else {
+                    newText = newText.toLowerCase();
+                    List<String> searchResults = new ArrayList<>();
+                    for(int i=0; i<Constants.ROOMS.size(); i++){
+                        String name = Constants.ROOMS.get(i).getName().toLowerCase();
+                        if(name.contains(newText))
+                            searchResults.add(Constants.ROOMS.get(i).getName());
+                    }
+                    adapter.updateSearchResults(searchResults);
+                    ViewGroup rootView = (ViewGroup) getView();
+                    assert rootView != null;
+                    rootView.removeViewAt(1);
+                    rootView.addView(resultsView);
 
-        mapFragment.getMapAsync(this);
-
+                }
+                return true;
+            }
+        });
         return view;
     }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mGoogleMap = googleMap;
-
-            googleMap.setMyLocationEnabled(true);
-        }
-    }
-
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mGoogleMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mGoogleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-
-            // Check if we were successful in obtaining the map.
-            if (mGoogleMap != null) setUpMap();
-        } else
-            setUpMap();
-    }
-
-    private void setUpMap() {
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleMap.animateCamera(CameraUpdateFactory
-                    .newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 16.0f));
-        }
-    }
-
-    /**
-     * Callback called when connected to GCore. Implementation of {@link GoogleApiClient.ConnectionCallbacks}.
-     */
-    @Override
-    public void onConnected(Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if(mLastLocation != null)
-                setUpMapIfNeeded();
-        }
-    }
-
-    @Override public void onConnectionSuspended(int i) {}
-    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
-
-    private View view;
 
     public PlacesFragment() { /* required empty constructor */ }
 }

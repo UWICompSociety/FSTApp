@@ -13,7 +13,7 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
     private CharSequence[] tabTitles = {   //names of the tabs
             "News",
             "Info",
-            "Map"
+            "Places"
     };
 
     public TabPagerAdapter(FragmentManager fm) {
