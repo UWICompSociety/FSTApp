@@ -22,9 +22,9 @@ public class NewsSync {
 
     public boolean syncNews()
     {
-        RestNews restContact = new RestNews(url);
+        RestNews restNews = new RestNews(url);
 
-        newsItems = restContact.getNews(); //gets the list of news from rest api
+        newsItems = restNews.getNews(); //gets the list of news from rest api
 
         if(newsItems == null) //if there are no news
             return false;

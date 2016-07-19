@@ -14,6 +14,9 @@ public  class Constants {
     public static String NEWS_URL  = "https://infinite-citadel-20637.herokuapp.com/news/";
     public static String FAQS_URL = "https://infinite-citadel-20637.herokuapp.com/faqs/";
     public static String SCHOL_URL = "https://infinite-citadel-20637.herokuapp.com/scholarship/";
+    public static String PLACE_URL = "https://infinite-citadel-20637.herokuapp.com/places/";
+
+
     public static final String[] PLACE_CATEGORIES = {"Chemistry", "Life Sciences", "Physics", "Mathematics",
             "Computing", "Engineering"};
     public static final String[] SUB_CATEGORIES = {"Room 1", "Room 2", "Room 3", "Room 4",
