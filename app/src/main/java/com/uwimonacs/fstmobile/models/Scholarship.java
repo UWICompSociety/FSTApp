@@ -14,8 +14,8 @@ import com.google.gson.annotations.SerializedName;
 public class Scholarship extends Model {
 
     @SerializedName("id")
-    @Column(name = "iD")
-    private int iD;
+    @Column(name = "scholId")
+    private int scholId;
 
     @SerializedName("name")
     @Column(name = "title")
@@ -40,7 +40,7 @@ public class Scholarship extends Model {
     public Scholarship(int iD, String title, String description, String detail, String image) {
         super();
 
-        this.iD = iD;
+        this.scholId = iD;
         this.title = title; //name of scholarship
         this.description = description; //short preview description of scholarship
         this.detail = detail;  //detailed description of scholarship
@@ -50,8 +50,8 @@ public class Scholarship extends Model {
     /*
     Getters
      */
-    public int getiD() {
-        return iD;
+    public int getScholD() {
+        return scholId;
     }
 
     public String getTitle() {
@@ -74,8 +74,8 @@ public class Scholarship extends Model {
     Setters
      */
 
-    public void setiD(int iD) {
-        this.iD = iD;
+    public void setScholiD(int iD) {
+        this.scholId = iD;
     }
 
     public void setTitle(String title) {
@@ -95,7 +95,7 @@ public class Scholarship extends Model {
     }
 
     public static Scholarship findOrCreateFromJson(Scholarship new_schol) {
-        int scholId = new_schol.getiD();
+        int scholId = new_schol.getScholD();
 
         Scholarship existingSchol = new Select().from(Scholarship.class).where("scholId = ?", scholId).executeSingle();
 
