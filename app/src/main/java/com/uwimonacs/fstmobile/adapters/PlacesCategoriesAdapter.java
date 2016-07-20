@@ -23,12 +23,19 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
     List<String> departments;
 
     public PlacesCategoriesAdapter(Context context, List<Place> places){
-        this.places = places;
+        this.places = new ArrayList<>(places);
         departments = new ArrayList<>();
         /*
         * Build a list of the names of the departments to act as the "category" names
         * for the expandable cards in the RecyclerView
         * */
+        setUpDepartments();
+
+        this.context = context;
+    }
+
+    private void setUpDepartments()
+    {
         for(int i=0; i<places.size(); i++){
             boolean add = true;
             for(int j=0; j<departments.size(); j++){
@@ -40,7 +47,6 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
             if(add)
                 departments.add(places.get(i).getDepartment());
         }
-        this.context = context;
     }
 
     @Override
@@ -133,7 +139,8 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
     }
 
     public void updatePlaces(List<Place> places){
-        this.places = places;
+        this.places = new ArrayList<>(places);
+        setUpDepartments();
         notifyDataSetChanged();
     }
 

@@ -28,22 +28,27 @@ import java.util.List;
 @SuppressWarnings("FieldCanBeLocal")
 public class PlacesFragment extends Fragment {
     private View view;
-    private List<Place> places;
+    private List<Place> places = new ArrayList<>();
     private String restUrl  = Constants.PLACE_URL;
     private PlacesCategoriesAdapter placesCategoriesAdapter;
-
+     RecyclerView categories;
+    RecyclerView searchResults;
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getPlacesFromDatabase();
-        if(places.size() == 0)
-            initializePlaces();
+
+
+
         view = inflater.inflate(R.layout.frag_places, container, false); //inflates the layout for the view
 
         final View resultsView = inflater.inflate(R.layout.frag_places_search_results, container, false);
 
-        final RecyclerView categories = (RecyclerView) view.findViewById(R.id.frag_places_recyclerview),
+        categories = (RecyclerView) view.findViewById(R.id.frag_places_recyclerview);
                 searchResults = (RecyclerView) resultsView.findViewById(R.id.frag_places_search_results_recyclerview);
+
+        getPlacesFromDatabase();
+        //if(places.size() == 0)
+          //  initializePlaces();
 
         categories.setLayoutManager(new LinearLayoutManager(getContext()));
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -68,5 +68,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     public void updateNews(List<News> new_news)
     {
         this.newsList = new ArrayList<>(new_news);
+        notifyDataSetChanged();
     }
 }

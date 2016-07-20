@@ -54,8 +54,8 @@ public class NewsFragment extends Fragment {
 
         getNewsFromDatabase();
 
-        if(newsItems.size()<=0)
-            intializeExampleData();
+       // if(newsItems.size()<=0)
+         //   intializeExampleData();
 
         Toast.makeText(this.getActivity(),newsItems.size()+"",Toast.LENGTH_SHORT).show();
 
