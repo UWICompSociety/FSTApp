@@ -22,12 +22,12 @@ public class PlaceSync {
     {
         RestPlace restPlace = new RestPlace(url);
 
-        places = restPlace.getPlaces(); //gets the list of news from rest api
+        places = restPlace.getPlaces(); //gets the list of places from rest api
 
-        if(places == null) //if there are no news
+        if(places == null) //if there are no places
             return false;
 
-        if(places.size() == 0) //if the news list is empty
+        if(places.size() == 0) //if the place list is empty
             return false;
 
 
@@ -35,7 +35,7 @@ public class PlaceSync {
         {
             Place place = places.get(i);
 
-            Place.findOrCreateFromJson(place); //saves contact to database
+            Place.findOrCreateFromJson(place); //saves places to database
         }
 
         return true;

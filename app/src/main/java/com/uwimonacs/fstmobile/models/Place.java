@@ -78,12 +78,12 @@ public class Place extends Model {
     public static Place findOrCreateFromJson(Place new_place) {
         int placeId = new_place.getPlaceId();
         Place existingPlace =
-                new Select().from(Place.class).where("newsId = ?", placeId).executeSingle();
+                new Select().from(Place.class).where("placeId = ?", placeId).executeSingle();
         if (existingPlace != null) {
             // found and return existing
             return existingPlace;
         } else {
-            // create and return new user
+            // create and return new place
             Place place = new_place;
             place.save();
             return place;

@@ -32,7 +32,7 @@ public class RestPlace
         ArrayList<Place> places;
         try {
             HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
-            conn.setRequestMethod("GET"); //sets the rest method to ger
+            conn.setRequestMethod("GET"); //sets the rest method to get
 
             Reader reader = new InputStreamReader(conn.getInputStream()); //gets the data from the rest api
             GsonExclude exclude = new GsonExclude(); //used to speed serialization process
