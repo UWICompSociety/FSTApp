@@ -1,6 +1,8 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.NewsDetailActivity;
 import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.News;
 
@@ -23,7 +26,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
 
 
 
-    public static class NewsViewHolder extends RecyclerView.ViewHolder
+    public class NewsViewHolder extends RecyclerView.ViewHolder
     {
         TextView newsTitle;
         TextView newsDesc;
@@ -33,6 +36,22 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
             newsTitle = (TextView)itemView.findViewById(R.id.newsHeading);
             newsDesc = (TextView)itemView.findViewById(R.id.newsDescription);
             newsImage = (ImageView)itemView.findViewById(R.id.newsImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = NewsViewHolder.this.getAdapterPosition(); //position of element in list
+
+                    Intent intent = new Intent(v.getContext(), NewsDetailActivity.class);
+                    intent.putExtra("image",newsList.get(pos).getImage_url());
+                    intent.putExtra("title",newsList.get(pos).getTitle());
+                    intent.putExtra("story",newsList.get(pos).getStory());
+
+                    v.getContext().startActivity(intent);
+
+
+                }
+            });
         }
     }
 
