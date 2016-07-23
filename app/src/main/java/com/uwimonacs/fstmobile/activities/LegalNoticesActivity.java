@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.google.android.gms.common.GoogleApiAvailability;
+//import com.google.android.gms.common.GoogleApiAvailability;
 import com.uwimonacs.fstmobile.R;
 
 // If you use the Google Maps Android API in your application,
@@ -24,11 +24,11 @@ public class LegalNoticesActivity extends AppCompatActivity {
 
         TextView legalInfoTextView = (TextView) findViewById(R.id.legal_info);
 
-        String openSourceSoftwareLicenseInfo =
-                GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(this);
-        if(openSourceSoftwareLicenseInfo != null)
-            legalInfoTextView.setText(openSourceSoftwareLicenseInfo);
-        else
+      //  String openSourceSoftwareLicenseInfo =
+        //        GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(this);
+        //if(openSourceSoftwareLicenseInfo != null)
+          //  legalInfoTextView.setText(openSourceSoftwareLicenseInfo);
+        //else
             legalInfoTextView.setText(R.string.play_services_not_installed);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
