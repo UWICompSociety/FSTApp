@@ -1,10 +1,12 @@
 package com.uwimonacs.fstmobile.fragments;
 
 import android.content.Context;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.NewsListAdapter;
+import com.uwimonacs.fstmobile.helper.Connect;
 import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.sync.NewsSync;
@@ -24,13 +27,18 @@ import java.util.List;
 /**
  * Created by Matthew on 6/20/2016.
  */
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private View view;
     private NewsListAdapter newsListAdapter;
     private RecyclerView newsListView;
     private List<News> newsItems;
     private String newsUrl  = Constants.NEWS_URL;
+    private LoadNewsTask loadNewsTask = null;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    Connect connect;
+
+
 
 
     public NewsFragment()
@@ -46,11 +54,18 @@ public class NewsFragment extends Fragment {
 
         newsListView = (RecyclerView)view.findViewById(R.id.listNews);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
 
         newsListView.setLayoutManager(llm);
 
         newsListView.setHasFixedSize(true);
+
+        connect = new Connect(this.getActivity());
 
         getNewsFromDatabase();
 
@@ -63,7 +78,8 @@ public class NewsFragment extends Fragment {
 
         newsListView.setAdapter(newsListAdapter);
 
-        new LoadNewsTask(view.getContext()).execute("");
+        new LoadNewsTask(this.getActivity()).execute("");
+        //loadNewsTask.execute("");
 
         return view;
     }
@@ -83,6 +99,31 @@ public class NewsFragment extends Fragment {
 
 
     }
+
+    private boolean isConnected(){
+
+        return connect.isConnected();
+    }
+
+    private boolean hasInternet()
+    {
+        boolean hasInternet = false;
+        try{
+            hasInternet =connect.haveInternetConnectivity();
+        }catch(Exception e)
+        {
+            hasInternet = false;
+        }
+
+        return  hasInternet;
+
+    }
+
+    @Override
+    public void onRefresh() {
+        new LoadNewsTask(getActivity()).execute("");
+    }
+
 
 
     private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>
@@ -104,12 +145,22 @@ public class NewsFragment extends Fragment {
         @Override
         protected Boolean doInBackground(String... params) {
             NewsSync newsSync = new NewsSync(newsUrl);
-            boolean result = newsSync.syncNews();
-            return result;
+
+            if(!isConnected()) {
+                return false;
+            }
+
+            if(!hasInternet())
+            {
+                return false;
+            }
+
+            return newsSync.syncNews();
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
+            swipeRefreshLayout.setRefreshing(false);
             if(result)
             {
                 getNewsFromDatabase();
