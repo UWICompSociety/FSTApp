@@ -106,6 +106,8 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity android:name=".activities.MapActivity"></activity>
+
+        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
     </application>
 
 </manifest>

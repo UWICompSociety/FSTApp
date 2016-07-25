@@ -16,12 +16,16 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapboxAccountManager.start(this,getString(R.string.access_token));
         setContentView(R.layout.activity_map);
 
-        MapboxAccountManager.start(this, getString(R.string.accessToken));
+
+
 
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
+
+
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -43,11 +47,7 @@ public class MapActivity extends AppCompatActivity {
         mapView.onPause();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
+
 
     @Override
     public void onLowMemory() {
@@ -59,5 +59,11 @@ public class MapActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 }
