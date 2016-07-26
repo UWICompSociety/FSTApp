@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -51,8 +53,14 @@ public class MapActivity extends AppCompatActivity {
                 String[] locals = location.split(",");
                 String snip = department + " - " + shortname;
 
+                double lat = Double.parseDouble(locals[0]);
+                double lon = Double.parseDouble(locals[1]);
+
+                mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition.Builder().target(new LatLng(lat,lon)).build()));
+
                 map.addMarker(new MarkerViewOptions()
-                        .position(new LatLng(Double.parseDouble(locals[0]),Double.parseDouble(locals[1])))
+                        .position(new LatLng(lat,lon))
                         .title(fullname)
                         .snippet(snip));
             }

@@ -68,11 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(scholIntent);
                 return true;
 
-            //For map activity
-            case R.id.action_maps:
-                Intent mapIntent = new Intent(this, MapActivity.class);
-                startActivity(mapIntent);
-
             default:
                 return super.onOptionsItemSelected(item);
         }
