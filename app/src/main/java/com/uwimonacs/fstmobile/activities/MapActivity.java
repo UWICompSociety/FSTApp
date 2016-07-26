@@ -19,13 +19,24 @@ public class MapActivity extends AppCompatActivity {
 
     private MapView mapView;
     private MapboxMap map;
-    private Place place = (Place) getIntent().getSerializableExtra("Place"); //get Place from intent
+    private Bundle extras;
+    private String location;
+    private String department;
+    private String shortname;
+    private String fullname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MapboxAccountManager.start(this,getString(R.string.access_token));
         setContentView(R.layout.activity_map);
+
+        extras = getIntent().getExtras();
+
+        location = extras.getString("location");
+        department = extras.getString("department");
+        shortname = extras.getString("shortname");
+        fullname = extras.getString("fullname");
 
         mapView = (MapView) findViewById(R.id.mapview);
 
@@ -37,12 +48,12 @@ public class MapActivity extends AppCompatActivity {
                 map = mapboxMap;
                 mapboxMap.setMyLocationEnabled(true);
 
-                String[] locals = place.getLocation().split(",");
-                String snip = place.getDepartment() + " - " + place.getShortname();
+                String[] locals = location.split(",");
+                String snip = department + " - " + shortname;
 
                 map.addMarker(new MarkerViewOptions()
                         .position(new LatLng(Double.parseDouble(locals[0]),Double.parseDouble(locals[1])))
-                        .title(place.getFullname())
+                        .title(fullname)
                         .snippet(snip));
             }
         });

@@ -71,9 +71,14 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         * */
         String department = departments.get(position);
         List<String> placeNames = new ArrayList<>();
+        List<Place> tempPlaces = new ArrayList<>();
         for(int i=0; i<places.size(); i++){
             if(places.get(i).getDepartment().equals(department))
+            {
                 placeNames.add(places.get(i).getShortname());
+                tempPlaces.add(places.get(i));
+            }
+
         }
 
         /*
@@ -90,7 +95,9 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         * extra or bundle
         * */
         for(int i=0; i<placeNames.size(); i++){
+
             final String name = placeNames.get(i);
+            final Place place = tempPlaces.get(i);
             TextView textView = new TextView(context);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
@@ -106,9 +113,12 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
                     Toast.makeText(context, "You clicked " +
                             name, Toast.LENGTH_SHORT).show();
                     //TODO: Start MapActivity here with IntentExtra
-                    //Intent mapIntent = new Intent(this, MapActivity.class);
-                    //mapIntent.putExtra("Place", Place);
-                    //startActivity(mapIntent);
+                    Intent mapIntent = new Intent(view.getContext(), MapActivity.class);
+                    mapIntent.putExtra("location", place.getLocation());
+                    mapIntent.putExtra("department",place.getDepartment());
+                    mapIntent.putExtra("shortname",name);
+                    mapIntent.putExtra("fullname",place.getFullname());
+                    view.getContext().startActivity(mapIntent);
                 }
             });
             linearLayout.addView(textView);
