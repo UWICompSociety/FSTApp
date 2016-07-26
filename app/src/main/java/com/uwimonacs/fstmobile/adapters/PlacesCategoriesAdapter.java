@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.MapActivity;
 import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
@@ -104,6 +106,9 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
                     Toast.makeText(context, "You clicked " +
                             name, Toast.LENGTH_SHORT).show();
                     //TODO: Start MapActivity here with IntentExtra
+                    //Intent mapIntent = new Intent(this, MapActivity.class);
+                    //mapIntent.putExtra("Place", Place);
+                    //startActivity(mapIntent);
                 }
             });
             linearLayout.addView(textView);
