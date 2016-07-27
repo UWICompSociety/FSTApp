@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/queens_way"
+        android:alpha="0.5"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/term"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="620012345"
+        android:id="@+id/id_number"
+        android:gravity="start"
+        android:layout_marginBottom="8dp"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:layout_above="@id/term"
+        android:layout_alignLeft="@id/term"
+        android:layout_alignStart="@id/term"
+        android:alpha="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAS User"
+        android:textSize="14sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:paddingBottom="4dp"
+        android:id="@+id/username"
+        android:layout_above="@id/id_number"
+        android:layout_alignLeft="@id/term"
+        android:layout_alignStart="@id/term"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:src="@drawable/profile"
+        app:border_color="#FF000000"
+        android:layout_above="@id/username"
+        android:layout_alignLeft="@id/term"
+        android:layout_alignStart="@id/term"/>
+</RelativeLayout>

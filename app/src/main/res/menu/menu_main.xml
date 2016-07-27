@@ -2,11 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
-    <item
-        android:id="@+id/action_schol"
-        android:orderInCategory="103"
-        android:title="@string/action_schol"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_legal_notices"

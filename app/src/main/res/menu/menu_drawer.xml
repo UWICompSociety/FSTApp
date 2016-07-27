@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single"
+        android:id="@+id/group_1">
+        <item
+            android:id="@+id/sas_registration"
+            android:checked="true"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/sas_registration"/>
+    </group>
+</menu>

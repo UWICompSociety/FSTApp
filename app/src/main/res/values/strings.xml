@@ -22,6 +22,64 @@
     <string name="channel_id">UCLSsrbKRNkPZF9_bTds6yAw</string>
     <string name="required_fields">items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)</string>
 
+    <!-- SAS Related -->
+    <string name="activity_sas">Student Services</string>
+    <string name="activity_registration">Registration</string>
+    <string name="activity_records">Student Records</string>
+    <string name="term_selector_label">Semester:</string>
+    <string name="registration_sas">Registration</string>
+    <string name="addcourse_label">Add New Courses</string>
+        <string name="registration_description_sas">
+            \u2022 Check your registration status \n
+            \u2022 Add or drop classes \n
+            \u2022 Display your class schedule
+        </string>
+        <string name="records_description_sas">
+            \u2022 View your holds \n
+            \u2022 Display your grades and transcripts \n
+            \u2022 Review charges and payments
+        </string>
+    <string name="add_drop_label">Add Courses</string>
+    <string name="timetable_label">View your schedule</string>
+    <string name="courses_label">View your courses</string>
+    <string name="override_label">Request Override</string>
+    <string name="records_sas">Student Records</string>
+    <string name="username_sas">ID Number e.g. 620012345</string>
+    <string name="password_sas">Password</string>
+    <string name="login_button_sas">Login</string>
+    <string name="reset_sas">Forgot password</string>
+    <string name="login_title_sas">Login to SAS</string>
+    <string name="logout_menuitem_sas">Logout</string>
+    <string name="remember_password_sas">Remember login</string>
+    <string name="main_title_sas">Student Services</string>
+    <string name="addcourses_description">
+        Search for courses below to add
+    </string>
+    <!-- Error Codes -->
+    <string-array name="error_codes">
+        <item>You may register during the following times</item>
+        <item>You have no Registration Time Ticket</item>
+    </string-array>
+    <!--  Links  -->
+    <string name="login_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_WWWLogin</string>
+    <string name="login_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_ValLogin</string>
+    <string name="webstart_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/web.startpage</string>
+    <string name="webagree_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/web.agree</string>
+    <string name="fstletter_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/uwm_fst.letter</string>
+    <string name="mainmenu_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu</string>
+    <string name="studentservices_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu</string>
+    <string name="registration_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu</string>
+    <string name="selectterm_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
+    <string name="selectterm_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
+    <string name="detailschedule_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
+    <string name="coursesearch_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwckgens.P_RegsGetCrse</string>
+    <string name="logout_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_Logout</string>
+
+
+    <string name="timetable_url">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
+    <string name="get_terms_url">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
+    <string name="store_term_url">http://sas.uwimona.edu.jm:9010//banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
+
     <!-- Map Related -->
     <string name="play_services_not_installed">Google Play Services is not installed on this device</string>
 
@@ -30,5 +88,8 @@
     <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_expandable_scholarship">ExpandableScholarshipActivity</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
+
+    <!-- Nav Drawer -->
+    <string name="sas_registration">View Timetable</string>
 
 </resources>
