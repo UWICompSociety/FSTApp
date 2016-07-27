@@ -110,8 +110,6 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "You clicked " +
-                            name, Toast.LENGTH_SHORT).show();
                     //TODO: Start MapActivity here with IntentExtra
                     Intent mapIntent = new Intent(view.getContext(), MapActivity.class);
                     mapIntent.putExtra("location", place.getLocation());
