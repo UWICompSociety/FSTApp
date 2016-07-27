@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,12 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.MapActivity;
+import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>{
-    private List<String> searchResults;
+    private List<Place> searchResults;
     private Context context;
 
     public SearchResultsAdapter(Context context){
@@ -30,14 +33,19 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     @Override
-    public void onBindViewHolder(final SearchResultsAdapter.SearchResultsHolder holder, int position) {
-        holder.result.setText(searchResults.get(position));
+    public void onBindViewHolder(final SearchResultsAdapter.SearchResultsHolder holder, final int position) {
+        holder.result.setText(searchResults.get(position).getShortname());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "You clicked "+
-                        searchResults.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                Place place = searchResults.get(position);
                 //TODO: Start MapActivity here
+                Intent mapIntent = new Intent(view.getContext(), MapActivity.class);
+                mapIntent.putExtra("location", place.getLocation());
+                mapIntent.putExtra("department",place.getDepartment());
+                mapIntent.putExtra("shortname",place.getShortname());
+                mapIntent.putExtra("fullname",place.getFullname());
+                view.getContext().startActivity(mapIntent);
             }
         });
     }
@@ -47,7 +55,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return searchResults.size();
     }
 
-    public void updateSearchResults(List<String> searchResults){
+    public void updateSearchResults(List<Place> searchResults){
         this.searchResults = searchResults;
         notifyDataSetChanged();
     }

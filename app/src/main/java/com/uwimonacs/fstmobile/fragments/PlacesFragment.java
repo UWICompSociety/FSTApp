@@ -86,11 +86,11 @@ public class PlacesFragment extends Fragment {
                 * */
                 else {
                     newText = newText.toLowerCase();
-                    List<String> searchResults = new ArrayList<>();
+                    List<Place> searchResults = new ArrayList<>();
                     for(int i=0; i<places.size(); i++){
                         String name = places.get(i).getShortname().toLowerCase();
                         if(name.contains(newText))
-                            searchResults.add(places.get(i).getShortname());
+                            searchResults.add(places.get(i));
                     }
                     searchResultsAdapter.updateSearchResults(searchResults);
                     ViewGroup rootView = (ViewGroup) getView();

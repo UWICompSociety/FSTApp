@@ -67,16 +67,6 @@ public class MapActivity extends AppCompatActivity {
                         .position(new LatLng(lat,lon))
                         .title(fullname)
                         .snippet(snip));
-
-                //For user location
-                IconFactory iconFactory = IconFactory.getInstance(MapActivity.this);
-                Drawable iconDrawable = ContextCompat.getDrawable(MapActivity.this, R.drawable.blue_marker);
-                Icon icon = iconFactory.fromDrawable(iconDrawable);
-
-                map.addMarker(new MarkerViewOptions()
-                        .position(new LatLng(map.getMyLocation()))
-                        .title("You")
-                        .icon(icon));
             }
         });
     }
