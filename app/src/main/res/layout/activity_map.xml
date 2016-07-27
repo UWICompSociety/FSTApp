@@ -17,6 +17,6 @@
         mapbox:style_url="@string/style_mapbox_streets"
         mapbox:center_latitude="18.0050"
         mapbox:center_longitude="-76.7466"
-        mapbox:zoom="20"/>
+        mapbox:zoom="18"/>
 
 </RelativeLayout>

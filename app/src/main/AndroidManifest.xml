@@ -129,7 +129,11 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.MapActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
 
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
     </application>
