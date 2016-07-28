@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
@@ -44,6 +45,16 @@ public class FAQActivity extends AppCompatActivity {
         faqList.setAdapter(adapter);
 
         new LoadFAQsTask(this).execute("");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 
     private void getFAQsFromDatabase()

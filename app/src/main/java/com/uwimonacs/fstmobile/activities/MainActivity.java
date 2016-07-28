@@ -2,10 +2,14 @@ package com.uwimonacs.fstmobile.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -152,6 +156,9 @@ implements AdapterView.OnItemSelectedListener{
                             startActivity(intent);
                         }
                         return true;
+                    case R.id.sas_logout:
+                        removeAccount();
+                        return true;
                     // Including legal notices as an independent menu item,
                     // or as part of an "About" menu item, is recommended.
                     case R.id.legal_notices:
@@ -164,6 +171,50 @@ implements AdapterView.OnItemSelectedListener{
                 }
             }
         });
+    }
+
+    public void removeAccount(){
+        final AppCompatActivity activity = this;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        // set title
+        alertDialogBuilder.setTitle("Logging out");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("This will remove your account from this device. \n" +
+                        "You can log in again")
+                .setCancelable(true)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        loggedIn = false;
+                        AccountManager manager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
+                        Account[] accounts = manager.getAccountsByType("UWI");
+                        Account account = new Account("dummy","dummy");
+                        for(Account listItem: accounts){
+                            if(sasConfig.student.getIdNumber().equals(listItem.name))
+                                account = listItem;
+                        }
+                        if (Build.VERSION.SDK_INT < 22) {
+                            manager.removeAccount(account, null, null);
+                        } else {
+                            manager.removeAccount(account, activity, null, null);
+                        }
+                        sasConfig.student = null;
+                        ActivityCompat.finishAffinity(activity);
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Do nothing
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     @Override

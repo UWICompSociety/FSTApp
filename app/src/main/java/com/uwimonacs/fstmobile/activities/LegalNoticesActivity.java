@@ -3,6 +3,7 @@ package com.uwimonacs.fstmobile.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -32,5 +33,15 @@ public class LegalNoticesActivity extends AppCompatActivity {
             legalInfoTextView.setText(R.string.play_services_not_installed);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 }

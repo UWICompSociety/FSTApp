@@ -10,6 +10,7 @@
                     android:title="@string/sas_registration"/>
                 <item
                     android:id="@+id/sas_logout"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
                     android:title="@string/sas_logout"/>
             </group>
         </menu>
