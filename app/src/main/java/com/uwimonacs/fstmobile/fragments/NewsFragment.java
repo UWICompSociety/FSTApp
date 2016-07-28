@@ -24,11 +24,8 @@ import com.uwimonacs.fstmobile.sync.NewsSync;
 
 import java.util.List;
 
-/**
- * Created by Matthew on 6/20/2016.
- */
-public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-
+@SuppressWarnings("FieldCanBeLocal")
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private View view;
     private NewsListAdapter newsListAdapter;
     private RecyclerView newsListView;
@@ -38,25 +35,24 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     Connect connect;
 
-
-
-
     public NewsFragment()
     {
-
+        /* required empty constructor */
     }
-
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frag_news,container,false); //inflates the layout for the view
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.frag_news, container, false);
 
         newsListView = (RecyclerView)view.findViewById(R.id.listNews);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
 
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+
         swipeRefreshLayout.setOnRefreshListener(this);
 
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
@@ -92,25 +88,31 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void intializeExampleData()
     {
+        newsItems.add(new News(1, R.drawable.coffee_cake, "No Classes Tomorrow!",
+                "The school board has advised that there will be no class tomorrow due to..",
+                "Detail1"));
 
-        newsItems.add(new News(1,R.drawable.coffee_cake,"No Classes Tommorow!","The sccholboard has advised that there will be no class tommorow due to..","Detail1"));
-        newsItems.add(new News(2,R.drawable.donut_holes,"New Buildings","New buildings have been constructed at science and tech with the departments benefiting from this being..","Detail2"));
-        newsItems.add(new News(3,R.drawable.muffins,"Deadline For Summer School","Deadline fo summer school registration is almost upon us ,all students who wish to..","Detail3"));
+        newsItems.add(new News(2, R.drawable.donut_holes, "New Buildings",
+                "New buildings have been constructed at science and tech with the departments "
+                        + "benefiting from this being..",
+                "Detail2"));
 
-
+        newsItems.add(new News(3, R.drawable.muffins, "Deadline For Summer School",
+                "Deadline fo summer school registration is almost upon us, all students who wish "
+                        + "to..",
+                "Detail3"));
     }
 
-    private boolean isConnected(){
-
+    private boolean isConnected() {
         return connect.isConnected();
     }
 
     private boolean hasInternet()
     {
         boolean hasInternet = false;
-        try{
-            hasInternet =connect.haveInternetConnectivity();
-        }catch(Exception e)
+        try {
+            hasInternet = connect.haveInternetConnectivity();
+        } catch(Exception e)
         {
             hasInternet = false;
         }
@@ -123,8 +125,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         new LoadNewsTask(getActivity()).execute("");
     }
-
-
 
     private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>
     {
@@ -165,9 +165,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             {
                 getNewsFromDatabase();
                 newsListAdapter.updateNews(newsItems);
-                Toast.makeText(ctxt,"Successful",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(ctxt,"Failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctxt, "Successful", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ctxt, "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
