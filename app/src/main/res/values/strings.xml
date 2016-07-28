@@ -2,11 +2,9 @@
     <string name="app_name">FST Mobile</string>
 
     <!-- Activity Titles -->
-    <string name="title_activity_legal_info">Legal Notices</string>
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
 
     <!-- Menu Option Titles -->
-    <string name="action_legal_notices">Legal Notices</string>
     <string name="action_settings">Settings</string>
     <string name="action_schol">Scholarships and Bursaries</string>
 
@@ -96,7 +94,6 @@
     <string name="sas">SAS</string>
     <string name="sas_registration">View Timetable</string>
     <string name="sas_logout">Log out</string>
-    <string name="legal_notices">Legal notices</string>
     <string name="settings">Settings</string>
 
 </resources>

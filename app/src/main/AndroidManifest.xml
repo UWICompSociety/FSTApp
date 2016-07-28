@@ -63,15 +63,6 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.LegalNoticesActivity"
-            android:label="@string/title_activity_legal_info"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
-        <activity
             android:name=".activities.ScholarshipActivity"
             android:label="@string/title_activity_scholarship"
             android:theme="@style/AppTheme.NoActionBar">

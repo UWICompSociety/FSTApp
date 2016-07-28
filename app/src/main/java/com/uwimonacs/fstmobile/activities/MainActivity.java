@@ -152,11 +152,7 @@ implements AdapterView.OnItemSelectedListener{
                             startActivity(intent);
                         }
                         return true;
-                    // Including legal notices as an independent menu item,
-                    // or as part of an "About" menu item, is recommended.
-                    case R.id.legal_notices:
-                        startActivity(new Intent(getApplicationContext(), LegalNoticesActivity.class));
-                        return true;
+
                     case R.id.settings:
                         return true;
                     default:
