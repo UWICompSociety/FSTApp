@@ -11,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
 import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
+import com.uwimonacs.fstmobile.helper.Connect;
 
 /**
  * Created by Matthew on 6/25/2016.
@@ -42,8 +44,12 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoVi
                             v.getContext().startActivity(faqIntent); //starting FAQ activity
                             break;
                         case 1:
-                            Intent videoIntent = new Intent(v.getContext(),VideoListActivity.class);
-                            v.getContext().startActivity(videoIntent); //starting video activity
+                            if(new Connect(v.getContext()).isConnected()) {
+                                Intent videoIntent = new Intent(v.getContext(), VideoListActivity.class);
+                                v.getContext().startActivity(videoIntent); //starting video activity
+                            } else {
+                                Toast.makeText(v.getContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                            }
                             break;
                         case 2:
                             //Scholarship Actvity
