@@ -201,15 +201,18 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                     id.setError(null);
                     pass.setError(null);
 
-                    if (TextUtils.isEmpty(id.getText().toString())) {
+                    final String username = id.getText().toString();
+                    final String password = pass.getText().toString();
+
+                    if (TextUtils.isEmpty(username)) {
                         id.setError("ID number required");
                         showMessage("ID Number required");
                     }
-                    else if (id.getText().toString().length() != 9) {
+                    else if (username.length() != 9) {
                         id.setError("ID number is too short");
                         showMessage("Invalid ID Number");
                     }
-                    else if (TextUtils.isEmpty(pass.getText().toString())) {
+                    else if (TextUtils.isEmpty(password)) {
                         pass.setError("Password required");
                         showMessage("Password required");
                     }
@@ -218,9 +221,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                     else {
                         mainLayout.setVisibility(View.GONE);
                         progressBar.setVisibility(View.VISIBLE);
-                        //Create account
-                        final String username = id.getText().toString();
-                        final String password = pass.getText().toString();
+
                         createAccount(username, password);
                     }
                 }
