@@ -30,7 +30,6 @@ import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerView
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 
 public class ExpandableScholarshipActivity extends AppCompatActivity {
-
     private List<Scholarship> schols;
     private String url = Constants.SCHOL_URL;
     private List<Card> cards;
@@ -44,7 +43,6 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //enable back button in the toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -55,10 +53,8 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
 
         CardRecyclerView mRecyclerView = (CardRecyclerView) findViewById(R.id.card_recyclerview);
 
-        //Initializes adapter
         mCardArrayAdapter = new ExpandableScholarshipAdapter(this, cards);
 
-        //Initializes and sets layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
@@ -75,8 +71,7 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
     public static Drawable LoadImageFromWebOperations(String url) {
         try {
             InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
+            return Drawable.createFromStream(is, "src name");
         } catch (Exception e) {
             return null;
         }
@@ -97,7 +92,7 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
             MaterialLargeImageCard card = new MaterialLargeImageCard(this);
 
             //Set relevant data for the card
-            card.setDrawableIdCardThumbnail(R.drawable.scholarship);
+            card.setDrawableIdCardThumbnail(R.drawable.ic_school_black_24dp);
             //card.setDrawableIdCardThumbnail(LoadImageFromWebOperations(schols.get(i).getImage()));
             card.setTitle(schols.get(i).getTitle());
             card.setSubTitle(schols.get(i).getDescription());
@@ -130,7 +125,8 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            Toast.makeText(ctxt, "Loading Scholarships and Bursaries...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctxt, "Loading Scholarships and Bursaries...",
+                    Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -144,10 +140,10 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 initMaterialCards();
-                Toast.makeText(ctxt, "Scholarships loaded successfully",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctxt, "Scholarships loaded successfully", Toast.LENGTH_SHORT).show();
                 mCardArrayAdapter.updateSchols(cards);
             }else {
-                Toast.makeText(ctxt,"Failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctxt, "Failed", Toast.LENGTH_SHORT).show();
             }
         }
 
