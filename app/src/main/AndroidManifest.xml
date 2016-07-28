@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
@@ -35,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SASLoginActivity" />
-        <activity android:name=".activities.SASTimetableActivity"
+        <activity
+            android:name=".activities.SASTimetableActivity"
             android:label="@string/timetable_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -111,11 +111,11 @@
             android:name=".activities.NewsDetailActivity"
             android:label="@string/title_activity_news_detail"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
         <service
             android:name=".account.AuthenticationService"
             android:enabled="true"
@@ -131,6 +131,13 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <activity android:name=".activities.SASTranscriptActivity"
+            android:label="@string/transcript_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
