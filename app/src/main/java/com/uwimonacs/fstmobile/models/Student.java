@@ -6,13 +6,15 @@ package com.uwimonacs.fstmobile.models;
  * Services website
  */
 public class Student {
-    String idNumber, password, name;
-    TimeTable timeTable;
+    private String idNumber, password, name;
+    private TimeTable timeTable;
+    private Transcript transcript;
 
     public Student(String id){
         this.idNumber = id;
         this.password = "";
         this.timeTable = new TimeTable();
+        this.transcript = new Transcript();
     }
 
     public String getIdNumber() {
@@ -45,5 +47,13 @@ public class Student {
 
     public void setTimeTable(TimeTable timeTable) {
         this.timeTable = timeTable;
+    }
+
+    public Transcript getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(Transcript transcript) {
+        this.transcript = transcript;
     }
 }

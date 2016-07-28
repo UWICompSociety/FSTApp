@@ -85,7 +85,8 @@ implements AdapterView.OnItemSelectedListener{
         if(sasConfig.termNames.size() == 0 && loggedIn) {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("View timetable");
             setUpSAS();
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(true);
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(true);
         }
         super.onResume();
     }
@@ -115,6 +116,7 @@ implements AdapterView.OnItemSelectedListener{
         if(mAccounts.length > 0) {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(false);
             navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(false);
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(2).setEnabled(false);
             mAccount = mAccounts[0];
             //Login with single account
             final String username = mAccount.name;
@@ -138,6 +140,7 @@ implements AdapterView.OnItemSelectedListener{
             });
         } else {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("Log in");
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
             navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
         }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -155,6 +158,9 @@ implements AdapterView.OnItemSelectedListener{
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
+                        return true;
+                    case R.id.sas_transcript:
+                        startActivity(new Intent(getApplicationContext(), SASTranscriptActivity.class));
                         return true;
                     case R.id.sas_logout:
                         removeAccount();

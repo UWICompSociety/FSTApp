@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
@@ -37,7 +36,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SASLoginActivity" />
-        <activity android:name=".activities.SASTimetableActivity"
+        <activity
+            android:name=".activities.SASTimetableActivity"
             android:label="@string/timetable_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -117,6 +117,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
         <service
             android:name=".account.AuthenticationService"
             android:enabled="true"
@@ -135,6 +136,13 @@
         <activity android:name=".activities.MapActivity"></activity>
 
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+
+        <activity android:name=".activities.SASTranscriptActivity"
+            android:label="@string/transcript_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

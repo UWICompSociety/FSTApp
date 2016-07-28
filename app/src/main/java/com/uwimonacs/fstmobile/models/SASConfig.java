@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -26,6 +27,7 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.MainActivity;
 import com.uwimonacs.fstmobile.activities.SASLoginActivity;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
+import com.uwimonacs.fstmobile.models.Transcript.Term;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -74,9 +76,15 @@ public class SASConfig {
      */
     @JavascriptInterface
     public void Login(String body, String activity){
-        System.out.println("HTML: " + body);
         if(body.contains("Authorization Failure") || body.contains("Invalid login information")) {
             Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+            login.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
+                    login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
+                }
+            });
         }
         else {
             Document document = Jsoup.parse(body);
@@ -138,7 +146,6 @@ public class SASConfig {
             System.out.println("Value: " + options.get(i).attr("value"));
             termNames.add(options.get(i).text());
         }
-        System.out.println("Terms");
 
         mActivity.runOnUiThread(new Runnable() {
             @Override
@@ -209,7 +216,123 @@ public class SASConfig {
             @Override
             public void run() {
                 ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(true);
-                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(true);
+                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(2).setEnabled(true);
+
+                webView.setWebViewClient(new WebViewClient(){
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        view.loadUrl("javascript:window.sasConfig.loadTranscript('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
+                        super.onPageFinished(view, url);
+                    }
+                });
+                String formData = "levl=UG&tprt=WEB";
+                webView.postUrl(resources.getString(R.string.transcript_post), formData.getBytes());
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void loadTranscript(String body){
+        Transcript transcript = new Transcript();
+        Document document = Jsoup.parse(body);
+        Elements tables = document.getElementsByTag("table");
+        Element studentInformationTable = tables.get(5);
+        Elements tds = studentInformationTable.getElementsByClass("dddefault");
+        Elements ths = studentInformationTable.getElementsByClass("ddlabel");
+        String name = tds.get(0).ownText();
+        String degreeType = tds.get(1).ownText();
+        String program = tds.get(2).ownText();
+        String faculty = tds.get(3).ownText();
+        String major = tds.get(5).ownText();
+        String minor = tds.get(6).ownText();
+
+        transcript.setDegree(degreeType)
+                .setProgram(program)
+                .setFaculty(faculty)
+                .setMajor(major)
+                .setMinor(minor);
+
+        List<Term> terms = new ArrayList<>();
+
+        int startTermIndex,
+                startCourseIndex;
+        if(minor.contains("Bachelor")) {
+            startTermIndex = 13;
+            startCourseIndex = 16;
+        } else {
+            startTermIndex = 15;
+            startCourseIndex = 18;
+        }
+
+        System.out.println("Minor: " + minor);
+        System.out.println("Start term index: " + startTermIndex);
+        while(true){
+            Term term = new Term();
+            String termName = ths.get(startTermIndex).text().substring(6);
+            System.out.println("Term: " + termName);
+            term.setName(termName);
+            List<Term.Course> courses = new ArrayList<>();
+             while(true){
+                 Term.Course course = new Term.Course();
+                 String subject, code, title, score, grade, creditHours;
+                 try {
+                     subject = tds.get(startCourseIndex).ownText();
+                     System.out.println("Subject: " + subject);
+                     code = tds.get(startCourseIndex+1).ownText();
+                     title = tds.get(startCourseIndex + 4).text().substring(0, tds.get(startCourseIndex + 4).text().indexOf("Final"));
+                     score = tds.get(startCourseIndex + 4).text().substring(tds.get(startCourseIndex + 4).text().indexOf("Final") + 6);
+                     grade = tds.get(startCourseIndex+5).ownText();
+                     creditHours = tds.get(startCourseIndex+6).text();
+                 } catch (StringIndexOutOfBoundsException e){
+                     startCourseIndex -= 1;
+                     subject = tds.get(startCourseIndex).ownText();
+                     System.out.println("Subject: " + subject);
+                     code = tds.get(startCourseIndex+1).ownText();
+                     title = tds.get(startCourseIndex + 4).text();
+                     score = "In Progress";
+                     grade = "";
+                     creditHours = tds.get(startCourseIndex+5).text();
+                 }
+
+                 course.setSubject(subject)
+                         .setCode(code)
+                         .setTitle(title)
+                         .setScore(score)
+                         .setGrade(grade)
+                         .setCreditHours(creditHours);
+
+                 courses.add(course);
+                 try {
+                     if (tds.get(startCourseIndex + 8).text().contains(".00")) {
+                         System.out.println("Error recovery: " + tds.get(startCourseIndex + 8).text());
+                         startCourseIndex += 18;
+                         break;
+                     } else {
+                         startCourseIndex += 8;
+                     }
+                 } catch (IndexOutOfBoundsException e){
+                     break;
+                 }
+             }
+            term.setCourses(courses);
+            terms.add(term);
+            try {
+                if (ths.get(startTermIndex + 7).text().contains("Term:")) {
+                    startTermIndex += 7;
+                } else {
+                    break;
+                }
+            } catch(IndexOutOfBoundsException e){
+                break;
+            }
+        }
+        System.out.println("No. of terms: " +  terms.size());
+        transcript.setTerms(terms);
+        student.setTranscript(transcript);
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((NavigationView) mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setEnabled(true);
             }
         });
     }
