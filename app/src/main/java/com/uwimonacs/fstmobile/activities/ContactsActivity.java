@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -79,6 +80,16 @@ public class ContactsActivity extends AppCompatActivity {
     private void getContactsFromDatabase()
     {
         contacts = new Select().all().from(Contact.class).execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 
     private class LoadContactsTask extends AsyncTask<String,Integer,Boolean>

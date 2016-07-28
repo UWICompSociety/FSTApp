@@ -119,6 +119,16 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
         rv.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
+    }
+
     private void getScholsFromDatabase() {
         schols = new Select().all().from(Scholarship.class).execute();
     }

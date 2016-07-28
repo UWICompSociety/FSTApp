@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
@@ -101,6 +102,16 @@ public class FAQActivity extends AppCompatActivity implements SwipeRefreshLayout
         faqList.setAdapter(adapter);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 
     private void getFAQsFromDatabase()

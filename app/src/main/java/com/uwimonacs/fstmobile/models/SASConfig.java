@@ -109,6 +109,7 @@ public class SASConfig {
                     }
                 });
             } else {
+                MainActivity.loggedIn = true;
                 Toast.makeText(context, "Account added", Toast.LENGTH_SHORT).show();
                 String accountType = "UWI";
                 String username = student.getIdNumber();
@@ -207,7 +208,8 @@ public class SASConfig {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).setEnabled(true);
+                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(true);
+                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(true);
             }
         });
     }

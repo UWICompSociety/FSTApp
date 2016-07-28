@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.VideosAdapter;
@@ -21,5 +22,15 @@ public class VideoListActivity extends AppCompatActivity {
         videosFound.setLayoutManager(new LinearLayoutManager(this));
         VideosAdapter adapter = new VideosAdapter(getApplicationContext());
         videosFound.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 }

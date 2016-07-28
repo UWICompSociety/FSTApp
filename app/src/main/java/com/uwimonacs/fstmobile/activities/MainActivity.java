@@ -2,10 +2,14 @@ package com.uwimonacs.fstmobile.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -77,10 +81,13 @@ implements AdapterView.OnItemSelectedListener{
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onResume() {
+        if(sasConfig.termNames.size() == 0 && loggedIn) {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("View timetable");
+            setUpSAS();
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+        }
+        super.onResume();
     }
 
     @Override
@@ -89,15 +96,6 @@ implements AdapterView.OnItemSelectedListener{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            // Including legal notices as an independent menu item,
-            // or as part of an "About" menu item, is recommended.
-            case R.id.menu_legal_notices:
-                startActivity(new Intent(this, LegalNoticesActivity.class));
-                return true;
-
-            case R.id.action_settings:
-                return true;
-
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 return true;
@@ -115,6 +113,8 @@ implements AdapterView.OnItemSelectedListener{
         navigationView = (NavigationView) findViewById(R.id.nav_drawer);
         assert navigationView != null;
         if(mAccounts.length > 0) {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(false);
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(false);
             mAccount = mAccounts[0];
             //Login with single account
             final String username = mAccount.name;
@@ -136,6 +136,9 @@ implements AdapterView.OnItemSelectedListener{
                     webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
                 }
             });
+        } else {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("Log in");
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
         }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -153,11 +156,65 @@ implements AdapterView.OnItemSelectedListener{
                             startActivity(intent);
                         }
                         return true;
+                    case R.id.sas_logout:
+                        removeAccount();
+                        return true;
+                    // Including legal notices as an independent menu item,
+                    // or as part of an "About" menu item, is recommended.
+                    case R.id.legal_notices:
+                        startActivity(new Intent(getApplicationContext(), LegalNoticesActivity.class));
+                        return true;
+                    case R.id.settings:
+                        return true;
                     default:
                         return true;
                 }
             }
         });
+    }
+
+    public void removeAccount(){
+        final AppCompatActivity activity = this;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+        // set title
+        alertDialogBuilder.setTitle("Logging out");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("This will remove your account from this device. \n" +
+                        "You can log in again")
+                .setCancelable(true)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        loggedIn = false;
+                        AccountManager manager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
+                        Account[] accounts = manager.getAccountsByType("UWI");
+                        Account account = new Account("dummy","dummy");
+                        for(Account listItem: accounts){
+                            if(sasConfig.student.getIdNumber().equals(listItem.name))
+                                account = listItem;
+                        }
+                        if (Build.VERSION.SDK_INT < 22) {
+                            manager.removeAccount(account, null, null);
+                        } else {
+                            manager.removeAccount(account, activity, null, null);
+                        }
+                        sasConfig.student = null;
+                        ActivityCompat.finishAffinity(activity);
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Do nothing
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     @Override
@@ -169,7 +226,7 @@ implements AdapterView.OnItemSelectedListener{
         final String term = sasConfig.termValues.get(pos);
         if(!term.equals(sasConfig.term)) {
             Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(0);
+            MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
             sasConfig.selectTerm(term);
             final String formData = "name_var=bmenu.P_RegMnu&term_in=" + term;

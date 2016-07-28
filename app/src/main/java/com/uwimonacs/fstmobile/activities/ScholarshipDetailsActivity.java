@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +43,16 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         scholPic.setImageResource(R.drawable.scholarship);
         scholNameTextView.setText(scholName);
         scholDetailsTextView.setText(scholDetails);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default: return true;
+        }
     }
 
     public static Drawable LoadImageFromWebOperations(String url) {

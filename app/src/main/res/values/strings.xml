@@ -93,6 +93,10 @@
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 
     <!-- Nav Drawer -->
+    <string name="sas">SAS</string>
     <string name="sas_registration">View Timetable</string>
+    <string name="sas_logout">Log out</string>
+    <string name="legal_notices">Legal notices</string>
+    <string name="settings">Settings</string>
 
 </resources>

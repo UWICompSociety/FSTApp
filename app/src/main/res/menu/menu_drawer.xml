@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single"
-        android:id="@+id/group_1">
-        <item
-            android:id="@+id/sas_registration"
-            android:checked="true"
-            android:icon="@mipmap/ic_launcher"
-            android:title="@string/sas_registration"/>
-    </group>
+    <item android:title="@string/sas">
+        <menu>
+            <group android:checkableBehavior="single"
+                android:id="@+id/group_1">
+                <item
+                    android:id="@+id/sas_registration"
+                    android:icon="@drawable/ic_event_black_24dp"
+                    android:title="@string/sas_registration"/>
+                <item
+                    android:id="@+id/sas_logout"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
+                    android:title="@string/sas_logout"/>
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/settings">
+        <menu>
+            <group android:checkableBehavior="single"
+                android:id="@+id/group_2">
+                <item
+                    android:id="@+id/legal_notices"
+                    android:icon="@drawable/ic_gavel_black_24dp"
+                    android:title="@string/legal_notices"/>
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="@string/settings"/>
+            </group>
+        </menu>
+    </item>
 </menu>
