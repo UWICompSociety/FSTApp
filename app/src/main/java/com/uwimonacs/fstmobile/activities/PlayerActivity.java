@@ -7,41 +7,44 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.fragments.VideoFragment;
 
-
+@SuppressWarnings("FieldCanBeLocal")
 public class PlayerActivity extends AppCompatActivity {
-
     private TextView title, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
         /*
-        *   Moves the YouTube Player into the view as a fragment, to
-        *   avoid this class having to extend YouTubeBaseActivity and
-        *   extend AppCompatActivity instead
-        * */
+         *   Moves the YouTube Player into the view as a fragment, to
+         *   avoid this class having to extend YouTubeBaseActivity and
+         *   extend AppCompatActivity instead
+         *
+         */
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.player_view_holder, VideoFragment.newInstance(getIntent().getStringExtra("VIDEO_ID")))
                 .commit();
-        title= (TextView) findViewById(R.id.player_view_title);
+        title = (TextView) findViewById(R.id.player_view_title);
         description = (TextView) findViewById(R.id.player_view_description);
+
         /*
-        *   Video ID, Title and Description are used to load the video
-        *   and populate the UI respectively
-        * */
+         *   Video ID, Title and Description are used to load the video
+         *   and populate the UI respectively
+         */
         title.setText(getIntent().getStringExtra("VIDEO_TITLE"));
         description.setText(getIntent().getStringExtra("VIDEO_DESC"));
 
-        // Set Menu option to go up to previous activity
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title.getText().toString());
-        CardView watchOnYoutube = (CardView) findViewById(R.id.watch_on_youtube);
+        Button watchOnYoutube = (Button) findViewById(R.id.watch_on_youtube);
         assert watchOnYoutube != null;
 
         /*

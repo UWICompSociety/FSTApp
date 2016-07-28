@@ -1,68 +1,54 @@
-<ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/player_view_holder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="8dp"
+        android:id="@+id/player_view_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="UWI Virtual Tour" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="8dp"
+        android:id="@+id/player_view_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:text="A tour of the University Of The West Indies, Mona"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/watch_on_youtube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/watch_externally"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:drawableLeft="@drawable/ic_launch_black_24dp"
+            android:drawableStart="@drawable/ic_launch_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/sharebtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/ic_share_black_24dp"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:id="@+id/player_view_holder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    />
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_margin="8dp"
-                        android:textSize="18sp"
-                        android:id="@+id/player_view_title"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_margin="8dp"
-                        android:textSize="15sp"
-                        android:id="@+id/player_view_description"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/watch_on_youtube">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/youtube_icon"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/watch_externally"/>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</LinearLayout>
