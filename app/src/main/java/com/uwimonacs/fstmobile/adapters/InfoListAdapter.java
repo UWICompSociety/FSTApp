@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
