@@ -77,10 +77,13 @@ implements AdapterView.OnItemSelectedListener{
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onResume() {
+        if(sasConfig.termNames.size() == 0 && loggedIn) {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("View timetable");
+            setUpSAS();
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(true);
+        }
+        super.onResume();
     }
 
     @Override
@@ -89,15 +92,6 @@ implements AdapterView.OnItemSelectedListener{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            // Including legal notices as an independent menu item,
-            // or as part of an "About" menu item, is recommended.
-            case R.id.menu_legal_notices:
-                startActivity(new Intent(this, LegalNoticesActivity.class));
-                return true;
-
-            case R.id.action_settings:
-                return true;
-
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 return true;
@@ -115,6 +109,8 @@ implements AdapterView.OnItemSelectedListener{
         navigationView = (NavigationView) findViewById(R.id.nav_drawer);
         assert navigationView != null;
         if(mAccounts.length > 0) {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(false);
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(false);
             mAccount = mAccounts[0];
             //Login with single account
             final String username = mAccount.name;
@@ -136,6 +132,9 @@ implements AdapterView.OnItemSelectedListener{
                     webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
                 }
             });
+        } else {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("Log in");
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
         }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -153,6 +152,13 @@ implements AdapterView.OnItemSelectedListener{
                             startActivity(intent);
                         }
                         return true;
+                    // Including legal notices as an independent menu item,
+                    // or as part of an "About" menu item, is recommended.
+                    case R.id.legal_notices:
+                        startActivity(new Intent(getApplicationContext(), LegalNoticesActivity.class));
+                        return true;
+                    case R.id.settings:
+                        return true;
                     default:
                         return true;
                 }
@@ -169,7 +175,7 @@ implements AdapterView.OnItemSelectedListener{
         final String term = sasConfig.termValues.get(pos);
         if(!term.equals(sasConfig.term)) {
             Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(0);
+            MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
             sasConfig.selectTerm(term);
             final String formData = "name_var=bmenu.P_RegMnu&term_in=" + term;
