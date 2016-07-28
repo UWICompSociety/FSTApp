@@ -75,7 +75,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         final int pos = position;
         holder.scholName.setText(schols.get(position).getTitle());
         holder.scholDescription.setText(schols.get(position).getDescription());
-        holder.scholPhoto.setImageResource(R.drawable.scholarship);
+        holder.scholPhoto.setImageResource(R.drawable.ic_school_black_24dp);
 
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override

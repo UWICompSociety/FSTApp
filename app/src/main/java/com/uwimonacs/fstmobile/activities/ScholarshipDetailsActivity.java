@@ -40,7 +40,7 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         scholDetailsTextView = (TextView) findViewById(R.id.detail);
 
         //Sets details of scholarship to be displayed
-        scholPic.setImageResource(R.drawable.scholarship);
+        scholPic.setImageResource(R.drawable.ic_school_black_24dp);
         scholNameTextView.setText(scholName);
         scholDetailsTextView.setText(scholDetails);
     }

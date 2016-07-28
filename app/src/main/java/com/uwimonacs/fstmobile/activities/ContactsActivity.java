@@ -23,15 +23,12 @@ import com.uwimonacs.fstmobile.sync.ContactSync;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressWarnings("FieldCanBeLocal")
 public class ContactsActivity extends AppCompatActivity {
-
-
     private RecyclerView contactList;
     private List<Contact> contacts = new ArrayList<>();
     private ContactListAdapter contactListAdapter;
     private String contactsUrl = Constants.CONTACTS_URL;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,40 +38,30 @@ public class ContactsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Contacts");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //functionality to go back to previous activity
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         contactList = (RecyclerView) findViewById(R.id.listContact);
 
-
-        getContactsFromDatabase();   //get all contacts from phone database
-
+        getContactsFromDatabase();   // get all contacts from phone database
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         contactList.setHasFixedSize(true);
-        contactList.setLayoutManager(llm); //sets the layout manager
+        contactList.setLayoutManager(llm);
 
+        contactListAdapter = new ContactListAdapter(this, contacts);
 
-        contactListAdapter = new ContactListAdapter(this,contacts);
+        contactList.setAdapter(contactListAdapter);
 
-        contactList.setAdapter(contactListAdapter); //sets the adapter
-
-        new LoadContactsTask(this).execute(""); //runs the contacts sync task
-
-
-
-
+        new LoadContactsTask(this).execute(""); // runs the contacts sync task
     }
 
     private void initalizeData()
     {
-        contacts.add(new Contact(1,"Faculty Office","9236728"));
-        contacts.add(new Contact(2,"Physics Main Ofiice","9782728"));
-        contacts.add(new Contact(3,"Chemistry Main Office","8785428"));
-        contacts.add(new Contact(4,"Life Sciences Main Office","7483407"));
-        contacts.add(new Contact(5,"Engineering Main Office","9916563"));
-
-
+        contacts.add(new Contact(1, "Faculty Office", "+18769236728"));
+        contacts.add(new Contact(2, "Physics Main Office", "+18769782728"));
+        contacts.add(new Contact(3, "Chemistry Main Office", "+18768785428"));
+        contacts.add(new Contact(4, "Life Sciences Main Office", "+18767483407"));
+        contacts.add(new Contact(5, "Engineering Main Office", "+18769916563"));
     }
 
     private void getContactsFromDatabase()
@@ -95,20 +82,21 @@ public class ContactsActivity extends AppCompatActivity {
     private class LoadContactsTask extends AsyncTask<String,Integer,Boolean>
     {
         Context ctxt;
+
         public LoadContactsTask(Context ctxt)
         {
-            this.ctxt = ctxt; //application contect
+            this.ctxt = ctxt; //application context
         }
+
         @Override
         protected void onPreExecute() {
-            Toast.makeText(ctxt,"Loading contacts..",Toast.LENGTH_SHORT).show(); //show message to user
+            Toast.makeText(ctxt, "Loading contacts..", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected Boolean doInBackground(String... params) {
             ContactSync contactSync = new ContactSync(contactsUrl);
-            boolean result = contactSync.syncContacts(); //make api request and sync to database
-            return result;
+            return contactSync.syncContacts();
         }
 
         @Override
@@ -116,10 +104,13 @@ public class ContactsActivity extends AppCompatActivity {
             if(result) //if sync was successful
             {
                 getContactsFromDatabase(); //get the freshly synced contacts from database
-                Toast.makeText(ctxt,"Contacts Loaded succesfully",Toast.LENGTH_SHORT).show();
-                contactListAdapter.updateContacts(contacts); //update the card list to show new contacts
-            }else{
-                Toast.makeText(ctxt,"Sync Failed",Toast.LENGTH_SHORT).show(); //failed to sync mabye no internet or some error with api
+                Toast.makeText(ctxt, "Contacts Loaded successfully", Toast.LENGTH_SHORT).show();
+
+                //update the card list to show new contacts
+                contactListAdapter.updateContacts(contacts);
+            } else {
+                //failed to sync maybe no internet or some error with api
+                Toast.makeText(ctxt, "Sync failed",Toast.LENGTH_SHORT).show();
             }
         }
 

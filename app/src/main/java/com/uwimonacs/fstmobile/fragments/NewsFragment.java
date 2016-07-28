@@ -27,11 +27,8 @@ import com.uwimonacs.fstmobile.sync.NewsSync;
 
 import java.util.List;
 
-/**
- * Created by Matthew on 6/20/2016.
- */
-public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-
+@SuppressWarnings("FieldCanBeLocal")
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private View view;
     private NewsListAdapter newsListAdapter;
     private RecyclerView newsListView;
@@ -43,14 +40,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private TextView tv_placeholder;
     private ProgressBar progressBar;
 
-
-
-
     public NewsFragment()
     {
-
+        /* required empty constructor */
     }
-
 
     @Nullable
     @Override
@@ -58,9 +51,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         view = inflater.inflate(R.layout.frag_news,container,false); //inflates the layout for the view
 
+
         initViews(); //initialize the views
 
         setUpSwipeRefresh(); //set up swipe refresh
+
 
         connect = new Connect(this.getActivity());
 
@@ -124,18 +119,16 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         newsItems = new Select().all().from(News.class).execute();
     }
 
-
-    private boolean isConnected(){
-
+    private boolean isConnected() {
         return connect.isConnected();
     }
 
     private boolean hasInternet()
     {
-        boolean hasInternet;
-        try{
-            hasInternet =connect.haveInternetConnectivity();
-        }catch(Exception e)
+        boolean hasInternet = false;
+        try {
+            hasInternet = connect.haveInternetConnectivity();
+        } catch(Exception e)
         {
             hasInternet = false;
         }
@@ -148,8 +141,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         new LoadNewsTask(getActivity()).execute("");
     }
-
-
 
     private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>
     {
@@ -205,6 +196,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     img_placeholder.setVisibility(View.VISIBLE);
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
+           
             }
 
 

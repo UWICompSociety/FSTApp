@@ -16,12 +16,7 @@ import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
 import com.uwimonacs.fstmobile.helper.Connect;
 
-/**
- * Created by Matthew on 6/25/2016.
- */
 public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoViewHolder> {
-
-
     public static class InfoViewHolder extends RecyclerView.ViewHolder
     {
         TextView infoTitle; //reference to the title text
@@ -71,35 +66,29 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoVi
     int[] images;
     Context ctxt;
 
-    public InfoListAdapter(Context ctxt,String[] titles,int[] images)
+    public InfoListAdapter(Context ctxt, String[] titles, int[] images)
     {
         this.ctxt = ctxt;
         this.titles = titles;
         this.images = images;
-
     }
-
 
     @Override
     public InfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_info_item,parent,false); //inflate view with layout file
-        final InfoViewHolder infoViewHolder = new InfoViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_info_item,
+                parent, false);
 
-
-
-        return infoViewHolder;
+        return new InfoViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(InfoViewHolder holder, int position) {
-
-        //setting values
         holder.infoTitle.setText(titles[position]);
         holder.infoImage.setImageResource(images[position]);
     }
 
     @Override
     public int getItemCount() {
-        return titles.length; //number of elements in list
+        return titles.length;
     }
 }

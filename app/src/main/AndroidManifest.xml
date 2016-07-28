@@ -35,10 +35,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SASLoginActivity" />
+   
         <activity
-            android:name=".activities.SASTimetableActivity"
-            android:label="@string/timetable_label">
+            android:name=".activities.SASLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar.SASLogin" />
+        <activity
+            android:name=".activities.SASTimetableActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -52,7 +54,8 @@
         </activity>
         <activity
             android:name=".activities.PlayerActivity"
-            android:label="@string/title_activity_player">
+            android:label="@string/title_activity_player"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.VideoListActivity" />
@@ -60,15 +63,6 @@
         <activity
             android:name=".activities.FAQActivity"
             android:label="@string/title_activity_faq"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
-        <activity
-            android:name=".activities.LegalNoticesActivity"
-            android:label="@string/title_activity_legal_info"
-            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -133,7 +127,11 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <activity android:name=".activities.MapActivity"></activity>
+        <activity android:name=".activities.MapActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
 
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
