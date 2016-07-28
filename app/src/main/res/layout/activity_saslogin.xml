@@ -74,6 +74,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:text="@string/login_button_sas"/>
+
+        <TextView
+            android:id="@+id/login_help"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/forgot_password"
+            android:textSize="16sp"
+            android:gravity="center"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

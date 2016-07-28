@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.MyApplication;
@@ -41,6 +42,16 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_saslogin);
+
+        login_help = (TextView) findViewById(R.id.login_help);
+
+        login_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHelpDialog(SASLoginActivity.this);
+            }
+        });
+
         sasConfig = MyApplication.getSasConfig();
         webView = MyApplication.getWebView();
         mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
@@ -114,6 +125,29 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
      */
     private void showMessage(String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showHelpDialog(Context context) {
+        final String MITS_HELPDESK = "https://support.mona.uwi.edu/";
+        final String message = "Student users should note that your password is now the same as"
+                + " your OURVLE/DOMAIN password. If your OURVLE/DOMAIN password is your date of"
+                + " birth, please use the format YYYYMMDD. e.g. John Brown is a student with id"
+                + " number 89876543. John was born on January 3, 1989. In this case John would"
+                + " enter: 89876543 in the slot for User ID and, 19890103 in the slot for Password."
+                + "\n\n"
+                + "If you do not remember your OURVLE/DOMAIN password or it has expired, please"
+                + " contact the MITS Helpdesk at extension 2992 or (876) 927-2148. You may also"
+                + " email the helpdesk or visit the UWI Mona Live Support page to  request a "
+                + "password reset";
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Login Help").setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     /**
@@ -250,11 +284,12 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                             super.onPageFinished(view, url);
                         }
                     });
-                    webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
+                    webView.postUrl(getResources().getString(R.string.login_post),
+                            formData.getBytes());
                 }
             });
         }
     }
 
-
+    private TextView login_help;
 }
