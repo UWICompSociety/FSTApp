@@ -194,15 +194,25 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
             final EditText pass = (EditText) findViewById(R.id.sas_password_edittext);
             Button button = (Button) findViewById(R.id.sas_login_button);
             assert button != null;
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (TextUtils.isEmpty(id.getText().toString()))
+                    id.setError(null);
+                    pass.setError(null);
+
+                    if (TextUtils.isEmpty(id.getText().toString())) {
+                        id.setError("ID number required");
                         showMessage("ID Number required");
-                    else if (id.getText().toString().length() != 9)
+                    }
+                    else if (id.getText().toString().length() != 9) {
+                        id.setError("ID number is too short");
                         showMessage("Invalid ID Number");
-                    else if (TextUtils.isEmpty(pass.getText().toString()))
+                    }
+                    else if (TextUtils.isEmpty(pass.getText().toString())) {
+                        pass.setError("Password required");
                         showMessage("Password required");
+                    }
                     else if (!isNetworkAvailable())
                         showNetworkDialog();
                     else {
