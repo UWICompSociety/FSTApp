@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,12 +8,42 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uwimonacs.fstmobile.activities.FAQActivity"
-    tools:showIn="@layout/activity_faq"
-    android:weightSum="1">
+    tools:showIn="@layout/activity_faq">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/faqlist" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/faqlist"
+            tools:listitem="@layout/faq_card"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+    <ImageView
+
+        android:id="@+id/img_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/notpresent"
+        android:layout_centerInParent="true"/>
+    <TextView
+
+        android:id="@+id/txt_notpresent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  No FAQ's Loaded\n Check Connectivity"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/img_placeholder"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

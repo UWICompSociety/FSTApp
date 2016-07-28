@@ -3,15 +3,21 @@ package com.uwimonacs.fstmobile.activities;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.FaqListAdapter;
+import com.uwimonacs.fstmobile.helper.Connect;
 import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.sync.FAQSync;
@@ -19,36 +25,111 @@ import com.uwimonacs.fstmobile.sync.FAQSync;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FAQActivity extends AppCompatActivity {
+public class FAQActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-    private List<FAQ> faqs = new ArrayList<>();
+    private List<FAQ> faqs;
     private FaqListAdapter adapter;
     private String faqsurl = Constants.FAQS_URL;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Connect connect;
+    private ImageView img_placeholder;
+    private TextView tv_placeholder;
+    private ProgressBar progressBar;
+    private Toolbar toolbar;
+    private RecyclerView faqList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("FAQs");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView faqList = (RecyclerView)findViewById(R.id.faqlist);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        faqList.setLayoutManager(llm);
+        initViews();
+
+        setUpToolBar();
+
+        connect = new Connect(this);
+
+        setUpSwipeRefresh();
 
         getFAQsFromDatabase();
 
+        if(faqs.size()>0) //if there are new items present remove place holder image and text
+        {
+            img_placeholder.setVisibility(View.GONE);
+            tv_placeholder.setVisibility(View.GONE);
+        }
+        setUpRecyclerView();
+
+        setUpProgressBar();
+
+        new LoadFAQsTask(this).execute("");
+    }
+
+    private void setUpToolBar()
+    {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("FAQs");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    private void initViews()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
+        img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        faqList = (RecyclerView)findViewById(R.id.faqlist);
+    }
+
+    private void setUpSwipeRefresh()
+    {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void setUpProgressBar()
+    {
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void setUpRecyclerView()
+    {
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        faqList.setLayoutManager(llm);
         adapter = new FaqListAdapter(faqs);
         faqList.setAdapter(adapter);
 
-        new LoadFAQsTask(this).execute("");
+
     }
 
     private void getFAQsFromDatabase()
     {
         faqs = new Select().all().from(FAQ.class).execute();
+    }
+
+    private boolean isConnected(){
+
+        return connect.isConnected();
+    }
+
+    private boolean hasInternet()
+    {
+        boolean hasInternet;
+        try{
+            hasInternet =connect.haveInternetConnectivity();
+        }catch(Exception e)
+        {
+            hasInternet = false;
+        }
+
+        return  hasInternet;
+
+    }
+
+    @Override
+    public void onRefresh() {
+        new LoadFAQsTask(this).execute("");
     }
 
     private class LoadFAQsTask extends AsyncTask<String,Integer,Boolean>
@@ -63,42 +144,55 @@ public class FAQActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute()
         {
-            Toast.makeText(ctxt,"Loading FAQs...",Toast.LENGTH_SHORT).show();
+            img_placeholder.setVisibility(View.GONE);
+            tv_placeholder.setVisibility(View.GONE);
+
+            if (faqs.size() == 0) { // check if any faqs are present
+                progressBar.setVisibility(View.VISIBLE);
+                if (swipeRefreshLayout.isRefreshing())
+                    progressBar.setVisibility(View.GONE);
+            }
+
         }
 
         @Override
         protected Boolean doInBackground(String... params)
         {
             FAQSync faqSync = new FAQSync(faqsurl);
-            boolean result = faqSync.syncFAQs();
-            return result;
+
+            if(!isConnected())  //if there is no internet connection
+            {
+                return false;
+            }
+
+            if(!hasInternet()) //if there is no internet
+            {
+                return false;
+            }
+
+            return faqSync.syncFAQs();
         }
 
         @Override
         protected void onPostExecute(Boolean result)
         {
+            swipeRefreshLayout.setRefreshing(false);
+            progressBar.setVisibility(View.GONE);
             if(result)
             {
                 getFAQsFromDatabase();
-                Toast.makeText(ctxt,"FAQs Loaded Successfully",Toast.LENGTH_SHORT).show();
                 adapter.updateFAQs(faqs);
             }
 
             else
             {
-                Toast.makeText(ctxt,"Failed",Toast.LENGTH_SHORT).show();
+                if(faqs.size() == 0)
+                {
+                    img_placeholder.setVisibility(View.VISIBLE);
+                    tv_placeholder.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
 
-    //Add FAQs to List
-    /*private void initialize()
-    {
-        faqs.add(new FAQ(1,"How Many Credits Do I Need To Graduate?", "A Total of 93 Credits"));
-        faqs.add(new FAQ(2,"Where is FST Dean's Office?", "Along The Spine"));
-        faqs.add(new FAQ(3,"When does Copy-Works Open?", "8:30 AM Mondays - Friday"));
-        faqs.add(new FAQ(4,"Where Can I Buy Books?", "At The Book Store"));
-        faqs.add(new FAQ(5,"Where Can I Find The Computing Society?", "Computing Lecture Theatre"));
-        faqs.add(new FAQ(6,"How Many First Year Computing Courses Are There?", "There are 5 Of Them"));
-    }*/
 }

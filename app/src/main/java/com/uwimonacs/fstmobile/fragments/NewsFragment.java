@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
@@ -34,9 +37,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView newsListView;
     private List<News> newsItems;
     private String newsUrl  = Constants.NEWS_URL;
-    private LoadNewsTask loadNewsTask = null;
     private SwipeRefreshLayout swipeRefreshLayout;
-    Connect connect;
+    private Connect connect;
+    private ImageView img_placeholder;
+    private TextView tv_placeholder;
+    private ProgressBar progressBar;
 
 
 
@@ -50,55 +55,75 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.frag_news,container,false); //inflates the layout for the view
 
+        initViews(); //initialize the views
+
+        setUpSwipeRefresh(); //set up swipe refresh
+
+        connect = new Connect(this.getActivity());
+
+        getNewsFromDatabase(); //gets news items from the database
+
+        if(newsItems.size()>0) //if there are new items present remove place holder image and text
+        {
+            img_placeholder.setVisibility(View.GONE);
+            tv_placeholder.setVisibility(View.GONE);
+        }
+
+        setUpRecyclerView(); //set up recycler view
+
+        setUpProgressBar(); //set up progress bar
+
+
+        new LoadNewsTask(this.getActivity()).execute(""); //refresh the news items from internet
+
+
+        return view;
+    }
+
+
+
+
+    private void initViews()
+    {
         newsListView = (RecyclerView)view.findViewById(R.id.listNews);
-
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-        swipeRefreshLayout.setOnRefreshListener(this);
-
+        tv_placeholder = (TextView)view.findViewById(R.id.txt_notpresent);
+        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
+        progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
+    }
+    private void setUpRecyclerView()
+    {
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
 
         newsListView.setLayoutManager(llm);
 
         newsListView.setHasFixedSize(true);
 
-        connect = new Connect(this.getActivity());
-
-        getNewsFromDatabase();
-
-       // if(newsItems.size()<=0)
-         //   intializeExampleData();
-
-        Toast.makeText(this.getActivity(),newsItems.size()+"",Toast.LENGTH_SHORT).show();
-
         newsListAdapter = new NewsListAdapter(view.getContext(),newsItems);
 
         newsListView.setAdapter(newsListAdapter);
 
-        new LoadNewsTask(this.getActivity()).execute("");
-        //loadNewsTask.execute("");
-
-        return view;
     }
 
+    private void setUpSwipeRefresh()
+    {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        swipeRefreshLayout.setOnRefreshListener(this);
+    }
 
+    private void setUpProgressBar()
+    {
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.GONE);
+    }
     private void getNewsFromDatabase()
     {
         newsItems = new Select().all().from(News.class).execute();
     }
 
-    private void intializeExampleData()
-    {
-
-        newsItems.add(new News(1,R.drawable.coffee_cake,"No Classes Tommorow!","The sccholboard has advised that there will be no class tommorow due to..","Detail1"));
-        newsItems.add(new News(2,R.drawable.donut_holes,"New Buildings","New buildings have been constructed at science and tech with the departments benefiting from this being..","Detail2"));
-        newsItems.add(new News(3,R.drawable.muffins,"Deadline For Summer School","Deadline fo summer school registration is almost upon us ,all students who wish to..","Detail3"));
-
-
-    }
 
     private boolean isConnected(){
 
@@ -107,7 +132,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private boolean hasInternet()
     {
-        boolean hasInternet = false;
+        boolean hasInternet;
         try{
             hasInternet =connect.haveInternetConnectivity();
         }catch(Exception e)
@@ -136,8 +161,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         @Override
         protected void onPreExecute() {
+            img_placeholder.setVisibility(View.GONE);
+            tv_placeholder.setVisibility(View.GONE);
 
-            Toast.makeText(ctxt,"Loading News..",Toast.LENGTH_SHORT).show();
+            if (newsItems.size() == 0) { // check if any news are present
+                progressBar.setVisibility(View.VISIBLE);
+                if (swipeRefreshLayout.isRefreshing())
+                    progressBar.setVisibility(View.GONE);
+            }
+
         }
 
 
@@ -146,11 +178,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         protected Boolean doInBackground(String... params) {
             NewsSync newsSync = new NewsSync(newsUrl);
 
-            if(!isConnected()) {
+            if(!isConnected())  //if there is no internet connection
+            {
                 return false;
             }
 
-            if(!hasInternet())
+            if(!hasInternet()) //if there is no internet
             {
                 return false;
             }
@@ -161,14 +194,20 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPostExecute(Boolean result) {
             swipeRefreshLayout.setRefreshing(false);
+            progressBar.setVisibility(View.GONE);
             if(result)
             {
                 getNewsFromDatabase();
                 newsListAdapter.updateNews(newsItems);
-                Toast.makeText(ctxt,"Successful",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(ctxt,"Failed",Toast.LENGTH_SHORT).show();
+                if(newsItems.size() == 0)
+                {
+                    img_placeholder.setVisibility(View.VISIBLE);
+                    tv_placeholder.setVisibility(View.VISIBLE);
+                }
             }
+
+
         }
     }
 }
