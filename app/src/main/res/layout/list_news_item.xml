@@ -18,26 +18,25 @@
             android:layout_height="172.0dip"
             android:scaleType="fitXY" />
         <TextView
-            android:textSize="20.0sp"
-            android:textColor="#ff000000"
+            android:textSize="24sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:id="@+id/newsHeading"
-            android:paddingLeft="5.0dip"
-            android:paddingTop="10.0dip"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Faculty to Get New Buildings"
-            android:alpha="0.75" />
+            tools:text="Faculty to Get New Buildings" />
         <TextView
-            android:textSize="15.0sp"
-            android:textColor="#ff000000"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:id="@+id/newsDescription"
-            android:padding="5dp"
-            android:paddingTop="5.0dip"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="The faculty of science and technology will be getting new buildings which include.."
-            android:layout_below="@+id/news_topic"
-            android:alpha="0.67" />
+            tools:text="The Faculty of Science and Technology will be getting new buildings which include.." />
 
     </LinearLayout>
 </android.support.v7.widget.CardView>
