@@ -52,6 +52,7 @@ public class SASConfig {
     private AppCompatActivity mActivity;
     private AccountAuthenticatorActivity login;
     private AccountManager mAccountManager;
+    private TermsAdapter terms;
 
     /**
      * Initializes  variables for the first time
@@ -143,14 +144,13 @@ public class SASConfig {
         Elements options = documentBody.getElementsByTag("option");
         for(int i=0; i<options.size(); i++){
             termValues.add(options.get(i).attr("value"));
-            System.out.println("Value: " + options.get(i).attr("value"));
             termNames.add(options.get(i).text());
         }
 
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                final TermsAdapter terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
+                terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
                 terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 terms.addAll(termNames);
 
@@ -160,6 +160,10 @@ public class SASConfig {
                 termSelector.setAdapter(terms);
             }
         });
+    }
+
+    public TermsAdapter getTerms() {
+        return terms;
     }
 
     public void selectTerm(final String term) {

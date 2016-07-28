@@ -25,12 +25,15 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity
@@ -112,11 +115,14 @@ implements AdapterView.OnItemSelectedListener{
         mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
         mAccounts = mAccountManager.getAccountsByType("UWI");
         navigationView = (NavigationView) findViewById(R.id.nav_drawer);
+        MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration),
+                transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript),
+                logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
         assert navigationView != null;
         if(mAccounts.length > 0) {
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(false);
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setEnabled(false);
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(2).setEnabled(false);
+            registration.setEnabled(false);
+            transcript.setEnabled(false);
+            logout.setEnabled(false);
             mAccount = mAccounts[0];
             //Login with single account
             final String username = mAccount.name;
@@ -139,7 +145,7 @@ implements AdapterView.OnItemSelectedListener{
                 }
             });
         } else {
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("Log in");
+            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
             navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
             navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
         }
@@ -207,7 +213,13 @@ implements AdapterView.OnItemSelectedListener{
                             manager.removeAccount(account, activity, null, null);
                         }
                         sasConfig.student = null;
-                        ActivityCompat.finishAffinity(activity);
+                        //ActivityCompat.finishAffinity(activity);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                cleanUp();
+                            }
+                        });
                     }
                 })
                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -221,6 +233,15 @@ implements AdapterView.OnItemSelectedListener{
 
         // show it
         alertDialog.show();
+    }
+
+    public void cleanUp(){
+        ((TextView)findViewById(R.id.username)).setText("SAS User");
+        ((TextView)findViewById(R.id.id_number)).setText("620012345");
+        sasConfig.getTerms().clear();
+        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
+        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
+        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
     }
 
     @Override

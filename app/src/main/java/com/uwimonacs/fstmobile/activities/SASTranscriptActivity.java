@@ -43,6 +43,7 @@ public class SASTranscriptActivity extends AppCompatActivity {
 //        minor.setText(sMinor);
 
         RecyclerView institutionCredit = (RecyclerView) findViewById(R.id.institution_credit);
+        institutionCredit.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
