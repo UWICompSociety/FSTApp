@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#e5e5e5"
     tools:context="com.uwimonacs.fstmobile.activities.SASTranscriptActivity">
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:textColor="@color/colorPrimary"
-            android:text="Undergraduate Transcript"/>
+            android:text="@string/ug_transcript"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +27,7 @@
             android:layout_marginStart="16dp"
             android:textColor="#000"
             android:layout_marginTop="8dp"
-            android:text="This is NOT an official transcript"/>
+            android:text="@string/not_official"/>
     </LinearLayout>
     <!--<android.support.v7.widget.CardView-->
                 <!--android:layout_width="match_parent"-->
@@ -94,7 +95,7 @@
         android:gravity="center"
         android:textSize="25sp"
         android:textColor="@color/colorPrimary"
-        android:text="Institution Credit"/>
+        android:text="@string/institution_credit"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/institution_credit"
         android:layout_width="match_parent"

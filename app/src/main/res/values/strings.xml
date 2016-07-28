@@ -51,6 +51,9 @@
     <string name="logout_menuitem_sas">Logout</string>
     <string name="remember_password_sas">Remember login</string>
     <string name="main_title_sas">Student Services</string>
+    <string name="ug_transcript">Undergraduate Transcript</string>
+    <string name="not_official">This is NOT an official transcript</string>
+    <string name="institution_credit">Institution Credit</string>
     <string name="addcourses_description">
         Search for courses below to add
     </string>
