@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
@@ -123,8 +124,8 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
      * Display some text in a toast for length short
      * @param message text to be displayed in toast
      */
-    private void showMessage(String message){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private void showMessage(String message) {
+        Snackbar.make((LinearLayout) findViewById(R.id.sas_login_mainlayout), message, Snackbar.LENGTH_SHORT).show();
     }
 
     private void showHelpDialog(Context context) {
@@ -240,15 +241,15 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
 
                     if (TextUtils.isEmpty(username)) {
                         id.setError("ID number required");
-                        showMessage("ID Number required");
+                        showMessage("ID Number field required");
                     }
                     else if (username.length() != 9) {
                         id.setError("ID number is too short");
-                        showMessage("Invalid ID Number");
+                        showMessage("ID number is too short");
                     }
                     else if (TextUtils.isEmpty(password)) {
                         pass.setError("Password required");
-                        showMessage("Password required");
+                        showMessage("Password field required");
                     }
                     else if (!isNetworkAvailable())
                         showNetworkDialog();

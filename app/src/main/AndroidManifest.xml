@@ -34,8 +34,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SASLoginActivity" />
-        <activity android:name=".activities.SASTimetableActivity">
+        <activity
+            android:name=".activities.SASLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar.SASLogin" />
+        <activity
+            android:name=".activities.SASTimetableActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
