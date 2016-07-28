@@ -1,13 +1,17 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 
@@ -18,16 +22,12 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Matthew on 6/27/2016.
- */
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactViewHolder> {
-
-
     public class ContactViewHolder extends RecyclerView.ViewHolder
     {
         TextView name;
         TextView number;
+
         public ContactViewHolder(View itemView) {
             super(itemView);
 
@@ -37,15 +37,35 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = ContactViewHolder.this.getAdapterPosition(); //position of element in list
+                    int pos = ContactViewHolder.this.getAdapterPosition();
                     String number = contacts.get(pos).getNumber();
-                    if(number!=null)
+                    if(!TextUtils.isEmpty(number))
                     {
                         Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:"+number ));
-                        ctxt.startActivity(intent);  //start dialer activity
+                        intent.setData(Uri.parse("tel:" + number ));
+                        ctxt.startActivity(intent);  // start dialer activity
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = ContactViewHolder.this.getAdapterPosition();
+                    String number = contacts.get(pos).getNumber();
+
+                    if (!TextUtils.isEmpty(number)) {
+                        ClipboardManager clipboard = (ClipboardManager)
+                                ctxt.getSystemService(Context.CLIPBOARD_SERVICE);
+
+                        ClipData clip = ClipData.newPlainText("number", number);
+
+                        clipboard.setPrimaryClip(clip);
+
+                        Toast.makeText(ctxt, "Text copied", Toast.LENGTH_SHORT).show();
                     }
 
+                    return  true;
                 }
             });
         }
@@ -62,17 +82,16 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item,parent,false);
-        ContactViewHolder contactViewHolder = new ContactViewHolder(view);
-        return contactViewHolder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item,
+                parent, false);
+
+        return new ContactViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
-
-        holder.name.setText(contacts.get(position).getName()); //sets name of contact
-        holder.number.setText(contacts.get(position).getNumber()); //sets number of contact
-
+        holder.name.setText(contacts.get(position).getName()); // sets name of contact
+        holder.number.setText(contacts.get(position).getNumber()); // sets number of contact
     }
 
     @Override
