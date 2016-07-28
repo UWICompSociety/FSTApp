@@ -23,7 +23,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="Category" />
+                tools:text="Category" />
             <ImageButton
                 android:id="@+id/frag_places_item_card_arrow"
                 android:layout_margin="5dp"
