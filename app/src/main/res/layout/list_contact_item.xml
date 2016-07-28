@@ -6,8 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10.0dip"
-    android:foreground="?android:selectableItemBackground" xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:foreground="?android:selectableItemBackground"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -24,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Faculty Office"
+            tools:text="Faculty Office"
             android:alpha="0.75" />
 
         <LinearLayout
@@ -45,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="938-4268"
+                tools:text="+18769384268"
                 android:alpha="0.65" />
             </LinearLayout>
     </LinearLayout>
