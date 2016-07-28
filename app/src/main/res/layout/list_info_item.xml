@@ -19,6 +19,7 @@
             android:layout_width="fill_parent"
             android:layout_height="100dip"
             android:scaleType="fitCenter"
+            android:background="#4CAF50"
             tools:src="@drawable/ic_call_black_24dp"/>
 
         <TextView
@@ -26,7 +27,7 @@
             android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="FAQ" />
 

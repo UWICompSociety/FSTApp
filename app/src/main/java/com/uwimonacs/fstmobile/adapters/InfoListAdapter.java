@@ -2,6 +2,8 @@ package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoVi
     }
 
     String[] titles;
+    String[] colors = {"#4CAF50","#2196F3","#9C27B0","#9E9E9E"};
     int[] images;
     Context ctxt;
 
@@ -85,6 +88,7 @@ public class InfoListAdapter extends RecyclerView.Adapter<InfoListAdapter.InfoVi
     public void onBindViewHolder(InfoViewHolder holder, int position) {
         holder.infoTitle.setText(titles[position]);
         holder.infoImage.setImageResource(images[position]);
+        holder.infoImage.setBackgroundColor(Color.parseColor(colors[position]));
     }
 
     @Override
