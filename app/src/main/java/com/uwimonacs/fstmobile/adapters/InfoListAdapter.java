@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.ContactsActivity;
+import com.uwimonacs.fstmobile.activities.ExpandableScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
 import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;

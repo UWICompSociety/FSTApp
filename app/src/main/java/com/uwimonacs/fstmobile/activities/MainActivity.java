@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -54,6 +55,7 @@ implements AdapterView.OnItemSelectedListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -100,6 +102,8 @@ implements AdapterView.OnItemSelectedListener{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            // Including legal notices as an independent menu item,
+            // or as part of an "About" menu item, is recommended.
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 return true;
@@ -173,6 +177,7 @@ implements AdapterView.OnItemSelectedListener{
                         return true;
 
                     case R.id.settings:
+                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
                     default:
                         return true;

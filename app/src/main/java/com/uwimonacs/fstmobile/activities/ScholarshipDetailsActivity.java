@@ -40,12 +40,18 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         scholDetailsTextView = (TextView) findViewById(R.id.detail);
 
         //Sets details of scholarship to be displayed
+        //scholPic.setImageResource(R.drawable.scholarship);
         scholPic.setImageResource(R.drawable.ic_school_black_24dp);
+        /*
+        try {
+            scholPic.setImageDrawable(LoadImageFromWebOperations(imageURL));
+        } catch (Exception e) {
+            scholPic.setImageResource(R.drawable.ic_school_black_24dp);
+        }*/
         scholNameTextView.setText(scholName);
         scholDetailsTextView.setText(scholDetails);
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
@@ -55,13 +61,15 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         }
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
+    /**
+     * Returns Drawable object of content at a URL
+     * @param url URL location of image
+     * @return Drawable object
+     * @throws Exception
+     */
+    public static Drawable LoadImageFromWebOperations(String url) throws Exception {
             InputStream is = (InputStream) new URL(url).getContent();
             Drawable d = Drawable.createFromStream(is, "src name");
             return d;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

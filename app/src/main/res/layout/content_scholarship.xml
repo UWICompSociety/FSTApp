@@ -2,7 +2,7 @@
 
 <!-- ScholarshipActivity - not in use-->
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +12,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uwimonacs.fstmobile.activities.ScholarshipActivity"
     tools:showIn="@layout/activity_scholarship">
+
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         />
+
     <ImageView
 
         android:id="@+id/img_placeholder"
@@ -43,10 +45,10 @@
         android:id="@+id/txt_notpresent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  No FAQ's Loaded\n Check Connectivity"
+        android:text="  No Scholarships Loaded\n Check Connectivity"
         android:textSize="20sp"
         android:paddingTop="10dp"
         android:layout_below="@+id/img_placeholder"
         android:layout_centerHorizontal="true"/>
 
-</LinearLayout>
+</RelativeLayout>

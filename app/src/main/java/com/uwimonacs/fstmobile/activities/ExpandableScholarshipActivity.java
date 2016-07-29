@@ -2,6 +2,9 @@ package com.uwimonacs.fstmobile.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +23,9 @@ import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.sync.ScholarshipSync;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,7 @@ import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerView
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 
 public class ExpandableScholarshipActivity extends AppCompatActivity {
+
     private List<Scholarship> schols;
     private String url = Constants.SCHOL_URL;
     private List<Card> cards;
@@ -64,6 +70,7 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         new LoadScholsTask(this).execute("");
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -74,18 +81,11 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Gets the list of scholarships from the database
+     */
     private void getScholsFromDatabase() {
         schols = new Select().all().from(Scholarship.class).execute();
-    }
-
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            return Drawable.createFromStream(is, "src name");
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     /**
@@ -103,8 +103,9 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
             MaterialLargeImageCard card = new MaterialLargeImageCard(this);
 
             //Set relevant data for the card
+            //card.setUrlCardThumbnail(schols.get(i).getImage());
             card.setDrawableIdCardThumbnail(R.drawable.ic_school_black_24dp);
-            //card.setDrawableIdCardThumbnail(LoadImageFromWebOperations(schols.get(i).getImage()));
+            //card.setDrawableIdCardThumbnail(R.drawable.scholarship);
             card.setTitle(schols.get(i).getTitle());
             card.setSubTitle(schols.get(i).getDescription());
 
@@ -127,6 +128,9 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loads and updates list of scholarships
+     */
     private class LoadScholsTask extends AsyncTask<String,Integer,Boolean> {
         Context ctxt;
 
@@ -159,21 +163,4 @@ public class ExpandableScholarshipActivity extends AppCompatActivity {
         }
 
     }
-
-    /**
-     * Initializes test data
-     */
-    /*
-    private void init() {
-        schols = new ArrayList<>();
-        schols.add(new Scholarship(1, "AFUWI Scholarships", "Description", "detail-1"));
-        schols.add(new Scholarship(2, "Ambassador Glen A. Holden Bursary", "Description", "detail-2"));
-        schols.add(new Scholarship(3, "Digicel Scholarships", "Description", "detail-3"));
-        schols.add(new Scholarship(4, "Douane Henry Memorial Bursary (The)", "Description", "detail-4"));
-        schols.add(new Scholarship(5, "Jamaica Government Exhibition", "Description", "detail-5"));
-        schols.add(new Scholarship(6, "Joe Pereira Scholarship (The)", "Description", "detail-6"));
-        schols.add(new Scholarship(7, "Principal's Scholarship For Excellence (The)Digicel Scholarships", "Description", "detail-7"));
-        schols.add(new Scholarship(8, "UWI Visa Card Scholarship", "Description", "detail-8"));
-    }*/
-
 }

@@ -3,6 +3,7 @@
 
     <!-- Activity Titles -->
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- Menu Option Titles -->
     <string name="action_settings">Settings</string>

@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-   
+
         <activity
             android:name=".activities.SASLoginActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin" />
@@ -137,6 +137,12 @@
 
         <activity android:name=".activities.SASTranscriptActivity"
             android:label="@string/transcript_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />

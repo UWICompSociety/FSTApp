@@ -129,6 +129,9 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
         }
     }
 
+    /**
+     * Gets the list of scholarships from the database
+     */
     private void getScholsFromDatabase() {
         schols = new Select().all().from(Scholarship.class).execute();
     }
@@ -152,6 +155,9 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
 
     }
 
+    /**
+     * Loads and updates list of scholarships
+     */
     @Override
     public void onRefresh() {
         new LoadScholsTask(this).execute("");

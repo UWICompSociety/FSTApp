@@ -19,7 +19,6 @@
             android:layout_height="50dp"
             android:id="@+id/photo"
             android:layout_alignParentTop="true"
-
             />
 
         <TextView

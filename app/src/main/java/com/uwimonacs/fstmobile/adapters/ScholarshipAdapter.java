@@ -116,6 +116,10 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         super.onAttachedToRecyclerView(view);
     }
 
+    /**
+     * Updates the list of scholarships
+     * @param newSchols updated list of scholarships
+     */
     public void updateSchols(List<Scholarship> newSchols)
     {
         this.schols = new ArrayList<>(newSchols);
