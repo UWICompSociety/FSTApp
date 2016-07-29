@@ -129,7 +129,7 @@ public class PlacesFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            Toast.makeText(context,"Loading Places..",Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(context,"Loading Places..",Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -144,10 +144,10 @@ public class PlacesFragment extends Fragment {
             if(result) {
                 getPlacesFromDatabase();
                 placesCategoriesAdapter.updatePlaces(places);
-                Toast.makeText(context,"Places loaded",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context,"Places loaded",Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context,"Places not loaded",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context,"Places not loaded",Toast.LENGTH_SHORT).show();
             }
         }
     }

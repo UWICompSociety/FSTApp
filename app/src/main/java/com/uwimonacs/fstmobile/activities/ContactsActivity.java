@@ -55,14 +55,7 @@ public class ContactsActivity extends AppCompatActivity {
         new LoadContactsTask(this).execute(""); // runs the contacts sync task
     }
 
-    private void initalizeData()
-    {
-        contacts.add(new Contact(1, "Faculty Office", "+18769236728"));
-        contacts.add(new Contact(2, "Physics Main Office", "+18769782728"));
-        contacts.add(new Contact(3, "Chemistry Main Office", "+18768785428"));
-        contacts.add(new Contact(4, "Life Sciences Main Office", "+18767483407"));
-        contacts.add(new Contact(5, "Engineering Main Office", "+18769916563"));
-    }
+
 
     private void getContactsFromDatabase()
     {
@@ -90,7 +83,7 @@ public class ContactsActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            Toast.makeText(ctxt, "Loading contacts..", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ctxt, "Loading contacts..", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -104,13 +97,13 @@ public class ContactsActivity extends AppCompatActivity {
             if(result) //if sync was successful
             {
                 getContactsFromDatabase(); //get the freshly synced contacts from database
-                Toast.makeText(ctxt, "Contacts Loaded successfully", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ctxt, "Contacts Loaded successfully", Toast.LENGTH_SHORT).show();
 
                 //update the card list to show new contacts
                 contactListAdapter.updateContacts(contacts);
             } else {
                 //failed to sync maybe no internet or some error with api
-                Toast.makeText(ctxt, "Sync failed",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ctxt, "Sync failed",Toast.LENGTH_SHORT).show();
             }
         }
 

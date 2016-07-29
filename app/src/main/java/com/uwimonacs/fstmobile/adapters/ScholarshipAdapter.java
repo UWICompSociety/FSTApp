@@ -28,7 +28,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
      * Initializes views for each item of the Recycler View items
      * using the Card View layout
      */
-    public static class ScholarshipViewHolder extends RecyclerView.ViewHolder {
+    public class ScholarshipViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView scholName;
         TextView scholDescription;
@@ -37,10 +37,22 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         ScholarshipViewHolder(final View itemView) {
             super(itemView);
 
-            cv = (CardView)itemView.findViewById(R.id.cv);
+           // cv = (CardView)itemView.findViewById(R.id.cv);
             scholName = (TextView)itemView.findViewById(R.id.schol_name);
             scholDescription = (TextView)itemView.findViewById(R.id.schol_description);
             scholPhoto = (ImageView)itemView.findViewById(R.id.schol_photo);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = ScholarshipViewHolder.this.getAdapterPosition();
+                    Intent intent = new Intent(v.getContext(), ScholarshipDetailsActivity.class);
+                    intent.putExtra("scholName", schols.get(pos).getTitle());
+                    intent.putExtra("scholDetails", schols.get(pos).getDetail());
+                    intent.putExtra("scholImage", schols.get(pos).getImage());
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -59,7 +71,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
      */
     @Override
     public ScholarshipViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_scholarship, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_schol_item, parent, false);
         return new ScholarshipViewHolder(v);
     }
 
@@ -77,7 +89,8 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         holder.scholDescription.setText(schols.get(position).getDescription());
         holder.scholPhoto.setImageResource(R.drawable.ic_school_black_24dp);
 
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+
+       /* holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mona.uwi.edu/osf/scholarship/list/fst")));
@@ -87,7 +100,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                 intent.putExtra("scholImage", schols.get(pos).getImage());
                 view.getContext().startActivity(intent);
             }
-        });
+        });*/
     }
 
     /**

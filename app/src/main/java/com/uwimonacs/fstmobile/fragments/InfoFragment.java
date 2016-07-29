@@ -19,8 +19,8 @@ public class InfoFragment extends Fragment {
     private InfoListAdapter infoListAdapter;
 
     String[] titles = {"FAQ", "Videos", "Scholarships & Bursaries", "Contacts"};
-    int[] images = {R.drawable.ic_info_black_24dp, R.drawable.ic_videocam_black_24dp,
-            R.drawable.ic_school_black_24dp, R.drawable.ic_contacts_black_24dp};
+    int[] images = {R.mipmap.ic_faqicon, R.mipmap.ic_video,
+            R.drawable.ic_school_black_24dp, R.mipmap.ic_contacts};
 
     public InfoFragment()
     {

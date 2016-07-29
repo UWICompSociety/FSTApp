@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolder> {
 
-    List<FAQ> faqs;
+
 
     public class FaqHolder extends RecyclerView.ViewHolder{
 
@@ -34,6 +34,10 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
             answer = (TextView)itemView.findViewById(R.id.answer);
         }
     }
+
+    String filter = "";
+    List<FAQ> faqs;
+
 
     public FaqListAdapter(List<FAQ> faqs){
         this.faqs = faqs;
@@ -66,5 +70,57 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
     {
         this.faqs = new ArrayList<>(newFags);
         notifyDataSetChanged();
+    }
+
+    public void animateTo(List<FAQ> models,String filter) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+        this.filter = filter;
+    }
+
+    private void applyAndAnimateRemovals(List<FAQ> newModels) {
+        for (int i = faqs.size() - 1; i >= 0; i--) {
+            final FAQ model = faqs.get(i);
+            if (!newModels.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<FAQ> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final FAQ model = newModels.get(i);
+            if (!faqs.contains(model)) {
+                addItem(i, model);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(List<FAQ> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final FAQ model = newModels.get(toPosition);
+            final int fromPosition = faqs.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    public FAQ removeItem(int position) {
+        final FAQ model = faqs.remove(position);
+        notifyItemRemoved(position);
+        return model;
+    }
+
+    public void addItem(int position, FAQ model) {
+        faqs.add(position, model);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final FAQ model = faqs.remove(fromPosition);
+        faqs.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
     }
 }

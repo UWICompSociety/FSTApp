@@ -8,10 +8,10 @@
     android:background="?android:attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_call_black_24dp"
+        android:id="@+id/schol_photo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_school_black_24dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_gravity="center_vertical" />
@@ -20,16 +20,17 @@
         android:id="@+id/contact_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="5dp"
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
 
         <TextView
-            android:id="@+id/contact_name"
-            android:textSize="16sp"
+            android:id="@+id/schol_name"
+            android:textSize="20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Faculty Office"
+            tools:text="AUWFI Scholarship"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -37,10 +38,10 @@
             android:textSize="16sp"
             android:paddingTop="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:id="@+id/contact_number"
+            android:id="@+id/schol_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="+18769384268" />
+            tools:text="A small scholarship handed down by the bursary" />
 
     </LinearLayout>
 
