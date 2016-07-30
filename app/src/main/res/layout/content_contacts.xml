@@ -39,7 +39,7 @@
         android:id="@+id/txt_notpresent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  No News Loaded\n Check Connectivity"
+        android:text=" No Contacts Loaded\n Check Connectivity"
         android:textSize="20sp"
         android:paddingTop="10dp"
         android:layout_below="@+id/img_placeholder"
