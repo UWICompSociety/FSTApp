@@ -16,10 +16,11 @@ import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.VideoViewHolder;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
-    private List<VideoItem> videos;
+    private List<VideoItem> videos = new ArrayList<>();
     private Context context;
 
     /**
@@ -30,13 +31,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
      */
     public VideosAdapter(final Context context){
         this.context = context;
-        new Thread(){
-            @Override
-            public void run() {
-                YoutubeConnector yc = new YoutubeConnector(context);
-                videos = yc.search();
-            }
-        }.start();
+
     }
 
     @Override
@@ -79,20 +74,13 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     @Override
     public int getItemCount() {
-        /*
-        * Possible null pointer if YouTubeConnector takes too long
-        * to return a list from yc.search() above. Pause the app until
-        * results are confirmed to be returned.
-        * Possible loading circle?
-        * */
-        while(videos == null)
-            synchronized (this) {
-                try {
-                    wait(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+
         return videos.size();
+    }
+
+    public void updateVideos(List<VideoItem> new_videos)
+    {
+        this.videos = new ArrayList<>(new_videos);
+        notifyDataSetChanged();
     }
 }
