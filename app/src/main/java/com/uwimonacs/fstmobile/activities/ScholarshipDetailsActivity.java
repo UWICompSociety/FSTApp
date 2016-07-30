@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
             scholPic.setImageResource(R.drawable.ic_school_black_24dp);
         }*/
         scholNameTextView.setText(scholName);
-        scholDetailsTextView.setText(scholDetails);
+        scholDetailsTextView.setText(Html.fromHtml(scholDetails).toString().trim());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

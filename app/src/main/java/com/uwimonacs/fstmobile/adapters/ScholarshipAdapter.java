@@ -49,7 +49,7 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                     Intent intent = new Intent(v.getContext(), ScholarshipDetailsActivity.class);
                     intent.putExtra("scholName", schols.get(pos).getTitle());
                     intent.putExtra("scholDetails", schols.get(pos).getDetail());
-                    intent.putExtra("scholImage", schols.get(pos).getImage());
+                   // intent.putExtra("scholImage", schols.get(pos).getImage());
                     v.getContext().startActivity(intent);
                 }
             });

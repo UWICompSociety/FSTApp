@@ -29,22 +29,22 @@ public class Scholarship extends Model {
     @Column(name = "detail")
     private String detail;
 
-    @SerializedName("image_url")
-    @Column(name = "image")
-    private String image;
+   // @SerializedName("image_url")
+    //@Column(name = "image")
+   // private String image;
 
     public Scholarship() {
         super();
     }
 
-    public Scholarship(int iD, String title, String description, String detail, String image) {
+    public Scholarship(int iD, String title, String description, String detail) {
         super();
 
         this.scholId = iD;
         this.title = title; //name of scholarship
         this.description = description; //short preview description of scholarship
         this.detail = detail;  //detailed description of scholarship
-        this.image = image;
+       // this.image = image;
     }
 
     /*
@@ -66,9 +66,6 @@ public class Scholarship extends Model {
         return detail;
     }
 
-    public String getImage() {
-        return image;
-    }
 
     /*
     Setters
@@ -90,9 +87,6 @@ public class Scholarship extends Model {
         this.detail = detail;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public static Scholarship findOrCreateFromJson(Scholarship new_schol) {
         int scholId = new_schol.getScholD();
