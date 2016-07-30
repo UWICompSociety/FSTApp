@@ -18,10 +18,7 @@ import java.util.List;
  * FAQList Adapter
  */
 public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolder> {
-
-
-
-    public class FaqHolder extends RecyclerView.ViewHolder{
+    public static class FaqHolder extends RecyclerView.ViewHolder{
 
         CardView cv;
         TextView question;
@@ -45,9 +42,10 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
 
     @Override
     public FaqHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.faq_card, viewGroup, false);
-        FaqHolder fh = new FaqHolder(v);
-        return fh;
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.faq_card, viewGroup, false);
+
+        return new FaqHolder(v);
     }
 
     @Override

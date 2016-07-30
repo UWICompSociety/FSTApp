@@ -60,7 +60,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyDataSetChanged();
     }
 
-    class SearchResultsHolder extends RecyclerView.ViewHolder{
+    public static class SearchResultsHolder extends RecyclerView.ViewHolder{
         public TextView result;
         public CardView cardView;
         public SearchResultsHolder(View itemView) {

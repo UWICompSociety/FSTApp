@@ -157,7 +157,7 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         notifyDataSetChanged();
     }
 
-    public class PlacesViewHolder extends RecyclerView.ViewHolder{
+    public static class PlacesViewHolder extends RecyclerView.ViewHolder{
         public CardView cardView;
         public PlacesViewHolder(View itemView) {
             super(itemView);
