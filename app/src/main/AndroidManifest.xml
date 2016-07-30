@@ -54,8 +54,7 @@
         </activity>
         <activity
             android:name=".activities.PlayerActivity"
-            android:label="@string/title_activity_player"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.PlayerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.VideoListActivity" />
