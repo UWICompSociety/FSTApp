@@ -134,11 +134,11 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
             public void onClick(View view) {
                 int visibility = linearLayout.getVisibility();
                 if(visibility == View.VISIBLE){
-                    expandableArrow.setImageResource(R.drawable.ic_keyboard_arrow_down_black_36dp);
+                    expandableArrow.setImageResource(R.drawable.ic_expand_more_black_24dp);
                     linearLayout.setVisibility(View.GONE);
                 }
                 else{
-                    expandableArrow.setImageResource(R.drawable.ic_keyboard_arrow_up_black_36dp);
+                    expandableArrow.setImageResource(R.drawable.ic_expand_less_black_24dp);
                     linearLayout.setVisibility(View.VISIBLE);
                 }
             }
