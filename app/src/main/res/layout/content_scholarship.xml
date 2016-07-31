@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv"
-            tools:listitem="@layout/card_scholarship"
+            tools:listitem="@layout/list_schol_item"
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,13 +21,14 @@ import android.widget.Toast;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.VideosAdapter;
 import com.uwimonacs.fstmobile.helper.Connect;
+import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class VideoListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,SearchView.OnQueryTextListener{
     RecyclerView videosFound;
     VideosAdapter adapter;
     List<VideoItem> videos = new ArrayList<>();
@@ -32,6 +37,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +118,62 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_videos, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        // searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search video"); //sets the hint text
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchView.setQuery("", false); //clears text from search view
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        final List<VideoItem> filteredModelList = filter(videos, query);
+        adapter.animateTo(filteredModelList,query);
+        videosFound.scrollToPosition(0);
+        return true;
+    }
+
+    /**
+     * takes a query and returns a list of contacts that match the query
+     * @param models
+     * @param query
+     * @return
+     */
+    private List<VideoItem> filter(List<VideoItem> models, String query) {
+        query = query.toLowerCase();
+        final List<VideoItem> filteredModelList = new ArrayList<>();
+        for (VideoItem model : models) {
+            final String text = model.getTitle().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
 
     private boolean isConnected() {
         return connect.isConnected();

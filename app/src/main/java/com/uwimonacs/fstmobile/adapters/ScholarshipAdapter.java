@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.activities.ScholarshipDetailsActivity;
+import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.R;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
 
     private List<Scholarship> schols;
+    private String filter = "";
 
     /**
      * Initializes views for each item of the Recycler View items
@@ -124,6 +126,58 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
     {
         this.schols = new ArrayList<>(newSchols);
         notifyDataSetChanged();
+    }
+
+    public void animateTo(List<Scholarship> models, String filter) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+        this.filter = filter;
+    }
+
+    private void applyAndAnimateRemovals(List<Scholarship> newModels) {
+        for (int i = schols.size() - 1; i >= 0; i--) {
+            final Scholarship model = schols.get(i);
+            if (!newModels.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<Scholarship> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final Scholarship model = newModels.get(i);
+            if (!schols.contains(model)) {
+                addItem(i, model);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(List<Scholarship> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final Scholarship model = newModels.get(toPosition);
+            final int fromPosition = schols.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    public Scholarship removeItem(int position) {
+        final Scholarship model = schols.remove(position);
+        notifyItemRemoved(position);
+        return model;
+    }
+
+    public void addItem(int position, Scholarship model) {
+        schols.add(position, model);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final Scholarship model = schols.remove(fromPosition);
+        schols.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
 }

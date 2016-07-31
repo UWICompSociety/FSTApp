@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PlayerActivity;
+import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.VideoViewHolder;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
@@ -22,6 +23,7 @@ import java.util.List;
 public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private List<VideoItem> videos = new ArrayList<>();
     private Context context;
+    private String filter ="";
 
     /**
      * Handles the setting up of the YouTube Android API
@@ -82,5 +84,57 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     {
         this.videos = new ArrayList<>(new_videos);
         notifyDataSetChanged();
+    }
+
+    public void animateTo(List<VideoItem> models, String filter) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+        this.filter = filter;
+    }
+
+    private void applyAndAnimateRemovals(List<VideoItem> newModels) {
+        for (int i = videos.size() - 1; i >= 0; i--) {
+            final VideoItem model = videos.get(i);
+            if (!newModels.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<VideoItem> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final VideoItem model = newModels.get(i);
+            if (!videos.contains(model)) {
+                addItem(i, model);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(List<VideoItem> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final VideoItem model = newModels.get(toPosition);
+            final int fromPosition = videos.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    public VideoItem removeItem(int position) {
+        final VideoItem model = videos.remove(position);
+        notifyItemRemoved(position);
+        return model;
+    }
+
+    public void addItem(int position, VideoItem model) {
+        videos.add(position, model);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final VideoItem model = videos.remove(fromPosition);
+        videos.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
     }
 }

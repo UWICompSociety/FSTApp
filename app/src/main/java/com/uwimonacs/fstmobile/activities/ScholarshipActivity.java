@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +28,7 @@ import com.uwimonacs.fstmobile.adapters.ScholarshipAdapter;
 import com.uwimonacs.fstmobile.helper.Connect;
 import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.Scholarship;
+import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.sync.ScholarshipSync;
 
 import java.util.ArrayList;
@@ -34,7 +39,7 @@ import java.util.List;
  * ScholarshipActivity - not in use
  */
 
-public class ScholarshipActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ScholarshipActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,SearchView.OnQueryTextListener{
 
     private List<Scholarship> schols = new ArrayList<>();
     private ScholarshipAdapter adapter;
@@ -46,6 +51,7 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private RecyclerView rv;
+    private SearchView searchView;
 
 
     @Override
@@ -127,6 +133,64 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
                 return true;
             default: return true;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_scholarship, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        // searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search scholarship"); //sets the hint text
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchView.setQuery("", false); //clears text from search view
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        final List<Scholarship> filteredModelList = filter(schols, query);
+        adapter.animateTo(filteredModelList,query);
+        rv.scrollToPosition(0);
+        return true;
+    }
+
+    /**
+     * takes a query and returns a list of contacts that match the query
+     * @param models
+     * @param query
+     * @return
+     */
+    private List<Scholarship> filter(List<Scholarship> models, String query) {
+        query = query.toLowerCase();
+        final List<Scholarship> filteredModelList = new ArrayList<>();
+        for (Scholarship model : models) {
+            final String text = model.getTitle().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
     }
 
     /**
