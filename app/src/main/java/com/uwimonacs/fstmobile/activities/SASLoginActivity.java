@@ -5,6 +5,7 @@ import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +15,13 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -30,6 +36,8 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
 
+import java.util.regex.Pattern;
+
 @SuppressLint("NewApi")
 public class SASLoginActivity extends AccountAuthenticatorActivity {
     private SASConfig sasConfig;
@@ -39,50 +47,93 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     public static Account[] mAccounts;
     private Account mAccount;
 
+    private EditText id;
+    private EditText pass;
+    private Button login_btn;
+
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_saslogin);
 
-        login_help = (TextView) findViewById(R.id.login_help);
+        id = (EditText) findViewById(R.id.sas_username_edittext);
+        pass = (EditText) findViewById(R.id.sas_password_edittext);
+        login_btn = (Button) findViewById(R.id.sas_login_button);
+        TextView login_help = (TextView) findViewById(R.id.login_help);
+
+        TextWatcher loginFieldWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* empty */
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* empty */
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (id.length() == 9 && pass.length() > 0)
+                    login_btn.setEnabled(true);
+                else
+                    login_btn.setEnabled(false);
+            }
+        };
+
+        id.addTextChangedListener(loginFieldWatcher);
+        pass.addTextChangedListener(loginFieldWatcher);
+
+        pass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    signin(v);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         login_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHelpDialog(SASLoginActivity.this);
+                showHelpDialog(v.getContext());
             }
         });
 
         sasConfig = MyApplication.getSasConfig();
         webView = MyApplication.getWebView();
-        mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
-        Intent intent = getIntent();
-        try {
-            main = intent.getAction().equals(Intent.ACTION_MAIN);
-        } catch (NullPointerException e){
-            main = false;
-        }
-        mAccounts = mAccountManager.getAccountsByType("UWI");
-        System.out.println("Accounts: " + mAccounts.length);
-        if(mAccounts.length == 0){
-            //Show login layout
-            tryLogin(0);
-        }
-        else if(mAccounts.length == 1) {
-            if(main) {
-                mAccount = mAccounts[0];
-                tryLogin(1); //Login with single account
-            }
-            else
-                tryLogin(0); //Allow new account to be added
-        }
-        else if(mAccounts.length > 1){
-            if(main)
-                showAccountChooser(); //Login with chosen account
-            else
-                tryLogin(0); //Allow new account to be added
-        }
-        super.onCreate(savedInstanceState);
+
+//        mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
+//        Intent intent = getIntent();
+//        try {
+//            main = intent.getAction().equals(Intent.ACTION_MAIN);
+//        } catch (NullPointerException e) {
+//            main = false;
+//        }
+//        mAccounts = mAccountManager.getAccountsByType("UWI");
+//        System.out.println("Accounts: " + mAccounts.length);
+//        if(mAccounts.length == 0){
+//            //Show login layout
+//            tryLogin(0);
+//        }
+//        else if(mAccounts.length == 1) {
+//            if(main) {
+//                mAccount = mAccounts[0];
+//                tryLogin(1); // Login with single account
+//            }
+//            else
+//                tryLogin(0); // Allow new account to be added
+//        }
+//        else if (mAccounts.length > 1) {
+//            if (main)
+//                showAccountChooser(); // Login with chosen account
+//            else
+//                tryLogin(0); // Allow new account to be added
+//        }
     }
 
     @Override
@@ -104,32 +155,23 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
         }
     }
 
-    private void showAccountChooser(){
-        /*
-        * Show account chooser dialog
-        * then login with chosen account
-        * */
-        Intent intent;
-        if (Build.VERSION.SDK_INT < 23) {
-            intent = AccountManager.newChooseAccountIntent(null, null, new String[]{"UWI"}, false,
-                    "Choose your UWI account", null, null, null);
-        } else {
-            intent = AccountManager.newChooseAccountIntent(null, null, new String[]{"UWI"},
-                    "Choose your UWI account", null, null, null);
-        }
-        startActivityForResult(intent, 1);
-    }
-
-    /**
-     * Display some text in a toast for length short
-     * @param message text to be displayed in toast
-     */
-    private void showMessage(String message) {
-        Snackbar.make((LinearLayout) findViewById(R.id.sas_login_mainlayout), message, Snackbar.LENGTH_SHORT).show();
-    }
+//    private void showAccountChooser(){
+//        /*
+//        * Show account chooser dialog
+//        * then login with chosen account
+//        * */
+//        Intent intent;
+//        if (Build.VERSION.SDK_INT < 23) {
+//            intent = AccountManager.newChooseAccountIntent(null, null, new String[]{"UWI"}, false,
+//                    "Choose your UWI account", null, null, null);
+//        } else {
+//            intent = AccountManager.newChooseAccountIntent(null, null, new String[]{"UWI"},
+//                    "Choose your UWI account", null, null, null);
+//        }
+//        startActivityForResult(intent, 1);
+//    }
 
     private void showHelpDialog(Context context) {
-        final String MITS_HELPDESK = "https://support.mona.uwi.edu/";
         final String message = "Student users should note that your password is now the same as"
                 + " your OURVLE/DOMAIN password. If your OURVLE/DOMAIN password is your date of"
                 + " birth, please use the format YYYYMMDD. e.g. John Brown is a student with id"
@@ -138,13 +180,15 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                 + "\n\n"
                 + "If you do not remember your OURVLE/DOMAIN password or it has expired, please"
                 + " contact the MITS Helpdesk at extension 2992 or (876) 927-2148. You may also"
-                + " email the helpdesk or visit the UWI Mona Live Support page to  request a "
+                + " email the helpdesk or visit the UWI Mona Live Support page to request a "
                 + "password reset";
 
         AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle("Login Help").setMessage(message)
+                .setTitle("Login Help")
+                .setMessage(message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        /* empty */
                     }
                 })
                 .create();
@@ -169,15 +213,13 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     private void showNetworkDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        // set title
         alertDialogBuilder.setTitle("No network connection");
 
-        // set dialog message
         final AccountAuthenticatorActivity activity = this;
         alertDialogBuilder
                 .setMessage("Enable WIFI?")
                 .setCancelable(true)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         //enable wifi
                         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -185,7 +227,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
                     }
                 })
-                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         activity.finish();
                     }
@@ -199,7 +241,8 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     }
 
     public void createAccount(final String username, final String password){
-        final String formData = "sid="+username+"&PIN="+password;
+        final String formData = "sid=" + username + "&PIN=" + password;
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -218,49 +261,57 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
         });
     }
 
+    public void signin(View v) {
+        final RelativeLayout progressBar = (RelativeLayout) findViewById(R.id.sas_login_progressbar);
+        final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.sas_login_mainlayout);
+
+        sasConfig.setLogin(this);
+
+        final String username = id.getText().toString();
+        final String password = pass.getText().toString();
+
+        if (!isNetworkAvailable())
+            showNetworkDialog();
+        else {
+            mainLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+
+            createAccount(username, password);
+        }
+    }
+
     private void tryLogin(int numberOfAccounts) {
         if (numberOfAccounts == 0) {
-            final RelativeLayout progressBar = (RelativeLayout) findViewById(R.id.sas_login_progressbar);
-            assert progressBar != null;
-            final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.sas_login_mainlayout);
-            assert mainLayout != null;
-            sasConfig.setLogin(this);
-            final EditText id = (EditText) findViewById(R.id.sas_username_edittext);
-            final EditText pass = (EditText) findViewById(R.id.sas_password_edittext);
-            Button button = (Button) findViewById(R.id.sas_login_button);
-            assert button != null;
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    id.setError(null);
-                    pass.setError(null);
-
-                    final String username = id.getText().toString();
-                    final String password = pass.getText().toString();
-
-                    if (TextUtils.isEmpty(username)) {
-                        id.setError("ID number required");
-                        showMessage("ID Number field required");
-                    }
-                    else if (username.length() != 9) {
-                        id.setError("ID number is too short");
-                        showMessage("ID number is too short");
-                    }
-                    else if (TextUtils.isEmpty(password)) {
-                        pass.setError("Password required");
-                        showMessage("Password field required");
-                    }
-                    else if (!isNetworkAvailable())
-                        showNetworkDialog();
-                    else {
-                        mainLayout.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
-
-                        createAccount(username, password);
-                    }
-                }
-            });
+//            final RelativeLayout progressBar = (RelativeLayout) findViewById(R.id.sas_login_progressbar);
+//            assert progressBar != null;
+//            final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.sas_login_mainlayout);
+//            assert mainLayout != null;
+//            sasConfig.setLogin(this);
+//            final EditText id = (EditText) findViewById(R.id.sas_username_edittext);
+//            final EditText pass = (EditText) findViewById(R.id.sas_password_edittext);
+//            Button button = (Button) findViewById(R.id.sas_login_button);
+//            assert button != null;
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (TextUtils.isEmpty(id.getText().toString()))
+//                        showMessage("ID Number required");
+//                    else if (id.getText().toString().length() != 9)
+//                        showMessage("Invalid ID Number");
+//                    else if (TextUtils.isEmpty(pass.getText().toString()))
+//                        showMessage("Password required");
+//                    else if (!isNetworkAvailable())
+//                        showNetworkDialog();
+//                    else {
+//                        mainLayout.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.VISIBLE);
+//                        //Create account
+//                        final String username = id.getText().toString();
+//                        final String password = pass.getText().toString();
+//                        createAccount(username, password);
+//                    }
+//                }
+//            });
         } else if (!isNetworkAvailable())
             showNetworkDialog();
         else {
@@ -285,12 +336,9 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                             super.onPageFinished(view, url);
                         }
                     });
-                    webView.postUrl(getResources().getString(R.string.login_post),
-                            formData.getBytes());
+                    webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
                 }
             });
         }
     }
-
-    private TextView login_help;
 }
