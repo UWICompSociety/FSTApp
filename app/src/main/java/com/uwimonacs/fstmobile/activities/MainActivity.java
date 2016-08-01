@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.MyApplication;
@@ -45,6 +48,7 @@ implements AdapterView.OnItemSelectedListener{
     private Account mAccount;
     private AccountManager mAccountManager;
     public static boolean loggedIn = false;
+    private AppCompatActivity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,15 +153,21 @@ implements AdapterView.OnItemSelectedListener{
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                drawer.closeDrawers();
                 switch (item.getItemId()) {
                     case R.id.sas_registration:
                         if (!loggedIn) {
+                            ImageView queensWay = (ImageView) findViewById(R.id.queens_way);
+                            Pair<View, String> pair = Pair.create((View)queensWay,"queens_way");
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pair);
                             Intent intent = new Intent(getApplicationContext(), SASLoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setAction("MainActivity");
-                            startActivity(intent);
+                            if(Build.VERSION.SDK_INT >= 21)
+                                startActivity(intent, options.toBundle());
+                            else
+                                startActivity(intent);
                         } else {
+                            drawer.closeDrawers();
                             Intent intent = new Intent(getApplicationContext(), SASTimetableActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -165,18 +175,22 @@ implements AdapterView.OnItemSelectedListener{
                         return true;
 
                     case R.id.sas_transcript:
+                        drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), SASTranscriptActivity.class));
                         return true;
 
                     case R.id.sas_logout:
+                        drawer.closeDrawers();
                         removeAccount();
                         return true;
 
                     case R.id.settings:
+                        drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
 
                     default:
+                        drawer.closeDrawers();
                         return true;
                 }
             }
