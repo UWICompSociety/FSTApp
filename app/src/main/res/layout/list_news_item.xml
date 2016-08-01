@@ -16,7 +16,8 @@
             android:id="@+id/newsImage"
             android:layout_width="fill_parent"
             android:layout_height="172.0dip"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:transitionName="news_image"/>
         <TextView
             android:textSize="24sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -28,6 +29,8 @@
             android:paddingTop="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:transitionName="news_title"
+
             tools:text="Faculty to Get New Buildings" />
         <TextView
             android:textSize="14sp"

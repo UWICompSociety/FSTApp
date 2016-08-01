@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,9 +36,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
+    private AppCompatActivity activity;
 
     public NewsFragment() {
         /* required empty constructor */
+    }
+
+    public void setActivity(AppCompatActivity activity){
+        this.activity = activity;
     }
 
     @Nullable
@@ -82,6 +88,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         newsListView.setHasFixedSize(true);
 
         newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
+
+        newsListAdapter.setActivity(activity);
 
         newsListView.setAdapter(newsListAdapter);
     }

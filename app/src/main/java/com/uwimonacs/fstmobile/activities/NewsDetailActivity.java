@@ -49,4 +49,9 @@ public class NewsDetailActivity extends AppCompatActivity {
                 return true;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        supportFinishAfterTransition();
+    }
 }
