@@ -47,12 +47,8 @@ public class InfoFragment extends Fragment
                 break;
 
             case R.id.videos:
-               // if (new Connect(v.getContext()).isConnected()) {
-                    Intent videoIntent = new Intent(v.getContext(), VideoListActivity.class);
-                    v.getContext().startActivity(videoIntent);
-               // } else {
-               //     Snackbar.make(v, "Check your Internet connection", Snackbar.LENGTH_SHORT).show();
-               // }
+                Intent videoIntent = new Intent(v.getContext(), VideoListActivity.class);
+                v.getContext().startActivity(videoIntent);
                 break;
 
             case R.id.scholarships:
