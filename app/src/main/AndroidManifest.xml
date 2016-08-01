@@ -38,7 +38,7 @@
 
         <activity
             android:name=".activities.SASLoginActivity"
-            android:theme="@style/AppTheme.NoActionBar.SASLogin" />
+            android:theme="@style/AppTheme.SASLogin" />
         <activity
             android:name=".activities.SASTimetableActivity" >
             <meta-data
@@ -130,7 +130,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
