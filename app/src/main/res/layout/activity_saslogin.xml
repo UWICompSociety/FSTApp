@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="@string/login_button_sas"
-            android:onClick="signin"
+            android:onClick="signIn"
             android:enabled="false"/>
 
         <TextView
