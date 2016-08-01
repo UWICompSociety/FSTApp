@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,12 +17,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.VideosAdapter;
 import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
@@ -29,15 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VideoListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,SearchView.OnQueryTextListener{
-    RecyclerView videosFound;
-    VideosAdapter adapter;
-    List<VideoItem> videos = new ArrayList<>();
+    private RecyclerView videosFound;
+    private VideosAdapter adapter;
+    private List<VideoItem> videos = new ArrayList<>();
     private Connect connect;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private SearchView searchView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     private void initViews()
     {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
@@ -88,8 +89,8 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         progressBar.setVisibility(View.GONE);
     }
 
-    private void setUpToolBar()
-    {
+    private void setUpToolBar() {
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.videos_activity_title);
     }
