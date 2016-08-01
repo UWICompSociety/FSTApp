@@ -6,11 +6,8 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
-public class VideoFragment extends YouTubePlayerSupportFragment{
-
+public class VideoFragment extends YouTubePlayerSupportFragment {
     /**
      * Creates a new instance of this Fragment and passes the video URL
      * to YouTube player
@@ -18,9 +15,8 @@ public class VideoFragment extends YouTubePlayerSupportFragment{
      * @return an instance of this VideoFragment
      */
     public static VideoFragment newInstance(String url) {
-
-        VideoFragment fragment = new VideoFragment();
-        Bundle bundle = new Bundle();
+        final VideoFragment fragment = new VideoFragment();
+        final Bundle bundle = new Bundle();
         bundle.putString("VIDEO_ID", url);
 
         fragment.setArguments(bundle);
@@ -35,12 +31,11 @@ public class VideoFragment extends YouTubePlayerSupportFragment{
      * as soon as initialization is complete.
      */
     private void initialize() {
-
         initialize(getArguments().getString("VIDEO_ID"), new YouTubePlayer.OnInitializedListener() {
 
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
-                if(!b) {
+                if (!b) {
                     /*
                     * Used in place of youTubePlayer.cueVideo() so that the
                     * video will play automatically

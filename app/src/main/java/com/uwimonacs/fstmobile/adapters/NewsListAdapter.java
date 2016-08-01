@@ -2,7 +2,6 @@ package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.NewsDetailActivity;
-import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.News;
 
 import java.util.ArrayList;
@@ -23,52 +21,48 @@ import java.util.List;
  * Created by Matthew on 7/11/2016.
  */
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
+    private List<News> newsList;
+    private final Context ctxt;
 
+    public class NewsViewHolder extends RecyclerView.ViewHolder {
+        final TextView newsTitle;
+        final TextView newsDesc;
+        final ImageView newsImage;
 
+        public NewsViewHolder(View v) {
+            super(v);
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView newsTitle;
-        TextView newsDesc;
-        ImageView newsImage;
-        public NewsViewHolder(View itemView) {
-            super(itemView);
-            newsTitle = (TextView)itemView.findViewById(R.id.newsHeading);
-            newsDesc = (TextView)itemView.findViewById(R.id.newsDescription);
-            newsImage = (ImageView)itemView.findViewById(R.id.newsImage);
+            newsTitle = (TextView) v.findViewById(R.id.newsHeading);
+            newsDesc = (TextView) v.findViewById(R.id.newsDescription);
+            newsImage = (ImageView) v.findViewById(R.id.newsImage);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = NewsViewHolder.this.getAdapterPosition(); //position of element in list
+                    final int pos = NewsViewHolder.this.getAdapterPosition();
 
-                    Intent intent = new Intent(v.getContext(), NewsDetailActivity.class);
-                    intent.putExtra("image",newsList.get(pos).getImage_url());
-                    intent.putExtra("title",newsList.get(pos).getTitle());
-                    intent.putExtra("story",newsList.get(pos).getStory());
+                    final Intent intent = new Intent(v.getContext(), NewsDetailActivity.class);
+                    intent.putExtra("image", newsList.get(pos).getImage_url());
+                    intent.putExtra("title", newsList.get(pos).getTitle());
+                    intent.putExtra("story", newsList.get(pos).getStory());
 
                     v.getContext().startActivity(intent);
-
-
                 }
             });
         }
     }
 
-    List<News> newsList;
-    Context ctxt;
-    public NewsListAdapter(Context ctxt, List<News> newsList)
-    {
+    public NewsListAdapter(Context ctxt, List<News> newsList) {
         this.ctxt = ctxt;
         this.newsList = new ArrayList<>(newsList);
-
     }
 
     @Override
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_news_item,parent,false);
-        NewsViewHolder newsViewHolder = new NewsViewHolder(view);
-        return newsViewHolder;
+        final View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_news_item, parent, false);
+
+        return new NewsViewHolder(v);
     }
 
     @Override
@@ -84,8 +78,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         return newsList.size();
     }
 
-    public void updateNews(List<News> new_news)
-    {
+    public void updateNews(List<News> new_news) {
         this.newsList = new ArrayList<>(new_news);
         notifyDataSetChanged();
     }

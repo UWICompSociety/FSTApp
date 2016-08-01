@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -38,7 +37,6 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     private EditText pass;
     private Button login_btn;
 
-
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
         /*
         * Disable adding account from SettingsActivity
         * */
-        if(getIntent().getAction() == null){
+        if (getIntent().getAction() == null) {
             Toast.makeText(this, "Not allowed", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -56,9 +54,9 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
         id = (EditText) findViewById(R.id.sas_username_edittext);
         pass = (EditText) findViewById(R.id.sas_password_edittext);
         login_btn = (Button) findViewById(R.id.sas_login_button);
-        TextView login_help = (TextView) findViewById(R.id.login_help);
+        final TextView login_help = (TextView) findViewById(R.id.login_help);
 
-        TextWatcher loginFieldWatcher = new TextWatcher() {
+        final TextWatcher loginFieldWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 /* empty */
@@ -132,9 +130,11 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
      * @return true if a network connection is detected, false otherwise
      */
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
+        final ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
@@ -143,7 +143,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
      * and offers to enable wifi
      */
     private void showNetworkDialog(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setTitle("No network connection");
 
@@ -154,7 +154,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         //enable wifi
-                        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                        final WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
                         wifiManager.setWifiEnabled(true);
                         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
                     }
@@ -165,10 +165,8 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                     }
                 });
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        final AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
         alertDialog.show();
     }
 

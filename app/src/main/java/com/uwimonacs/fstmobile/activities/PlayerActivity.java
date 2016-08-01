@@ -5,24 +5,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.fragments.VideoFragment;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class PlayerActivity extends AppCompatActivity {
-    private TextView title, description;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_player);
 
         /*
@@ -34,8 +28,9 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.player_view_holder, VideoFragment.newInstance(getIntent().getStringExtra("VIDEO_ID")))
                 .commit();
-        title = (TextView) findViewById(R.id.player_view_title);
-        description = (TextView) findViewById(R.id.player_view_description);
+
+        final TextView title = (TextView) findViewById(R.id.player_view_title);
+        final TextView description = (TextView) findViewById(R.id.player_view_description);
 
         /*
          *   Video ID, Title and Description are used to load the video
@@ -44,8 +39,7 @@ public class PlayerActivity extends AppCompatActivity {
         title.setText(getIntent().getStringExtra("VIDEO_TITLE"));
         description.setText(getIntent().getStringExtra("VIDEO_DESC"));
 
-        Button watchOnYoutube = (Button) findViewById(R.id.watch_on_youtube);
-        assert watchOnYoutube != null;
+        final Button watchOnYoutube = (Button) findViewById(R.id.watch_on_youtube);
 
         /*
         * Launches the video externally in the YouTube app or the
@@ -58,7 +52,7 @@ public class PlayerActivity extends AppCompatActivity {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + getIntent().getStringExtra("VIDEO_ID")));
                     startActivity(intent);
-                } catch (ActivityNotFoundException e){
+                } catch (ActivityNotFoundException e) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + getIntent().getStringExtra("VIDEO_ID")));
                     startActivity(intent);
                 }

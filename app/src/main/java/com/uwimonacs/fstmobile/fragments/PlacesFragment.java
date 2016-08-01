@@ -29,17 +29,15 @@ import java.util.List;
 public class PlacesFragment extends Fragment {
     private View view;
     private List<Place> places = new ArrayList<>();
-    private String restUrl  = Constants.PLACE_URL;
     private PlacesCategoriesAdapter placesCategoriesAdapter;
-     RecyclerView categories;
-    RecyclerView searchResults;
+    private RecyclerView categories;
+    private RecyclerView searchResults;
+
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-
-        view = inflater.inflate(R.layout.frag_places, container, false); //inflates the layout for the view
+    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.frag_places, container, false);
 
         final View resultsView = inflater.inflate(R.layout.frag_places_search_results, container, false);
 
@@ -58,8 +56,7 @@ public class PlacesFragment extends Fragment {
         final SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(getContext());
         searchResults.setAdapter(searchResultsAdapter);
 
-
-        SearchView searchView = (SearchView) view.findViewById(R.id.frag_places_search);
+        final SearchView searchView = (SearchView) view.findViewById(R.id.frag_places_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,9 +70,8 @@ public class PlacesFragment extends Fragment {
                 * Move the original RecyclerView with the categories into the layout
                 * if the search bar is empty
                 * */
-                if(TextUtils.isEmpty(newText)){
-                    ViewGroup rootView = (ViewGroup) getView();
-                    assert rootView != null;
+                if (TextUtils.isEmpty(newText)) {
+                    final ViewGroup rootView = (ViewGroup) getView();
                     rootView.removeViewAt(1);
                     rootView.addView(categories);
                 }
@@ -86,15 +82,14 @@ public class PlacesFragment extends Fragment {
                 * */
                 else {
                     newText = newText.toLowerCase();
-                    List<Place> searchResults = new ArrayList<>();
-                    for(int i=0; i<places.size(); i++){
-                        String name = places.get(i).getShortname().toLowerCase();
-                        if(name.contains(newText))
+                    final List<Place> searchResults = new ArrayList<>();
+                    for (int i = 0; i < places.size(); i++) {
+                        final String name = places.get(i).getShortname().toLowerCase();
+                        if (name.contains(newText))
                             searchResults.add(places.get(i));
                     }
                     searchResultsAdapter.updateSearchResults(searchResults);
-                    ViewGroup rootView = (ViewGroup) getView();
-                    assert rootView != null;
+                    final ViewGroup rootView = (ViewGroup) getView();
                     rootView.removeViewAt(1);
                     rootView.addView(resultsView);
 
@@ -121,7 +116,7 @@ public class PlacesFragment extends Fragment {
     }
 
     private class LoadPlacesTask extends AsyncTask<String,Integer,Boolean> {
-        Context context;
+        final Context context;
 
         public LoadPlacesTask() {
             this.context = getContext();
@@ -134,14 +129,13 @@ public class PlacesFragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            PlaceSync placeSync = new PlaceSync(restUrl);
-            boolean result = placeSync.syncPlaces();
-            return result;
+            final PlaceSync placeSync = new PlaceSync(Constants.PLACE_URL);
+            return placeSync.syncPlaces();
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if(result) {
+            if (result) {
                 getPlacesFromDatabase();
                 placesCategoriesAdapter.updatePlaces(places);
                // Toast.makeText(context,"Places loaded",Toast.LENGTH_SHORT).show();

@@ -1,6 +1,6 @@
 package com.uwimonacs.fstmobile.helper;
 
-public  class Constants {
+public class Constants {
     public static final String CONTACTS_URL =
             "https://infinite-citadel-20637.herokuapp.com/contacts/";
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,8 +23,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.MyApplication;
@@ -33,8 +30,6 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
-
-import java.util.ArrayList;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity
@@ -59,13 +54,14 @@ implements AdapterView.OnItemSelectedListener{
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
-            ActionBarDrawerToggle toggle =
+            final ActionBarDrawerToggle toggle =
                     new ActionBarDrawerToggle(this, drawer, R.string.app_name, R.string.app_name);
+
             toggle.setDrawerIndicatorEnabled(true);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
@@ -87,7 +83,7 @@ implements AdapterView.OnItemSelectedListener{
 
     @Override
     protected void onResume() {
-        if(sasConfig.termNames.size() == 0 && loggedIn) {
+        if (sasConfig.termNames.size() == 0 && loggedIn) {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("View timetable");
             setUpSAS();
             navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(true);
@@ -98,12 +94,7 @@ implements AdapterView.OnItemSelectedListener{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            // Including legal notices as an independent menu item,
-            // or as part of an "About" menu item, is recommended.
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 return true;
@@ -112,18 +103,20 @@ implements AdapterView.OnItemSelectedListener{
         }
     }
 
-    public void setUpSAS(){
+    public void setUpSAS() {
         sasConfig = MyApplication.getSasConfig();
         sasConfig.setmActivity(this);
         webView = MyApplication.getWebView();
         mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
         mAccounts = mAccountManager.getAccountsByType("UWI");
         navigationView = (NavigationView) findViewById(R.id.nav_drawer);
-        MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration),
-                transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript),
-                logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
+
+        final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
+        final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
+        final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
         assert navigationView != null;
-        if(mAccounts.length > 0) {
+
+        if (mAccounts.length > 0) {
             registration.setEnabled(false);
             transcript.setEnabled(false);
             logout.setEnabled(false);
@@ -131,14 +124,14 @@ implements AdapterView.OnItemSelectedListener{
             //Login with single account
             final String username = mAccount.name;
             final String password = mAccountManager.getPassword(mAccount);
-            final String formData = "sid="+username+"&PIN="+password;
+            final String formData = "sid=" + username + "&PIN=" + password;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     webView.setWebViewClient(new WebViewClient(){
                         @Override
                         public void onPageFinished(WebView view, String url) {
-                            Student student = new Student(username);
+                            final Student student = new Student(username);
                             student.setPassword(password);
                             sasConfig.student = student;
                             view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'main');");
@@ -157,22 +150,24 @@ implements AdapterView.OnItemSelectedListener{
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawer.closeDrawers();
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.sas_registration:
-                        if(!loggedIn) {
+                        if (!loggedIn) {
                             Intent intent = new Intent(getApplicationContext(), SASLoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setAction("MainActivity");
                             startActivity(intent);
-                        } else{
+                        } else {
                             Intent intent = new Intent(getApplicationContext(), SASTimetableActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         }
                         return true;
+
                     case R.id.sas_transcript:
                         startActivity(new Intent(getApplicationContext(), SASTranscriptActivity.class));
                         return true;
+
                     case R.id.sas_logout:
                         removeAccount();
                         return true;
@@ -180,6 +175,7 @@ implements AdapterView.OnItemSelectedListener{
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
+
                     default:
                         return true;
                 }
@@ -187,14 +183,12 @@ implements AdapterView.OnItemSelectedListener{
         });
     }
 
-    public void removeAccount(){
+    public void removeAccount() {
         final AppCompatActivity activity = this;
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 
-        // set title
         alertDialogBuilder.setTitle("Logging out");
 
-        // set dialog message
         alertDialogBuilder
                 .setMessage("This will remove your account from this device. \n" +
                         "You can log in again")
@@ -204,16 +198,18 @@ implements AdapterView.OnItemSelectedListener{
                         loggedIn = false;
                         AccountManager manager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
                         Account[] accounts = manager.getAccountsByType("UWI");
-                        Account account = new Account("dummy","dummy");
-                        for(Account listItem: accounts){
-                            if(sasConfig.student.getIdNumber().equals(listItem.name))
+                        Account account = new Account("dummy", "dummy");
+                        for (final Account listItem: accounts) {
+                            if (sasConfig.student.getIdNumber().equals(listItem.name))
                                 account = listItem;
                         }
+
                         if (Build.VERSION.SDK_INT < 22) {
                             manager.removeAccount(account, null, null);
                         } else {
                             manager.removeAccount(account, activity, null, null);
                         }
+
                         sasConfig.student = null;
                         //ActivityCompat.finishAffinity(activity);
                         activity.runOnUiThread(new Runnable() {
@@ -253,10 +249,11 @@ implements AdapterView.OnItemSelectedListener{
         * and invoke a JS callback to get all the courses for that term
         * */
         final String term = sasConfig.termValues.get(pos);
-        if(!term.equals(sasConfig.term)) {
-            Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
+        if (!term.equals(sasConfig.term)) {
+            final Menu menu = navigationView.getMenu();
+            final MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
+
             sasConfig.selectTerm(term);
             final String formData = "name_var=bmenu.P_RegMnu&term_in=" + term;
             webView.setWebViewClient(new WebViewClient() {

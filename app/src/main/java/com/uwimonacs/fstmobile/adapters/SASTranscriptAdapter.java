@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import java.util.List;
 public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHolder> {
     private List<Transcript.Term> terms;
 
-    public SASTranscriptAdapter(){
+    public SASTranscriptAdapter() {
         terms = MyApplication.getSasConfig().student.getTranscript().getTerms();
     }
 
@@ -30,17 +31,20 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
 
     @Override
     public void onBindViewHolder(TranscriptViewHolder holder, int position) {
-        Transcript.Term term = terms.get(position);
+        final Transcript.Term term = terms.get(position);
         holder.termName.setText(term.getName());
-        List<Transcript.Term.Course> courses = term.getCourses();
+        final List<Transcript.Term.Course> courses = term.getCourses();
         holder.linearLayout.removeAllViews();
-        for(Transcript.Term.Course course: courses){
-            TextView subjectView = new TextView(MyApplication.getContext());
-            ViewGroup.LayoutParams params =
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT*3);
+        for (final Transcript.Term.Course course: courses) {
+            final TextView subjectView = new TextView(MyApplication.getContext());
+
+            final ViewGroup.LayoutParams params =
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT * 3);
+
             subjectView.setLayoutParams(params);
             subjectView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            String subject = "Subject: " + course.getSubject() + " " + course.getCode();
+            final String subject = "Subject: " + course.getSubject() + " " + course.getCode();
             subjectView.setText(subject);
             if (Build.VERSION.SDK_INT < 23) {
                 subjectView.setTextColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
@@ -49,10 +53,10 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
             }
             holder.linearLayout.addView(subjectView);
 
-            TextView titleView = new TextView(MyApplication.getContext());
+            final TextView titleView = new TextView(MyApplication.getContext());
             titleView.setLayoutParams(params);
             titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            String title = "Title: " + course.getTitle();
+            final String title = "Title: " + course.getTitle();
             titleView.setText(title);
             if (Build.VERSION.SDK_INT < 23) {
                 titleView.setTextColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
@@ -61,10 +65,10 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
             }
             holder.linearLayout.addView(titleView);
 
-            TextView scoreView = new TextView(MyApplication.getContext());
+            final TextView scoreView = new TextView(MyApplication.getContext());
             scoreView.setLayoutParams(params);
             scoreView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            String score = "Score: " + course.getScore();
+            final String score = "Score: " + course.getScore();
             scoreView.setText(score);
             if (Build.VERSION.SDK_INT < 23) {
                 scoreView.setTextColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
@@ -73,10 +77,10 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
             }
             holder.linearLayout.addView(scoreView);
 
-            TextView gradeView = new TextView(MyApplication.getContext());
+            final TextView gradeView = new TextView(MyApplication.getContext());
             gradeView.setLayoutParams(params);
             gradeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            String grade = "Grade: " + course.getGrade();
+            final String grade = "Grade: " + course.getGrade();
             gradeView.setText(grade);
             if (Build.VERSION.SDK_INT < 23) {
                 gradeView.setTextColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
@@ -85,10 +89,10 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
             }
             holder.linearLayout.addView(gradeView);
 
-            TextView creditsView = new TextView(MyApplication.getContext());
+            final TextView creditsView = new TextView(MyApplication.getContext());
             creditsView.setLayoutParams(params);
             creditsView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            String creditHours = "Credit Hours: " + course.getCreditHours();
+            final String creditHours = "Credit Hours: " + course.getCreditHours();
             creditsView.setText(creditHours);
             if (Build.VERSION.SDK_INT < 23) {
                 creditsView.setTextColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
@@ -100,13 +104,14 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
             /*
             * Set a divider between courses
             * */
-            View view = View.inflate(MyApplication.getContext(), R.layout.divider, null);
+            final View v = View.inflate(MyApplication.getContext(), R.layout.divider, null);
             if (Build.VERSION.SDK_INT < 23) {
-                view.setBackgroundColor(MyApplication.getContext().getResources().getColor(android.R.color.black));
+                v.setBackgroundColor(ContextCompat.getColor(MyApplication.getContext(),
+                        android.R.color.black));
             } else {
-                view.setBackgroundColor(MyApplication.getContext().getColor(android.R.color.black));
+                v.setBackgroundColor(MyApplication.getContext().getColor(android.R.color.black));
             }
-            holder.linearLayout.addView(view);
+            holder.linearLayout.addView(v);
         }
     }
 

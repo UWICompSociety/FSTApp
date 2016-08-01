@@ -16,40 +16,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestFAQ {
-
-    String url = "";
+    private String url = "";
 
     public RestFAQ(String url)
     {
-        this.url = url; //url to to connect to backend api
+        this.url = url; // url to to connect to backend api
     }
 
-    public ArrayList<FAQ> getFAQs()
-    {
+    public ArrayList<FAQ> getFAQs() {
         ArrayList<FAQ> faqs;
 
-        try
-        {
-            //Create http request and set to GET
-            HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
+        try {
+            final HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
             conn.setRequestMethod("GET");
 
-            Reader reader = new InputStreamReader(conn.getInputStream()); //gets the data
-            GsonExclude exclude = new GsonExclude(); //used to speed up
+            final Reader reader = new InputStreamReader(conn.getInputStream()); // gets the data
+            final GsonExclude exclude = new GsonExclude(); // used to speed up
 
-            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
+            final Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
                     .addSerializationExclusionStrategy(exclude).create();
 
-            //converts the json to  a list of cars
             faqs = gson.fromJson(reader, new TypeToken<List<FAQ>>(){}.getType());
         }
 
-        catch(MalformedURLException mal)
-        {
+        catch(MalformedURLException mal) {
             return null;
         }
-        catch(IOException io)
-        {
+        catch(IOException io) {
             return null;
         }
 

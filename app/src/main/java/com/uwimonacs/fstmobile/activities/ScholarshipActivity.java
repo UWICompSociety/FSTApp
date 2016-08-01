@@ -4,10 +4,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +18,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
@@ -28,7 +25,6 @@ import com.uwimonacs.fstmobile.adapters.ScholarshipAdapter;
 import com.uwimonacs.fstmobile.helper.Connect;
 import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.Scholarship;
-import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.sync.ScholarshipSync;
 
 import java.util.ArrayList;
@@ -39,11 +35,10 @@ import java.util.List;
  * ScholarshipActivity - not in use
  */
 
-public class ScholarshipActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,SearchView.OnQueryTextListener{
-
+public class ScholarshipActivity extends AppCompatActivity
+        implements SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener {
     private List<Scholarship> schols = new ArrayList<>();
     private ScholarshipAdapter adapter;
-    private String url = Constants.SCHOL_URL;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Connect connect;
     private ImageView img_placeholder;
@@ -53,74 +48,64 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
     private RecyclerView rv;
     private SearchView searchView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scholarship);
 
-        initViews(); //initalize the views in the activity
+        initViews(); // initalize the views in the activity
 
-        setUpToolBar(); //set up properties for toolbar such as title
+        setUpToolBar(); // set up properties for toolbar such as title
 
-        connect = new Connect(this); //used theck connectivity
+        connect = new Connect(this); // used to heck connectivity
 
-        setUpSwipeRefresh(); //set up swipe down to refresh
+        setUpSwipeRefresh(); // set up swipe down to refresh
 
-        getScholsFromDatabase(); //get scholarships from database
+        getScholsFromDatabase(); // get scholarships from database
 
-        if(schols.size()>0) //if there are new items present remove place holder image and text
-        {
+        if (schols.size() > 0) { // if there are new items present remove place holder image and text
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
         }
 
-        setUpRecyclerView(); //set up recycler view
+        setUpRecyclerView();
 
-        setUpProgressBar(); //set up progress bar
+        setUpProgressBar();
 
-
-        new LoadScholsTask(this).execute("");  //refresh items from internet
+        new LoadScholsTask(this).execute("");  // refresh items from internet
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
+        tv_placeholder = (TextView) findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        rv = (RecyclerView)findViewById(R.id.rv);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        rv = (RecyclerView) findViewById(R.id.rv);
     }
 
-    private void setUpToolBar()
-    {
+    private void setUpToolBar() {
         setSupportActionBar(toolbar);
 
-        //enable back button in the toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setUpSwipeRefresh()
-    {
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+    private void setUpSwipeRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void setUpProgressBar()
-    {
+    private void setUpProgressBar() {
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.GONE);
     }
 
-    private void setUpRecyclerView()
-    {
-        //Initializes and set layout manager
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        //Initializes and set adapter
+    private void setUpRecyclerView() {
+        rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ScholarshipAdapter(schols);
         rv.setAdapter(adapter);
     }
@@ -131,17 +116,18 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            default: return true;
+            default:
+                return true;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_scholarship, menu);
 
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -184,7 +170,7 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
     private List<Scholarship> filter(List<Scholarship> models, String query) {
         query = query.toLowerCase();
         final List<Scholarship> filteredModelList = new ArrayList<>();
-        for (Scholarship model : models) {
+        for (final Scholarship model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
@@ -208,10 +194,10 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
     private boolean hasInternet()
     {
         boolean hasInternet;
-        try{
-            hasInternet =connect.haveInternetConnectivity();
-        }catch(Exception e)
-        {
+
+        try {
+            hasInternet = connect.haveInternetConnectivity();
+        } catch(Exception e) {
             hasInternet = false;
         }
 
@@ -228,7 +214,7 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
     }
 
     private class LoadScholsTask extends AsyncTask<String,Integer,Boolean> {
-        Context ctxt;
+        final Context ctxt;
 
         public LoadScholsTask(Context ctxt) {
             this.ctxt = ctxt;
@@ -248,14 +234,13 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
 
         @Override
         protected Boolean doInBackground(String... params) {
-            ScholarshipSync scholSync = new ScholarshipSync(url);
-            if(!isConnected())  //if there is no internet connection
-            {
+            final ScholarshipSync scholSync = new ScholarshipSync(Constants.SCHOL_URL);
+
+            if (!isConnected()) { // if there is no internet connection
                 return false;
             }
 
-            if(!hasInternet()) //if there is no internet
-            {
+            if (!hasInternet()) {// if there is no internet
                 return false;
             }
 
@@ -269,9 +254,8 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
             if (result) {
                 getScholsFromDatabase();
                 adapter.updateSchols(schols);
-            }else {
-                if(schols.size() == 0)
-                {
+            } else {
+                if (schols.size() == 0) {
                     img_placeholder.setVisibility(View.VISIBLE);
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
@@ -279,7 +263,4 @@ public class ScholarshipActivity extends AppCompatActivity implements SwipeRefre
         }
 
     }
-
-
-
 }

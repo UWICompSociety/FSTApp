@@ -47,7 +47,6 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     private ProgressBar progressBar;
     private SearchView searchView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +62,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         getContactsFromDatabase();   // get all contacts from phone database
 
-        if(contacts.size()>0) //if there are new items present remove place holder image and text
-        {
+        if (contacts.size() > 0) {//if there are new items present remove place holder image and text
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
         }
@@ -76,8 +74,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         new LoadContactsTask(this).execute(""); // runs the contacts sync task
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         contactList = (RecyclerView) findViewById(R.id.listContact);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
@@ -86,38 +83,30 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
     }
 
-    private void setUpToolBar()
-    {
+    private void setUpToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Contacts");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setUpRecyclerView()
-    {
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+    private void setUpRecyclerView() {
         contactList.setHasFixedSize(true);
-        contactList.setLayoutManager(llm);
+        contactList.setLayoutManager(new LinearLayoutManager(this));
         contactListAdapter = new ContactListAdapter(this, contacts);
         contactList.setAdapter(contactListAdapter);
     }
 
-    private void setUpSwipeRefresh()
-    {
+    private void setUpSwipeRefresh() {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void setUpProgressBar()
-    {
+    private void setUpProgressBar() {
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.GONE);
     }
 
-
-
-    private void getContactsFromDatabase()
-    {
+    private void getContactsFromDatabase() {
         contacts = new Select().all().from(Contact.class).execute();
     }
 
@@ -125,18 +114,16 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         return connect.isConnected();
     }
 
-    private boolean hasInternet()
-    {
-        boolean hasInternet = false;
+    private boolean hasInternet() {
+        boolean hasInternet;
+
         try {
             hasInternet = connect.haveInternetConnectivity();
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             hasInternet = false;
         }
 
-        return  hasInternet;
-
+        return hasInternet;
     }
 
     @Override
@@ -146,17 +133,18 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            default: return true;
+            default:
+                return true;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_contacts, menu);
 
         // Get the SearchView and set the searchable configuration
@@ -202,6 +190,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     private List<Contact> filter(List<Contact> models, String query) {
         query = query.toLowerCase();
         final List<Contact> filteredModelList = new ArrayList<>();
+
         for (Contact model : models) {
             final String text = model.getName().toLowerCase();
             if (text.contains(query.toLowerCase())) {
@@ -211,13 +200,12 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         return filteredModelList;
     }
 
-    private class LoadContactsTask extends AsyncTask<String,Integer,Boolean>
-    {
-        Context ctxt;
+    private class LoadContactsTask extends AsyncTask<String,Integer,Boolean> {
+        final Context ctxt;
 
         public LoadContactsTask(Context ctxt)
         {
-            this.ctxt = ctxt; //application context
+            this.ctxt = ctxt; // application context
         }
 
         @Override
@@ -234,14 +222,13 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         @Override
         protected Boolean doInBackground(String... params) {
-            ContactSync contactSync = new ContactSync(contactsUrl);
-            if(!isConnected())  //if there is no internet connection
-            {
+            final ContactSync contactSync = new ContactSync(contactsUrl);
+
+            if (!isConnected()) { // if there is no internet connection
                 return false;
             }
 
-            if(!hasInternet()) //if there is no internet
-            {
+            if (!hasInternet()) { // if there is no internet
                 return false;
             }
 
@@ -252,23 +239,18 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         protected void onPostExecute(Boolean result) {
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.GONE);
-            if(result) //if sync was successful
-            {
-                getContactsFromDatabase(); //get the freshly synced contacts from database
+            if (result) { //if sync was successful
+                getContactsFromDatabase(); // get the freshly synced contacts from database
 
-                //update the card list to show new contacts
+                // update the card list to show new contacts
                 contactListAdapter.updateContacts(contacts);
             } else {
-                //failed to sync maybe no internet or some error with api
-                if(contacts.size() == 0)
-                {
+                // failed to sync maybe no internet or some error with api
+                if (contacts.size() == 0) {
                     img_placeholder.setVisibility(View.VISIBLE);
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
             }
         }
-
-
     }
-
 }

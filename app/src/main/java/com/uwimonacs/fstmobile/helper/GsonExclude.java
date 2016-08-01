@@ -32,7 +32,7 @@ public class GsonExclude implements ExclusionStrategy {
     @Override
     public boolean shouldSkipField(FieldAttributes field) {
         SerializedName sname = field.getAnnotation(SerializedName.class);
-        if(sname != null)
+        if (sname != null)
             return false;
 
         return true;

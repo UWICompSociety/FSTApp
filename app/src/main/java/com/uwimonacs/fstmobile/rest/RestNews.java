@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.uwimonacs.fstmobile.helper.GsonExclude;
-import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.News;
 
 import java.io.IOException;
@@ -20,32 +19,30 @@ import java.util.List;
  * Created by Matthew on 7/11/2016.
  */
 public class RestNews {
-
-    String url;
+    private String url;
 
     public RestNews(String url)
     {
         this.url = url;
     }
 
-    public ArrayList<News> getNews()
-    {
+    public ArrayList<News> getNews() {
         ArrayList<News> newsItems;
         try {
-            HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
-            conn.setRequestMethod("GET"); //sets the rest method to ger
+            final HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
+            conn.setRequestMethod("GET");
 
-            Reader reader = new InputStreamReader(conn.getInputStream()); //gets the data from the rest api
-            GsonExclude exclude = new GsonExclude(); //used to speed serialization process
+            // gets the data from the rest api
+            final Reader reader = new InputStreamReader(conn.getInputStream());
+            final GsonExclude exclude = new GsonExclude(); // used to speed serialization process
 
-            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
+            final Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
                     .addSerializationExclusionStrategy(exclude).create();
 
-            newsItems = gson.fromJson(reader, new TypeToken<List<News>>(){}.getType()); //gets a list of contacts from the api
-
-        }catch(MalformedURLException mal){
+            newsItems = gson.fromJson(reader, new TypeToken<List<News>>(){}.getType());
+        } catch(MalformedURLException mal) {
             return null;
-        }catch(IOException i){
+        } catch(IOException i) {
             return null;
         }
 

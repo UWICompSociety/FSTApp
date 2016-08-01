@@ -46,15 +46,13 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
         initViews();
 
-
         setUpToolBar();
 
         setUpSwipeRefresh();
 
         setUpProgressBar();
 
-        if(videos.size()>0) //if there are new items present remove place holder image and text
-        {
+        if (videos.size() > 0) {// if there are new items present remove place holder image and text
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
         }
@@ -68,23 +66,22 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     }
 
-    private void initViews()
-    {
+    private void initViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
+        tv_placeholder = (TextView) findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
-    private void setUpSwipeRefresh()
-    {
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+    private void setUpSwipeRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void setUpProgressBar()
-    {
+    private void setUpProgressBar() {
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.GONE);
     }
@@ -95,13 +92,11 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         getSupportActionBar().setTitle(R.string.videos_activity_title);
     }
 
-    private void setUpRecyclerView()
-    {
+    private void setUpRecyclerView() {
         videosFound.setHasFixedSize(true);
         videosFound.setLayoutManager(new LinearLayoutManager(this));
         adapter = new VideosAdapter(getApplicationContext());
         videosFound.setAdapter(adapter);
-
     }
 
     @Override
@@ -111,21 +106,22 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            default: return true;
+            default:
+                return true;
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_videos, menu);
 
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -167,7 +163,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
     private List<VideoItem> filter(List<VideoItem> models, String query) {
         query = query.toLowerCase();
         final List<VideoItem> filteredModelList = new ArrayList<>();
-        for (VideoItem model : models) {
+        for (final VideoItem model : models) {
             final String text = model.getTitle().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);
@@ -182,28 +178,27 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     private boolean hasInternet()
     {
-        boolean hasInternet = false;
+        boolean hasInternet;
+
         try {
             hasInternet = connect.haveInternetConnectivity();
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             hasInternet = false;
         }
 
         return  hasInternet;
 
     }
-    private class LoadVideosTask extends AsyncTask<String,Integer,Boolean>
-    {
-        Context ctxt;
+    private class LoadVideosTask extends AsyncTask<String,Integer,Boolean> {
+        final Context ctxt;
 
         public LoadVideosTask(Context ctxt)
         {
             this.ctxt = ctxt;
         }
+
         @Override
         protected void onPreExecute() {
-
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
 
@@ -216,28 +211,22 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
         @Override
         protected Boolean doInBackground(String... params) {
-
-
-            if(!isConnected())  //if there is no internet connection
-            {
+            if (!isConnected()) { // if there is no internet connection
                 return false;
             }
 
-            if(!hasInternet()) //if there is no internet
-            {
+            if (!hasInternet()) { // if there is no internet
                 return false;
             }
 
-            YoutubeConnector yc = new YoutubeConnector(ctxt);
+            final YoutubeConnector yc = new YoutubeConnector(ctxt);
             videos = yc.search();
 
-            if(videos == null)
-            {
+            if (videos == null) {
                 return false;
             }
 
-            if(videos.size() == 0)
-            {
+            if (videos.size() == 0) {
                 return false;
             }
 
@@ -245,22 +234,17 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         }
 
         @Override
-        protected void onPostExecute(Boolean result)
-        {
+        protected void onPostExecute(Boolean result) {
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.GONE);
-            if(result)
-            {
+            if (result) {
                 adapter.updateVideos(videos);
-            }else{
-                if(videos.size() == 0)
-                {
+            } else {
+                if (videos.size() == 0) {
                     img_placeholder.setVisibility(View.VISIBLE);
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
             }
-
-
         }
     }
 }

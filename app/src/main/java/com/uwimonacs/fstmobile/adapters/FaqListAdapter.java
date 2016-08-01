@@ -18,23 +18,22 @@ import java.util.List;
  * FAQList Adapter
  */
 public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolder> {
-    public static class FaqHolder extends RecyclerView.ViewHolder{
+    private String filter = "";
+    private List<FAQ> faqs;
 
-        CardView cv;
-        TextView question;
-        TextView answer;
+    public static class FaqHolder extends RecyclerView.ViewHolder {
+        final CardView cv;
+        final TextView question;
+        final TextView answer;
 
-        FaqHolder(View itemView){
-            super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-            question = (TextView)itemView.findViewById(R.id.question);
-            answer = (TextView)itemView.findViewById(R.id.answer);
+        FaqHolder(View v) {
+            super(v);
+
+            cv = (CardView) v.findViewById(R.id.cv);
+            question = (TextView) v.findViewById(R.id.question);
+            answer = (TextView) v.findViewById(R.id.answer);
         }
     }
-
-    String filter = "";
-    List<FAQ> faqs;
-
 
     public FaqListAdapter(List<FAQ> faqs){
         this.faqs = faqs;
@@ -42,7 +41,7 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
 
     @Override
     public FaqHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
+        final View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.faq_card, viewGroup, false);
 
         return new FaqHolder(v);

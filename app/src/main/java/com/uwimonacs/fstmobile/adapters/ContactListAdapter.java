@@ -24,46 +24,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactViewHolder> {
-    public class ContactViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView name;
-        TextView number;
+    private ArrayList<Contact> contacts;
+    private final Context ctxt;
+    private String filter = "";
 
-        public ContactViewHolder(View itemView) {
-            super(itemView);
+    public class ContactViewHolder extends RecyclerView.ViewHolder  {
+        final TextView name;
+        final TextView number;
 
-            name = (TextView)itemView.findViewById(R.id.contact_name);
-            number = (TextView) itemView.findViewById(R.id.contact_number);
+        public ContactViewHolder(View v) {
+            super(v);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            name = (TextView) v.findViewById(R.id.contact_name);
+            number = (TextView) v.findViewById(R.id.contact_number);
+
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = ContactViewHolder.this.getAdapterPosition();
-                    String number = contacts.get(pos).getNumber();
-                    if(!TextUtils.isEmpty(number))
-                    {
+                    final String number = contacts.get(pos).getNumber();
+                    if (!TextUtils.isEmpty(number)) {
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse("tel:" + number ));
-                        ctxt.startActivity(intent);  // start dialer activity
+                        v.getContext().startActivity(intent);  // start dialer activity
                     }
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    int pos = ContactViewHolder.this.getAdapterPosition();
-                    String number = contacts.get(pos).getNumber();
+                    final int pos = ContactViewHolder.this.getAdapterPosition();
+                    final String number = contacts.get(pos).getNumber();
 
                     if (!TextUtils.isEmpty(number)) {
-                        ClipboardManager clipboard = (ClipboardManager)
-                                ctxt.getSystemService(Context.CLIPBOARD_SERVICE);
+                        final ClipboardManager clipboard = (ClipboardManager)
+                                v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
-                        ClipData clip = ClipData.newPlainText("number", number);
+                        final ClipData clip = ClipData.newPlainText("number", number);
 
                         clipboard.setPrimaryClip(clip);
 
-                        Toast.makeText(ctxt, "Text copied", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), "Text copied", Toast.LENGTH_SHORT).show();
                     }
 
                     return  true;
@@ -72,22 +74,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     }
 
-    private ArrayList<Contact> contacts;
-    private Context ctxt;
-    String filter = "";
-
-    public ContactListAdapter(Context ctxt, List<Contact> contacts)
-    {
+    public ContactListAdapter(Context ctxt, List<Contact> contacts) {
         this.contacts = new ArrayList<>(contacts);
         this.ctxt = ctxt;
     }
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_contact_item,
-                parent, false);
+        final View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_contact_item, parent, false);
 
-        return new ContactViewHolder(view);
+        return new ContactViewHolder(v);
     }
 
     @Override
@@ -98,11 +95,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public int getItemCount() {
-        return contacts.size(); //returns number of contacts
+        return contacts.size(); // returns number of contacts
     }
 
-    public void updateContacts(List<Contact> newContacts)
-    {
+    public void updateContacts(List<Contact> newContacts) {
         this.contacts = new ArrayList<>(newContacts);
         notifyDataSetChanged();
     }

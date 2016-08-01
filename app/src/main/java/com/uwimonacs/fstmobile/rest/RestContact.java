@@ -1,8 +1,5 @@
 package com.uwimonacs.fstmobile.rest;
 
-import android.os.Debug;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -22,38 +19,37 @@ import java.util.List;
  * Created by Matthew on 7/5/2016.
  */
 public class RestContact {
+    private String url = "";
 
-    String url = "";
-
-    public RestContact(String url)
-    {
+    public RestContact(String url) {
         this.url = url; //url to connect to rest api eg.localhost/api/contacts
     }
 
-    public ArrayList<Contact> getContacts()
-    {
+    public ArrayList<Contact> getContacts() {
         ArrayList<Contact> contacts;
 
-        try
-        {
-            HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection(); //creates a new http connection with the rest url
-            conn.setRequestMethod("GET"); //sets the rest method to ger
+        try {
+            final HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
 
-            Reader reader = new InputStreamReader(conn.getInputStream()); //gets the data from the rest api
-            GsonExclude exclude = new GsonExclude(); //used to speed serialization process
+            conn.setRequestMethod("GET");
 
-            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
+            // gets the data from the rest api
+            final Reader reader = new InputStreamReader(conn.getInputStream());
+
+            // used to speed serialization process
+            final GsonExclude exclude = new GsonExclude();
+
+            final Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
                     .addSerializationExclusionStrategy(exclude).create();
 
-            contacts = gson.fromJson(reader, new TypeToken<List<Contact>>(){}.getType()); //gets a list of contacts from the api
+            // gets a list of contacts from the api
+            contacts = gson.fromJson(reader, new TypeToken<List<Contact>>(){}.getType());
 
-        }catch(MalformedURLException mal){
+        } catch(MalformedURLException mal) {
             return null;
-        }catch(IOException io){
+        } catch(IOException io) {
             return null;
         }
-
-
 
         return contacts;
     }

@@ -1,7 +1,6 @@
 package com.uwimonacs.fstmobile.fragments;
 
 import android.content.Context;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
@@ -27,95 +25,79 @@ import com.uwimonacs.fstmobile.sync.NewsSync;
 
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private View view;
     private NewsListAdapter newsListAdapter;
     private RecyclerView newsListView;
     private List<News> newsItems;
-    private String newsUrl  = Constants.NEWS_URL;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
 
-    public NewsFragment()
-    {
+    public NewsFragment() {
         /* required empty constructor */
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        view = inflater.inflate(R.layout.frag_news,container,false); //inflates the layout for the view
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.frag_news, container, false);
 
         initViews(); //initialize the views
 
-        setUpSwipeRefresh(); //set up swipe refresh
-
+        setUpSwipeRefresh();
 
         connect = new Connect(this.getActivity());
 
-        getNewsFromDatabase(); //gets news items from the database
+        getNewsFromDatabase(); // gets news items from the database
 
-        if(newsItems.size()>0) //if there are new items present remove place holder image and text
-        {
+        if (newsItems.size() > 0) { // if there are new items present remove place holder image and text
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
         }
 
-        setUpRecyclerView(); //set up recycler view
+        setUpRecyclerView();
 
-        setUpProgressBar(); //set up progress bar
+        setUpProgressBar();
 
-
-        new LoadNewsTask(this.getActivity()).execute(""); //refresh the news items from internet
-
+        new LoadNewsTask(this.getActivity()).execute(""); // refresh the news items from internet
 
         return view;
     }
 
-
-
-
-    private void initViews()
-    {
-        newsListView = (RecyclerView)view.findViewById(R.id.listNews);
+    private void initViews() {
+        newsListView = (RecyclerView) view.findViewById(R.id.listNews);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        tv_placeholder = (TextView)view.findViewById(R.id.txt_notpresent);
+        tv_placeholder = (TextView) view.findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
-        progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
     }
-    private void setUpRecyclerView()
-    {
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
 
-        newsListView.setLayoutManager(llm);
+    private void setUpRecyclerView() {
+        newsListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         newsListView.setHasFixedSize(true);
 
-        newsListAdapter = new NewsListAdapter(view.getContext(),newsItems);
+        newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
 
         newsListView.setAdapter(newsListAdapter);
-
     }
 
-    private void setUpSwipeRefresh()
-    {
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+    private void setUpSwipeRefresh() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
+                R.color.colorPrimaryDark);
+
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void setUpProgressBar()
-    {
+    private void setUpProgressBar() {
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.GONE);
     }
-    private void getNewsFromDatabase()
-    {
+    private void getNewsFromDatabase() {
         newsItems = new Select().all().from(News.class).execute();
     }
 
@@ -125,16 +107,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private boolean hasInternet()
     {
-        boolean hasInternet = false;
+        boolean hasInternet;
+
         try {
             hasInternet = connect.haveInternetConnectivity();
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             hasInternet = false;
         }
 
         return  hasInternet;
-
     }
 
     @Override
@@ -142,14 +123,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         new LoadNewsTask(getActivity()).execute("");
     }
 
-    private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>
-    {
-        Context ctxt;
+    private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>  {
+        final Context ctxt;
 
         public LoadNewsTask(Context ctxt)
         {
             this.ctxt = ctxt;
         }
+
         @Override
         protected void onPreExecute() {
             img_placeholder.setVisibility(View.GONE);
@@ -160,22 +141,17 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (swipeRefreshLayout.isRefreshing())
                     progressBar.setVisibility(View.GONE);
             }
-
         }
-
-
 
         @Override
         protected Boolean doInBackground(String... params) {
-            NewsSync newsSync = new NewsSync(newsUrl);
+            final NewsSync newsSync = new NewsSync(Constants.NEWS_URL);
 
-            if(!isConnected())  //if there is no internet connection
-            {
+            if (!isConnected()) {  // if there is no internet connection
                 return false;
             }
 
-            if(!hasInternet()) //if there is no internet
-            {
+            if (!hasInternet()) { // if there is no internet
                 return false;
             }
 
@@ -186,20 +162,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         protected void onPostExecute(Boolean result) {
             swipeRefreshLayout.setRefreshing(false);
             progressBar.setVisibility(View.GONE);
-            if(result)
-            {
+            if (result) {
                 getNewsFromDatabase();
                 newsListAdapter.updateNews(newsItems);
-            }else{
-                if(newsItems.size() == 0)
-                {
+            } else {
+                if (newsItems.size() == 0) {
                     img_placeholder.setVisibility(View.VISIBLE);
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
-           
             }
-
-
         }
     }
 }

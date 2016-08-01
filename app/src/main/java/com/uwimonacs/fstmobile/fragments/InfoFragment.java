@@ -23,12 +23,12 @@ public class InfoFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_info, container, false);
+        final View v = inflater.inflate(R.layout.frag_info, container, false);
 
-        CardView card_faq = (CardView) v.findViewById(R.id.faq);
-        CardView card_videos = (CardView) v.findViewById(R.id.videos);
-        CardView card_scholarships = (CardView) v.findViewById(R.id.scholarships);
-        CardView card_contacts = (CardView) v.findViewById(R.id.contacts);
+        final CardView card_faq = (CardView) v.findViewById(R.id.faq);
+        final CardView card_videos = (CardView) v.findViewById(R.id.videos);
+        final CardView card_scholarships = (CardView) v.findViewById(R.id.scholarships);
+        final CardView card_contacts = (CardView) v.findViewById(R.id.contacts);
 
         /*
          * The event handler is registered at runtime instead of in the onClick XML attribute of

@@ -14,14 +14,14 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Gets data for the relevant card details
-        Bundle extras = getIntent().getExtras();
-        String scholName = extras.getString("scholName");
-        String scholDetails = extras.getString("scholDetails");
+        final Bundle extras = getIntent().getExtras();
+        final String scholName = extras.getString("scholName");
+        final String scholDetails = extras.getString("scholDetails");
 
         setContentView(R.layout.activity_scholarship_details);
 
-        TextView scholNameTextView = (TextView) findViewById(R.id.name);
-        TextView scholDetailsTextView = (TextView) findViewById(R.id.detail);
+        final TextView scholNameTextView = (TextView) findViewById(R.id.name);
+        final TextView scholDetailsTextView = (TextView) findViewById(R.id.detail);
 
         scholNameTextView.setText(scholName);
         scholDetailsTextView.setText(Html.fromHtml(scholDetails).toString().trim());

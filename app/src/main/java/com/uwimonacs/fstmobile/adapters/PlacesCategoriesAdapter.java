@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.MapActivity;
 import com.uwimonacs.fstmobile.models.Place;
@@ -19,12 +18,13 @@ import com.uwimonacs.fstmobile.models.Place;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategoriesAdapter.PlacesViewHolder> {
-    private Context context;
+public class PlacesCategoriesAdapter
+        extends RecyclerView.Adapter<PlacesCategoriesAdapter.PlacesViewHolder> {
+    private final Context context;
     private List<Place> places;
-    List<String> departments;
+    private List<String> departments;
 
-    public PlacesCategoriesAdapter(Context context, List<Place> places){
+    public PlacesCategoriesAdapter(Context context, List<Place> places) {
         this.places = new ArrayList<>(places);
         departments = new ArrayList<>();
         /*
@@ -36,17 +36,16 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         this.context = context;
     }
 
-    private void setUpDepartments()
-    {
-        for(int i=0; i<places.size(); i++){
+    private void setUpDepartments() {
+        for (int i = 0; i < places.size(); i++) {
             boolean add = true;
-            for(int j=0; j<departments.size(); j++){
-                if(departments.get(j).equals(places.get(i).getDepartment())) {
+            for (int j = 0; j < departments.size(); j++) {
+                if (departments.get(j).equals(places.get(i).getDepartment())) {
                     add = false;
                     break;
                 }
             }
-            if(add)
+            if (add)
                 departments.add(places.get(i).getDepartment());
         }
     }
@@ -58,7 +57,7 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
 
     @Override
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
-        CardView cardView = holder.cardView; //An expandable CardView
+        final CardView cardView = holder.cardView; // an expandable CardView
         /*
         * Holds the list of places under a certain category. Visibility toggled between
         * VISIBLE and GONE to achieve expandability of CardView
@@ -69,36 +68,35 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         /*
         * Build a list of the names of the actual places that will be listed under each category
         * */
-        String department = departments.get(position);
-        List<String> placeNames = new ArrayList<>();
-        List<Place> tempPlaces = new ArrayList<>();
-        for(int i=0; i<places.size(); i++){
-            if(places.get(i).getDepartment().equals(department))
-            {
+        final String department = departments.get(position);
+        final List<String> placeNames = new ArrayList<>();
+        final List<Place> tempPlaces = new ArrayList<>();
+
+        for (int i = 0; i < places.size(); i++) {
+            if (places.get(i).getDepartment().equals(department)) {
                 placeNames.add(places.get(i).getShortname());
                 tempPlaces.add(places.get(i));
             }
-
         }
 
         /*
         * A height sufficient to display one line of text times the number of lines
         * to be displayed
         * */
-        linearLayout.setMinimumHeight(50*placeNames.size());
+        linearLayout.setMinimumHeight(50 * placeNames.size());
         linearLayout.removeAllViews(); //Prevents duplication of place names
-        TextView title = (TextView) cardView.findViewById(R.id.frag_places_item_category_name);
+        final TextView title = (TextView) cardView.findViewById(R.id.frag_places_item_category_name);
         title.setText(department);
         /*
         * Create, customize and populate TextViews to hold each place name.
         * Also set an OnClickListener to launch the MapActivity, sending an intent
         * extra or bundle
         * */
-        for(int i=0; i<placeNames.size(); i++){
-
+        for (int i = 0; i < placeNames.size(); i++) {
             final String name = placeNames.get(i);
             final Place place = tempPlaces.get(i);
-            TextView textView = new TextView(context);
+            final TextView textView = new TextView(context);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
             }
@@ -109,14 +107,13 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
             textView.setText(name);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    //TODO: Start MapActivity here with IntentExtra
-                    Intent mapIntent = new Intent(view.getContext(), MapActivity.class);
+                public void onClick(View v) {
+                    Intent mapIntent = new Intent(v.getContext(), MapActivity.class);
                     mapIntent.putExtra("location", place.getLocation());
                     mapIntent.putExtra("department",place.getDepartment());
                     mapIntent.putExtra("shortname",name);
                     mapIntent.putExtra("fullname",place.getFullname());
-                    view.getContext().startActivity(mapIntent);
+                    v.getContext().startActivity(mapIntent);
                 }
             });
             linearLayout.addView(textView);
@@ -131,9 +128,9 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
         * */
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 int visibility = linearLayout.getVisibility();
-                if(visibility == View.VISIBLE){
+                if (visibility == View.VISIBLE){
                     expandableArrow.setImageResource(R.drawable.ic_expand_more_black_24dp);
                     linearLayout.setVisibility(View.GONE);
                 }
@@ -158,10 +155,12 @@ public class PlacesCategoriesAdapter extends RecyclerView.Adapter<PlacesCategori
     }
 
     public static class PlacesViewHolder extends RecyclerView.ViewHolder{
-        public CardView cardView;
-        public PlacesViewHolder(View itemView) {
-            super(itemView);
-            cardView = (CardView) itemView;
+        public final CardView cardView;
+
+        public PlacesViewHolder(View v) {
+            super(v);
+
+            cardView = (CardView) v;
         }
     }
 }

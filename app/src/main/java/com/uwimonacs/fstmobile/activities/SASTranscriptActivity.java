@@ -20,8 +20,11 @@ public class SASTranscriptActivity extends AppCompatActivity {
     @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sasConfig = MyApplication.getSasConfig();
+
         setContentView(R.layout.activity_sastranscript);
+
+        sasConfig = MyApplication.getSasConfig();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //        Transcript transcript = sasConfig.student.getTranscript();
 //        TextView degreeType = (TextView) findViewById(R.id.degree_type),
@@ -42,9 +45,9 @@ public class SASTranscriptActivity extends AppCompatActivity {
 //        major.setText(sMajor);
 //        minor.setText(sMinor);
 
-        RecyclerView institutionCredit = (RecyclerView) findViewById(R.id.institution_credit);
+        final RecyclerView institutionCredit = (RecyclerView) findViewById(R.id.institution_credit);
         institutionCredit.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         institutionCredit.setLayoutManager(layoutManager);

@@ -14,17 +14,18 @@ public class ScholarshipSync {
         this.url = url;
     }
 
-    public boolean syncSchol()
-    {
-        RestScholarship restSchol = new RestScholarship(url);
+    public boolean syncSchol() {
+        final RestScholarship restSchol = new RestScholarship(url);
 
         schols = restSchol.getSchols();
 
-        if(schols == null){ return false; }
-        if(schols.size() == 0){ return false; }
+        if (schols == null)
+            return false;
 
-        for(int i = 0; i < schols.size(); i++)
-        {
+        if (schols.size() == 0)
+            return false;
+
+        for (int i = 0; i < schols.size(); i++) {
             Scholarship schol = schols.get(i);
             Scholarship.findOrCreateFromJson(schol);
         }

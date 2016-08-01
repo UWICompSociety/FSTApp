@@ -31,19 +31,19 @@ public class ScholarshipAdapter
      * using the Card View layout
      */
     public class ScholarshipViewHolder extends RecyclerView.ViewHolder {
-        TextView scholName;
-        TextView scholDescription;
+        final TextView scholName;
+        final TextView scholDescription;
 
-        ScholarshipViewHolder(final View itemView) {
-            super(itemView);
+        ScholarshipViewHolder(final View v) {
+            super(v);
 
-            scholName = (TextView)itemView.findViewById(R.id.schol_name);
-            scholDescription = (TextView)itemView.findViewById(R.id.schol_description);
+            scholName = (TextView) v.findViewById(R.id.schol_name);
+            scholDescription = (TextView) v.findViewById(R.id.schol_description);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = ScholarshipViewHolder.this.getAdapterPosition();
+                    final int pos = ScholarshipViewHolder.this.getAdapterPosition();
                     Intent intent = new Intent(v.getContext(), ScholarshipDetailsActivity.class);
                     intent.putExtra("scholName", schols.get(pos).getTitle());
                     intent.putExtra("scholDetails", schols.get(pos).getDetail());
@@ -68,7 +68,9 @@ public class ScholarshipAdapter
      */
     @Override
     public ScholarshipViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_schol_item, parent, false);
+        final View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_schol_item, parent, false);
+
         return new ScholarshipViewHolder(v);
     }
 
@@ -102,8 +104,7 @@ public class ScholarshipAdapter
      * Updates the list of scholarships
      * @param newSchols updated list of scholarships
      */
-    public void updateSchols(List<Scholarship> newSchols)
-    {
+    public void updateSchols(List<Scholarship> newSchols) {
         this.schols = new ArrayList<>(newSchols);
         notifyDataSetChanged();
     }

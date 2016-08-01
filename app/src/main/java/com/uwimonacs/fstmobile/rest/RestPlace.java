@@ -17,34 +17,33 @@ import java.util.List;
 /**
  * Created by Matthew on 7/19/2016.
  */
-public class RestPlace
-{
-
-    String url;
+public class RestPlace {
+    private String url;
 
     public RestPlace(String url)
     {
         this.url = url;
     }
 
-    public ArrayList<Place> getPlaces()
-    {
+    public ArrayList<Place> getPlaces() {
         ArrayList<Place> places;
         try {
-            HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
-            conn.setRequestMethod("GET"); //sets the rest method to get
+            final HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
+            conn.setRequestMethod("GET");
 
-            Reader reader = new InputStreamReader(conn.getInputStream()); //gets the data from the rest api
-            GsonExclude exclude = new GsonExclude(); //used to speed serialization process
+            // gets the data from the rest api
+            final Reader reader = new InputStreamReader(conn.getInputStream());
+            final GsonExclude exclude = new GsonExclude(); //used to speed serialization process
 
-            Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
+            final Gson gson = new GsonBuilder().addDeserializationExclusionStrategy(exclude)
                     .addSerializationExclusionStrategy(exclude).create();
 
-            places = gson.fromJson(reader, new TypeToken<List<Place>>(){}.getType()); //gets a list of places from the api
+            // gets a list of places from the api
+            places = gson.fromJson(reader, new TypeToken<List<Place>>(){}.getType());
 
-        }catch(MalformedURLException mal){
+        } catch(MalformedURLException mal) {
             return null;
-        }catch(IOException i){
+        } catch(IOException i) {
             return null;
         }
 

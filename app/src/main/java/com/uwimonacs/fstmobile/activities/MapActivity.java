@@ -1,13 +1,9 @@
 package com.uwimonacs.fstmobile.activities;
 
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
-import com.mapbox.mapboxsdk.annotations.Icon;
-import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -18,10 +14,8 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.uwimonacs.fstmobile.R;
 
 public class MapActivity extends AppCompatActivity {
-
     private MapView mapView;
     private MapboxMap map;
-    private Bundle extras;
     private String location;
     private String department;
     private String shortname;
@@ -36,7 +30,7 @@ public class MapActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Map");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
 
         location = extras.getString("location");
         department = extras.getString("department");
@@ -53,11 +47,11 @@ public class MapActivity extends AppCompatActivity {
                 map = mapboxMap;
                 mapboxMap.setMyLocationEnabled(true);
 
-                String[] locals = location.split(",");
-                String snip = department + " - " + shortname;
+                final String[] locals = location.split(",");
+                final String snip = department + " - " + shortname;
 
-                double lat = Double.parseDouble(locals[0]);
-                double lon = Double.parseDouble(locals[1]);
+                final double lat = Double.parseDouble(locals[0]);
+                final double lon = Double.parseDouble(locals[1]);
 
                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                         new CameraPosition.Builder().target(new LatLng(lat,lon)).build()));

@@ -12,11 +12,10 @@ import java.net.URL;
  * Created by Matthew on 11/22/2015.
  */
 public class Connect {
+    private final Context ctxt;
+    private final ConnectivityManager cm;
 
-    private Context ctxt;
-    ConnectivityManager cm;
-
-    public Connect(Context ctxt){
+    public Connect(Context ctxt) {
         this.ctxt = ctxt;
         cm = (ConnectivityManager)ctxt.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
@@ -25,12 +24,11 @@ public class Connect {
      * checks whether phone is connected to a network
      * @return isConnected
      */
-    public boolean isConnected(){
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+    public boolean isConnected() {
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        return isConnected;
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 
     /**
@@ -38,17 +36,17 @@ public class Connect {
      * @return
      * @throws Exception
      */
-    public boolean haveInternetConnectivity() throws Exception{
-        URL url = new URL("http://www.google.com");
+    public boolean haveInternetConnectivity() throws Exception {
+        final URL url = new URL("http://www.google.com");
 
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection(); //opens a connection to google.com
+        final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
         conn.setRequestMethod("GET");
 
-        if(conn.getResponseCode() == 200) //checks if server responds with 200 OK
-            return true;   //internet is present
+        if (conn.getResponseCode() == 200) // checks if server responds with 200 OK
+            return true;   // internet is present
         else{
-            return false;  //no internet present
+            return false;  // no internet present
         }
     }
 }

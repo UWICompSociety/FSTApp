@@ -22,8 +22,8 @@ import java.util.List;
 
 public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private List<VideoItem> videos = new ArrayList<>();
-    private Context context;
-    private String filter ="";
+    private final Context context;
+    private String filter = "";
 
     /**
      * Handles the setting up of the YouTube Android API
@@ -31,9 +31,8 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
      * the RecyclerView
      * @param context
      */
-    public VideosAdapter(final Context context){
+    public VideosAdapter(final Context context) {
         this.context = context;
-
     }
 
     @Override
@@ -41,19 +40,19 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 /*
                 *   Passes information to the Player activity so it can load the
                 *   correct video set UI elements accordingly
                 * */
-                TextView title = (TextView) view.findViewById(R.id.video_title),
-                        description =  (TextView) view.findViewById(R.id.video_description),
-                        id = (TextView) view.findViewById(R.id.video_id);
-                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                final TextView title = (TextView) v.findViewById(R.id.video_title),
+                        description =  (TextView) v.findViewById(R.id.video_description),
+                        id = (TextView) v.findViewById(R.id.video_id);
+                final Intent intent = new Intent(v.getContext(), PlayerActivity.class);
                 intent.putExtra("VIDEO_ID", id.getText().toString());
                 intent.putExtra("VIDEO_TITLE", title.getText().toString());
                 intent.putExtra("VIDEO_DESC", description.getText().toString());
-                view.getContext().startActivity(intent);
+                v.getContext().startActivity(intent);
             }
         });
         return new VideoViewHolder(itemView);
@@ -61,7 +60,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     @Override
     public void onBindViewHolder(VideoViewHolder holder, int position) {
-        VideoItem item = videos.get(position);
+        final VideoItem item = videos.get(position);
         // Loads a thumbnail from its URL into the ImageView at bind time
         Picasso.with(context).load(item.getThumbnailURL()).into(holder.vThumbnail);
         holder.vTitle.setText(item.getTitle());
@@ -76,12 +75,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     @Override
     public int getItemCount() {
-
         return videos.size();
     }
 
-    public void updateVideos(List<VideoItem> new_videos)
-    {
+    public void updateVideos(List<VideoItem> new_videos) {
         this.videos = new ArrayList<>(new_videos);
         notifyDataSetChanged();
     }
