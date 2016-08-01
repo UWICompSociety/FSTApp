@@ -341,7 +341,7 @@ public class SASConfig {
         });
     }
 
-    public List<Calendar> setCalendarDates(String start, String end){
+    public static List<Calendar> setCalendarDates(String start, String end){
         Calendar startDate = Calendar.getInstance(),
                 endDate = Calendar.getInstance();
         List<Calendar> calendars = new ArrayList<>();
