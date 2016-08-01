@@ -8,12 +8,8 @@ import com.uwimonacs.fstmobile.fragments.InfoFragment;
 import com.uwimonacs.fstmobile.fragments.PlacesFragment;
 import com.uwimonacs.fstmobile.fragments.NewsFragment;
 
-public class TabPagerAdapter  extends FragmentPagerAdapter {
-    private static final CharSequence[] tabTitles = {
-            "News",
-            "Info",
-            "Places"
-    };
+public class TabPagerAdapter extends FragmentPagerAdapter {
+    private static final CharSequence[] TAB_TITLES = {"News", "Info", "Places"};
 
     public TabPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -34,11 +30,11 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return tabTitles.length;
+        return TAB_TITLES.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabTitles[position];
+        return TAB_TITLES[position];
     }
 }
