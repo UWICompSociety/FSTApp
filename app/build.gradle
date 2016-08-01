@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.uwimonacs.fstmobile"
@@ -50,7 +50,6 @@ dependencies {
             {
                 exclude group: 'com.google.guava', module: 'guava-jdk5'
             }
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar') {
         transitive=true
