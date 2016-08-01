@@ -1,8 +1,6 @@
 package com.uwimonacs.fstmobile.activities;
 
-import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -64,7 +62,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (id.length() == 9 && pass.length() > 0)
+                if (id.length() > 0 && pass.length() > 0)
                     login_btn.setEnabled(true);
                 else
                     login_btn.setEnabled(false);
