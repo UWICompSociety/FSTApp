@@ -64,7 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/login_button_sas" />
+            android:text="@string/login_button_sas"
+            android:onClick="signIn"
+            android:enabled="false"/>
 
         <TextView
             android:id="@+id/login_help"

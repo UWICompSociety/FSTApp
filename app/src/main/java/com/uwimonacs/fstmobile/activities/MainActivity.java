@@ -162,6 +162,7 @@ implements AdapterView.OnItemSelectedListener{
                         if(!loggedIn) {
                             Intent intent = new Intent(getApplicationContext(), SASLoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction("MainActivity");
                             startActivity(intent);
                         } else{
                             Intent intent = new Intent(getApplicationContext(), SASTimetableActivity.class);
