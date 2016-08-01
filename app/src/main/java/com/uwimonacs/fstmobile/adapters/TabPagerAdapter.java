@@ -9,8 +9,7 @@ import com.uwimonacs.fstmobile.fragments.PlacesFragment;
 import com.uwimonacs.fstmobile.fragments.NewsFragment;
 
 public class TabPagerAdapter  extends FragmentPagerAdapter {
-
-    private CharSequence[] tabTitles = {   //names of the tabs
+    private static final CharSequence[] tabTitles = {
             "News",
             "Info",
             "Places"
@@ -22,7 +21,7 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 return new NewsFragment();
             case 1:
@@ -35,7 +34,7 @@ public class TabPagerAdapter  extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return tabTitles.length;   //returns the number of tabs
+        return tabTitles.length;
     }
 
     @Override
