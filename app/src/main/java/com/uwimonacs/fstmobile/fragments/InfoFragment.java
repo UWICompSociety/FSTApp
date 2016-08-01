@@ -30,6 +30,10 @@ public class InfoFragment extends Fragment
         CardView card_scholarships = (CardView) v.findViewById(R.id.scholarships);
         CardView card_contacts = (CardView) v.findViewById(R.id.contacts);
 
+        /*
+         * The event handler is registered at runtime instead of in the onClick XML attribute of
+         * the Button nodes because the View hierarchy is in a Fragment.
+         */
         card_faq.setOnClickListener(this);
         card_videos.setOnClickListener(this);
         card_scholarships.setOnClickListener(this);
@@ -42,23 +46,19 @@ public class InfoFragment extends Fragment
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.faq:
-                Intent faqIntent = new Intent(v.getContext(), FAQActivity.class);
-                v.getContext().startActivity(faqIntent);
+                v.getContext().startActivity(new Intent(v.getContext(), FAQActivity.class));
                 break;
 
             case R.id.videos:
-                Intent videoIntent = new Intent(v.getContext(), VideoListActivity.class);
-                v.getContext().startActivity(videoIntent);
+                v.getContext().startActivity(new Intent(v.getContext(), VideoListActivity.class));
                 break;
 
             case R.id.scholarships:
-                Intent scholarshipIntent = new Intent(v.getContext(), ScholarshipActivity.class);
-                v.getContext().startActivity(scholarshipIntent);
+                v.getContext().startActivity(new Intent(v.getContext(), ScholarshipActivity.class));
                 break;
 
             case R.id.contacts:
-                Intent contactIntent = new Intent(v.getContext(), ContactsActivity.class);
-                v.getContext().startActivity(contactIntent);
+                v.getContext().startActivity(new Intent(v.getContext(), ContactsActivity.class));
                 break;
 
             default:
