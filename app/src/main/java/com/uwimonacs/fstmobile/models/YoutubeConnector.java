@@ -19,7 +19,7 @@ import java.util.List;
 
 public class YoutubeConnector {
     private YouTube.Search.List query;
-    private final long MAX_RESULTS = 50;
+    private static final long MAX_RESULTS = 50;
 
     /**
      * Handles setting up connection to YouTube Android API overhead.
