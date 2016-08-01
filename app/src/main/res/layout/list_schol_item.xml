@@ -2,47 +2,35 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contact_info"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:orientation="horizontal"
-    android:background="?android:attr/selectableItemBackground">
+    android:gravity="center_vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/schol_photo"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_school_black_24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_gravity="center_vertical" />
-
-    <LinearLayout
-        android:id="@+id/contact_info"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/schol_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="AUWFI Scholarship"/>
 
-        <TextView
-            android:id="@+id/schol_name"
-            android:textSize="20sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="AUWFI Scholarship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:textSize="16sp"
-            android:paddingTop="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:id="@+id/schol_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="A small scholarship handed down by the bursary" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/schol_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:text="A small scholarship handed down by the bursary" />
 
 </LinearLayout>

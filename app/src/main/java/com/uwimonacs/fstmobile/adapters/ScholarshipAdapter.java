@@ -21,8 +21,8 @@ import java.util.List;
  * Created by Jhanelle on 6/22/2016.
  * ScholarshipActivity - not in use
  */
-public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
-
+public class ScholarshipAdapter
+        extends RecyclerView.Adapter<ScholarshipAdapter.ScholarshipViewHolder> {
     private List<Scholarship> schols;
     private String filter = "";
 
@@ -31,18 +31,14 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
      * using the Card View layout
      */
     public class ScholarshipViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
         TextView scholName;
         TextView scholDescription;
-        ImageView scholPhoto;
 
         ScholarshipViewHolder(final View itemView) {
             super(itemView);
 
-           // cv = (CardView)itemView.findViewById(R.id.cv);
             scholName = (TextView)itemView.findViewById(R.id.schol_name);
             scholDescription = (TextView)itemView.findViewById(R.id.schol_description);
-            scholPhoto = (ImageView)itemView.findViewById(R.id.schol_photo);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -51,7 +47,6 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
                     Intent intent = new Intent(v.getContext(), ScholarshipDetailsActivity.class);
                     intent.putExtra("scholName", schols.get(pos).getTitle());
                     intent.putExtra("scholDetails", schols.get(pos).getDetail());
-                   // intent.putExtra("scholImage", schols.get(pos).getImage());
                     v.getContext().startActivity(intent);
                 }
             });
@@ -86,23 +81,8 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
      */
     @Override
     public void onBindViewHolder(ScholarshipViewHolder holder, int position) {
-        final int pos = position;
         holder.scholName.setText(schols.get(position).getTitle());
         holder.scholDescription.setText(schols.get(position).getDescription());
-        holder.scholPhoto.setImageResource(R.drawable.ic_school_black_24dp);
-
-
-       /* holder.cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mona.uwi.edu/osf/scholarship/list/fst")));
-                Intent intent = new Intent(view.getContext(), ScholarshipDetailsActivity.class);
-                intent.putExtra("scholName", schols.get(pos).getTitle());
-                intent.putExtra("scholDetails", schols.get(pos).getDetail());
-                intent.putExtra("scholImage", schols.get(pos).getImage());
-                view.getContext().startActivity(intent);
-            }
-        });*/
     }
 
     /**
@@ -179,5 +159,4 @@ public class ScholarshipAdapter extends RecyclerView.Adapter<ScholarshipAdapter.
         schols.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
-
 }
