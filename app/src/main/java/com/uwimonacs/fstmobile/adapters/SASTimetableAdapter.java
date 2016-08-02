@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class SASTimetableAdapter extends RecyclerView.Adapter<TimetableViewHolde
         holder.times.setText(times.get(holder.getAdapterPosition()));
         holder.venue.setText(venues.get(holder.getAdapterPosition()));
         if (currentClass.equals(times.get(holder.getAdapterPosition())))
-            holder.classCard.setBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
+            holder.classCard.setBackgroundColor(ContextCompat.getColor(context, R.color.cardview_dark_background));
     }
 
     @Override

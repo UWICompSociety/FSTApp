@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -17,21 +20,21 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="Course code - title"/>
+            tools:text="Course code - title"/>
         <TextView
             android:id="@+id/timetable_times"
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Times"/>
+            tools:text="Times"/>
         <TextView
             android:id="@+id/timetable_venue"
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Venue"/>
+            tools:text="Venue"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
