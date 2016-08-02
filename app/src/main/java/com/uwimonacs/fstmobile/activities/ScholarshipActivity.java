@@ -81,7 +81,7 @@ public class ScholarshipActivity extends AppCompatActivity
 
         setUpProgressBar();
 
-        new LoadScholsTask(this).execute("");  // refresh items from internet
+        new LoadScholsTask(this).execute();  // refresh items from internet
     }
 
     private void initViews() {
@@ -250,10 +250,10 @@ public class ScholarshipActivity extends AppCompatActivity
      */
     @Override
     public void onRefresh() {
-        new LoadScholsTask(this).execute("");
+        new LoadScholsTask(this).execute();
     }
 
-    private class LoadScholsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadScholsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadScholsTask(Context ctxt) {
@@ -273,7 +273,7 @@ public class ScholarshipActivity extends AppCompatActivity
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final ScholarshipSync scholSync = new ScholarshipSync(Constants.SCHOL_URL);
 
             if (!isConnected()) { // if there is no internet connection

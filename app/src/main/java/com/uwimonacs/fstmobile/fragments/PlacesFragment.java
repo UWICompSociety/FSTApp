@@ -115,7 +115,7 @@ public class PlacesFragment extends Fragment {
         places.add(place);
     }
 
-    private class LoadPlacesTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadPlacesTask extends AsyncTask<Void,Void,Boolean> {
         final Context context;
 
         public LoadPlacesTask() {
@@ -128,7 +128,7 @@ public class PlacesFragment extends Fragment {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final PlaceSync placeSync = new PlaceSync(Constants.PLACE_URL);
             return placeSync.syncPlaces();
         }

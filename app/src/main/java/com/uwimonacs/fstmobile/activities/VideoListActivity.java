@@ -75,7 +75,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
         setUpRecyclerView();
 
-        new LoadVideosTask(this).execute("");
+        new LoadVideosTask(this).execute();
 
     }
 
@@ -145,7 +145,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     @Override
     public void onRefresh() {
-        new LoadVideosTask(this).execute("");
+        new LoadVideosTask(this).execute();
     }
 
     @Override
@@ -233,7 +233,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         return  hasInternet;
 
     }
-    private class LoadVideosTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadVideosTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadVideosTask(Context ctxt)
@@ -254,7 +254,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             if (!isConnected()) { // if there is no internet connection
                 return false;
             }

@@ -75,7 +75,7 @@ public class FAQActivity extends AppCompatActivity
 
         setUpProgressBar();
 
-        new LoadFAQsTask(this).execute("");
+        new LoadFAQsTask(this).execute();
     }
 
     private void setUpToolBar() {
@@ -237,10 +237,10 @@ public class FAQActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        new LoadFAQsTask(this).execute("");
+        new LoadFAQsTask(this).execute();
     }
 
-    private class LoadFAQsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadFAQsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadFAQsTask(Context ctxt)
@@ -262,7 +262,7 @@ public class FAQActivity extends AppCompatActivity
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final FAQSync faqSync = new FAQSync(Constants.FAQS_URL);
 
             if (!isConnected()) { //if there is no internet connection

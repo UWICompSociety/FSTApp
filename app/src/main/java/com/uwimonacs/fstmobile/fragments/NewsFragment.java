@@ -69,7 +69,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         setUpProgressBar();
 
-        new LoadNewsTask(this.getActivity()).execute(""); // refresh the news items from internet
+        new LoadNewsTask(this.getActivity()).execute(); // refresh the news items from internet
 
         return view;
     }
@@ -128,10 +128,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        new LoadNewsTask(getActivity()).execute("");
+        new LoadNewsTask(getActivity()).execute();
     }
 
-    private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>  {
+    private class LoadNewsTask extends AsyncTask<Void,Void,Boolean>  {
         final Context ctxt;
 
         public LoadNewsTask(Context ctxt)
@@ -152,7 +152,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final NewsSync newsSync = new NewsSync(Constants.NEWS_URL);
 
             if (!isConnected()) {  // if there is no internet connection

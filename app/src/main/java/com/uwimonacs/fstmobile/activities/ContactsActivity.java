@@ -80,7 +80,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         setUpProgressBar(); //set up progress bar
 
-        new LoadContactsTask(this).execute(""); // runs the contacts sync task
+        new LoadContactsTask(this).execute(); // runs the contacts sync task
     }
 
     private void initViews() {
@@ -168,7 +168,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        new LoadContactsTask(this).execute(""); // runs the contacts sync task
+        new LoadContactsTask(this).execute(); // runs the contacts sync task
     }
 
     @Override
@@ -240,7 +240,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         return filteredModelList;
     }
 
-    private class LoadContactsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadContactsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadContactsTask(Context ctxt)
@@ -261,7 +261,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final ContactSync contactSync = new ContactSync(contactsUrl);
 
             if (!isConnected()) { // if there is no internet connection
