@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -34,7 +34,7 @@
                         android:layout_height="100dip"
                         android:scaleType="fitCenter"
                         android:background="#4CAF50"
-                        android:src="@mipmap/ic_faqicon"/>
+                        app:srcCompat="@drawable/ic_info_outline_black_24dp"/>
 
                     <TextView
                         android:padding="16dp"
@@ -66,7 +66,7 @@
                         android:layout_height="100dip"
                         android:scaleType="fitCenter"
                         android:background="#2196F3"
-                        android:src="@mipmap/ic_video"/>
+                        app:srcCompat="@drawable/ic_videocam_black_24dp"/>
 
                     <TextView
                         android:padding="16dp"
@@ -98,7 +98,7 @@
                         android:layout_height="100dip"
                         android:scaleType="fitCenter"
                         android:background="#9C27B0"
-                        android:src="@drawable/ic_school_black_24dp"/>
+                        app:srcCompat="@drawable/ic_school_black_24dp"/>
 
                     <TextView
                         android:padding="16dp"
@@ -130,7 +130,7 @@
                         android:layout_height="100dip"
                         android:scaleType="fitCenter"
                         android:background="#9E9E9E"
-                        android:src="@mipmap/ic_contacts"/>
+                        app:srcCompat="@drawable/ic_people_black_24dp"/>
 
                     <TextView
                         android:padding="16dp"
