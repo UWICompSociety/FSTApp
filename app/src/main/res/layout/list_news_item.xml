@@ -20,7 +20,7 @@
             android:transitionName="news_image"/>
         <TextView
             android:textSize="24sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:id="@+id/newsHeading"
             android:paddingLeft="16dp"
             android:paddingStart="16dp"

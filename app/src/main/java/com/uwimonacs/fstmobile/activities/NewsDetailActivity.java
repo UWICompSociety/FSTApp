@@ -52,6 +52,12 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        /*
+        * To reduce jagged backward transition
+        * */
+        TextView heading = (TextView)findViewById(R.id.newsDetail_Topic);
+        heading.setTextSize(24);
+        heading.setPadding(24, 34, 24, 0); //Do not change these values
         supportFinishAfterTransition();
     }
 }
