@@ -34,7 +34,7 @@
                         android:layout_height="100dip"
                         android:scaleType="fitCenter"
                         android:background="#4CAF50"
-                        app:srcCompat="@drawable/ic_info_outline_black_24dp"/>
+                        app:srcCompat="@drawable/ic_help_outline_black_24dp"/>
 
                     <TextView
                         android:padding="16dp"
