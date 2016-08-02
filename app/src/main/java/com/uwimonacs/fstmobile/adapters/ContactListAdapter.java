@@ -1,8 +1,10 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -53,19 +55,28 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
+                public boolean onLongClick(final View v) {
                     final int pos = ContactViewHolder.this.getAdapterPosition();
                     final String number = contacts.get(pos).getNumber();
 
                     if (!TextUtils.isEmpty(number)) {
-                        final ClipboardManager clipboard = (ClipboardManager)
-                                v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        final AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                                .setTitle(number)
+                                .setMessage("Copy to clipboard?")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        final ClipboardManager clipboard =
+                                                (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
-                        final ClipData clip = ClipData.newPlainText("number", number);
+                                        clipboard.setPrimaryClip(ClipData.newPlainText("number", number));
 
-                        clipboard.setPrimaryClip(clip);
-
-                        Toast.makeText(v.getContext(), "Text copied", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(v.getContext(), "Text copied", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .create();
+                        dialog.show();
                     }
 
                     return  true;
