@@ -12,9 +12,8 @@ import com.uwimonacs.fstmobile.R;
  * in VideoListActivity
  */
 public class VideoViewHolder extends RecyclerView.ViewHolder {
-
-    public ImageView vThumbnail;
-    public TextView vTitle, vDescription, vId;
+    public final ImageView vThumbnail;
+    public final TextView vTitle, vDescription, vId;
 
     /**
      * Instantiates references to the sub-views of the CardView
