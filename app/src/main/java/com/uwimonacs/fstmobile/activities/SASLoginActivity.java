@@ -113,14 +113,10 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                 + " email the helpdesk or visit the UWI Mona Live Support page to request a "
                 + "password reset";
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Login Help")
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        /* empty */
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, null)
                 .create();
         dialog.show();
     }
