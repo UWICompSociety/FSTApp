@@ -31,6 +31,6 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="A small scholarship handed down by the bursary" />
+        tools:text="@string/placeholder_lorem_ipsum" />
 
 </LinearLayout>

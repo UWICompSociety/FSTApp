@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/question"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="FAQ title" />
+            tools:text="FAQ" />
 
         <TextView
             android:paddingTop="10dp"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/answer"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            tools:text="FAQ answer" />
+            tools:text="@string/placeholder_lorem_ipsum" />
 
     </LinearLayout>
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder strings for dynamic content in the app. This file is empty for production usage,
+     but src/main/debug has a file with values to allow layout editor previews to work. -->
+<resources>
+    <string name="placeholder_lorem_ipsum"/>
+</resources>
