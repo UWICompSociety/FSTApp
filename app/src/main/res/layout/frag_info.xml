@@ -76,7 +76,7 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="24dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:text="@string/videos_activity_title" />
+                    android:text="@string/title_activity_videos" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
