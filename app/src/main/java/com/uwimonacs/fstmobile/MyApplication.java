@@ -5,7 +5,6 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import com.activeandroid.ActiveAndroid;
-import com.uwimonacs.fstmobile.helper.Constants;
 import com.uwimonacs.fstmobile.models.SASConfig;
 
 /**

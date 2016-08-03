@@ -1,4 +1,4 @@
-package com.uwimonacs.fstmobile.helper;
+package com.uwimonacs.fstmobile.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
