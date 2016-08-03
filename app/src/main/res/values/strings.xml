@@ -4,6 +4,7 @@
     <!-- Activity Titles -->
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_contacts">Contacts</string>
 
     <!-- Menu Option Titles -->
     <string name="action_settings">Settings</string>
@@ -92,7 +93,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_expandable_scholarship">ExpandableScholarshipActivity</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 
