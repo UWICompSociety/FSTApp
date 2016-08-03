@@ -49,7 +49,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
                     @SuppressLint("InflateParams")
                     // Pass null as the parent view because its going in the dialog layout
-                    final View dialogView = inflater.inflate(R.layout.contact_details, null);
+                    final View dialogView = inflater.inflate(R.layout.dialog_content_contact_info, null);
 
                     final TextView telNumView = (TextView) dialogView.findViewById(R.id.telNumView);
 
