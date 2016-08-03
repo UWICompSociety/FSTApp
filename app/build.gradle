@@ -29,7 +29,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
-    compile files('libs/picasso-2.4.0.jar')
 
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
@@ -57,5 +56,6 @@ dependencies {
         transitive = true
     }
     compile 'com.mukesh:markdownview:1.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
   //  compile 'us.feras.mdv:markdownview:1.1.0'
 }
