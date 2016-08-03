@@ -1,45 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_gravity="center_horizontal"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10.0dip"
-    android:foreground="?android:selectableItemBackground"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="8dp"
+    android:foreground="?android:selectableItemBackground">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
         <ImageView
             android:id="@+id/newsImage"
             android:layout_width="fill_parent"
             android:layout_height="172.0dip"
             android:scaleType="fitXY"
-            android:transitionName="news_image"/>
+            android:transitionName="news_image"
+            tools:background="@android:color/black"
+            tools:targetApi="LOLLIPOP"/>
+
         <TextView
-            android:textSize="24sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:id="@+id/newsHeading"
+            android:paddingTop="24dp"
             android:paddingLeft="16dp"
             android:paddingStart="16dp"
             android:paddingRight="16dp"
             android:paddingEnd="16dp"
-            android:paddingTop="24dp"
+            android:paddingBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:transitionName="news_title"
+            tools:text="Faculty to Get New Buildings"
+            tools:targetApi="LOLLIPOP"/>
 
-            tools:text="Faculty to Get New Buildings" />
         <TextView
-            android:textSize="14sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:id="@+id/newsDescription"
-            android:padding="16dp"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:ellipsize="end"
             tools:text="@string/placeholder_lorem_ipsum" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:padding="8dp"
+            android:layout_gravity="end"
+            android:id="@+id/sharebtn"
+            app:srcCompat="@drawable/ic_share_black_24dp"/>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>
