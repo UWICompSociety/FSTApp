@@ -125,7 +125,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
     private void setUpToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Contacts");
+        getSupportActionBar().setTitle(R.string.title_activity_contacts);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
