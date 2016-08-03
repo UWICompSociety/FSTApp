@@ -1,8 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/player_view_holder"
@@ -48,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:attr/borderlessButtonStyle"
-            android:src="@drawable/ic_share_black_24dp"/>
+            app:srcCompat="@drawable/ic_share_black_24dp"/>
 
     </LinearLayout>
 </LinearLayout>
