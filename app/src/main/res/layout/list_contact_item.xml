@@ -1,48 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contact_name"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:orientation="horizontal"
-    android:background="?android:attr/selectableItemBackground">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:srcCompat="@drawable/ic_call_black_24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_gravity="center_vertical" />
-
-    <LinearLayout
-        android:id="@+id/contact_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
-
-        <TextView
-            android:id="@+id/contact_name"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Faculty Office"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:textSize="16sp"
-            android:paddingTop="5dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:id="@+id/contact_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="+18769384268" />
-
-    </LinearLayout>
-
-</LinearLayout>
+    android:layout_height="48dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:gravity="center_vertical"
+    android:background="?android:selectableItemBackground"
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+    android:singleLine="true"
+    android:ellipsize="end"
+    tools:showIn="@layout/content_contacts"
+    tools:text="Faculty Office"
+    tools:ignore="RtlHardcoded,RtlSymmetry" />
