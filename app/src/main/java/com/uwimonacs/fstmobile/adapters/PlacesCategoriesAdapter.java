@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlacesCategoriesAdapter
-        extends RecyclerView.Adapter<PlacesCategoriesAdapter.PlacesViewHolder> {
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
     private List<Place> places;
     private List<String> departments;
@@ -56,8 +56,9 @@ public class PlacesCategoriesAdapter
     }
 
     @Override
-    public void onBindViewHolder(PlacesViewHolder holder, int position) {
-        final CardView cardView = holder.cardView; // an expandable CardView
+    public void onBindViewHolder(RecyclerView.ViewHolder vh, int position) {
+        final CardView cardView = (CardView) vh.itemView; // an expandable CardView
+
         /*
         * Holds the list of places under a certain category. Visibility toggled between
         * VISIBLE and GONE to achieve expandability of CardView
@@ -143,24 +144,15 @@ public class PlacesCategoriesAdapter
     }
 
     @Override
-    public PlacesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PlacesViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.frag_places_item, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RecyclerView.ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.frag_places_item, parent, false)) {
+        };
     }
 
     public void updatePlaces(List<Place> places){
         this.places = new ArrayList<>(places);
         setUpDepartments();
         notifyDataSetChanged();
-    }
-
-    public static class PlacesViewHolder extends RecyclerView.ViewHolder{
-        public final CardView cardView;
-
-        public PlacesViewHolder(View v) {
-            super(v);
-
-            cardView = (CardView) v;
-        }
     }
 }
