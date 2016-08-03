@@ -1,11 +1,16 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.FAQ;
@@ -32,6 +37,24 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqListAdapter.FaqHolde
             cv = (CardView) v.findViewById(R.id.cv);
             question = (TextView) v.findViewById(R.id.question);
             answer = (TextView) v.findViewById(R.id.answer);
+
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    final String ans = answer.getText().toString();
+
+                    if (!TextUtils.isEmpty(ans)) {
+                        final ClipboardManager clipboard =
+                                (ClipboardManager) v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+
+                        clipboard.setPrimaryClip(ClipData.newPlainText("text", ans));
+
+                        Toast.makeText(v.getContext(), R.string.toast_text_copied, Toast.LENGTH_SHORT).show();
+                    }
+
+                    return true;
+                }
+            });
         }
     }
 
