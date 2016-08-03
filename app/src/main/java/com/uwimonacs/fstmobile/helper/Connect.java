@@ -36,7 +36,7 @@ public class Connect {
      * @return
      * @throws Exception
      */
-    public boolean haveInternetConnectivity() throws Exception {
+    public static boolean haveInternetConnectivity() throws Exception {
         final URL url = new URL("http://www.google.com");
 
         final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
