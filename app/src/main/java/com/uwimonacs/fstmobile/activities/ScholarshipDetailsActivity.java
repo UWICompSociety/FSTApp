@@ -6,7 +6,10 @@ import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.mukesh.MarkdownView;
 import com.uwimonacs.fstmobile.R;
+
+//import us.feras.mdv.MarkdownView;
 
 public class ScholarshipDetailsActivity extends AppCompatActivity {
     @Override
@@ -18,13 +21,15 @@ public class ScholarshipDetailsActivity extends AppCompatActivity {
         final String scholName = extras.getString("scholName");
         final String scholDetails = extras.getString("scholDetails");
 
+        assert getSupportActionBar()!=null;
+        getSupportActionBar().setTitle(scholName);
+
         setContentView(R.layout.activity_scholarship_details);
 
-        final TextView scholNameTextView = (TextView) findViewById(R.id.name);
-        final TextView scholDetailsTextView = (TextView) findViewById(R.id.detail);
+        MarkdownView markdownView = (MarkdownView) findViewById(R.id.markdown_view);
+        markdownView.setMarkDownText(scholDetails);
 
-        scholNameTextView.setText(scholName);
-        scholDetailsTextView.setText(Html.fromHtml(scholDetails).toString().trim());
+
     }
 
     @Override
