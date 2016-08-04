@@ -2,6 +2,7 @@ package com.uwimonacs.fstmobile.models;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.uwimonacs.fstmobile.R;
 public class VideoViewHolder extends RecyclerView.ViewHolder {
     public final ImageView vThumbnail;
     public final TextView vTitle, vDescription, vId;
+    public View divider;
 
     /**
      * Instantiates references to the sub-views of the CardView
@@ -22,6 +24,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
      */
     public VideoViewHolder(View cardView) {
         super(cardView);
+        divider = cardView.findViewById(R.id.divider);
         vThumbnail = (ImageView) cardView.findViewById(R.id.video_thumbnail);
         vTitle = (TextView) cardView.findViewById(R.id.video_title);
         vDescription = (TextView) cardView.findViewById(R.id.video_description);
