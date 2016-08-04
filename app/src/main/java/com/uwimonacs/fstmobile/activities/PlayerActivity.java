@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.R;
@@ -39,7 +41,7 @@ public class PlayerActivity extends AppCompatActivity {
         title.setText(getIntent().getStringExtra("VIDEO_TITLE"));
         description.setText(getIntent().getStringExtra("VIDEO_DESC"));
 
-        final Button watchOnYoutube = (Button) findViewById(R.id.watch_on_youtube);
+        final ViewGroup watchOnYoutube = (ViewGroup) findViewById(R.id.watch_on_youtube);
 
         /*
         * Launches the video externally in the YouTube app or the
