@@ -119,4 +119,9 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
     public int getItemCount() {
         return terms.size();
     }
+
+    public void updateTerms(List<Transcript.Term> terms){
+        this.terms = terms;
+        notifyDataSetChanged();
+    }
 }

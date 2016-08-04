@@ -7,25 +7,33 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.MainActivity;
 import com.uwimonacs.fstmobile.activities.SASLoginActivity;
+import com.uwimonacs.fstmobile.activities.SASTimetableActivity;
+import com.uwimonacs.fstmobile.activities.SASTranscriptActivity;
+import com.uwimonacs.fstmobile.adapters.SASTimetableAdapter;
+import com.uwimonacs.fstmobile.adapters.SASTranscriptAdapter;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
 import com.uwimonacs.fstmobile.models.Transcript.Term;
 
@@ -41,18 +49,35 @@ import java.util.List;
 /**
  * Holds  session data for connecting to SAS website
  */
-public class SASConfig {
+@Table(name = "SASConfig")
+public class SASConfig extends Model {
     public Student student;
     public Context context;
     public String term = "";
     public int semester;
     private Resources resources;
-    public List<String> termValues, termNames;
+
+    @Column(name = "term_values")
+    private String serializedTermValues;
+
+    @Column(name = "term_names")
+    private String serializedTermNames;
+
+    public List<String> termValues;
+    public List<String> termNames;
     private WebView webView;
     private AppCompatActivity mActivity;
     private AccountAuthenticatorActivity login;
     private AccountManager mAccountManager;
     private TermsAdapter terms;
+    private SASTranscriptAdapter transcriptAdapter;
+    private SASTranscriptActivity transcriptActivity;
+    private SASTimetableActivity timetableActivity;
+    private SwipeRefreshLayout swipe1,swipe2;
+
+    public SASConfig(){
+        super();
+    }
 
     /**
      * Initializes  variables for the first time
@@ -71,6 +96,16 @@ public class SASConfig {
         semester = 1;
     }
 
+    public void serialize(){
+        serializedTermNames = new Gson().toJson(termNames);
+        serializedTermValues = new Gson().toJson(termValues);
+    }
+
+    public void unSerialize(){
+        termNames = new Gson().fromJson(serializedTermNames, new TypeToken<List<String>>(){}.getType());
+        termValues = new Gson().fromJson(serializedTermValues, new TypeToken<List<String>>(){}.getType());
+    }
+
     /**
      * Sends HTTP POST Request with login information to
      * SAS Website to initiate a session
@@ -78,64 +113,172 @@ public class SASConfig {
     @JavascriptInterface
     public void Login(String body, String activity){
         if(body.contains("Authorization Failure") || body.contains("Invalid login information")) {
-            Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-            login.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
-                    login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
-                }
-            });
-        }
-        else {
-            Document document = Jsoup.parse(body);
-            Element p = document.getElementsByClass("text-intro").get(0);
-            String name = p.text().substring(5, p.text().indexOf("Student ID#:"));
-            student.setName(name);
+            // Login failed - handle error
 
-            if(activity.equals("main")){
-                MainActivity.loggedIn = true;
-                mActivity.runOnUiThread(new Runnable() {
+            if(activity.equals("login")) {
+                //Simple case of invalid ID Number or Password
+                Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                login.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView username = (TextView) mActivity.findViewById(R.id.username),
-                        idNUmber = (TextView) mActivity.findViewById(R.id.id_number);
-                        assert username != null;
-                        username.setText(student.getName());
-                        assert idNUmber != null;
-                        idNUmber.setText(student.getIdNumber());
-
-                        if(termNames.size() == 0) {
-                            webView.setWebViewClient(new WebViewClient() {
-                                @Override
-                                public void onPageFinished(WebView view, String url) {
-                                    view.loadUrl("javascript:window.sasConfig.getTerms('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
-                                    super.onPageFinished(view, url);
-                                }
-                            });
-                            webView.loadUrl(resources.getString(R.string.get_terms_url));
-                        }
+                        login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
+                        login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
                     }
                 });
             } else {
-                MainActivity.loggedIn = true;
-                Toast.makeText(context, "Account added", Toast.LENGTH_SHORT).show();
-                String accountType = "UWI";
-                String username = student.getIdNumber();
-                String password = student.getPassword();
-                Account sasAccount = new Account(username, accountType);
-                mAccountManager = AccountManager.get(login);
-                mAccountManager.addAccountExplicitly(sasAccount, password, null);
-
-                final Intent intent = new Intent();
-                intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
-                intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType);
-                intent.putExtra(AccountManager.KEY_AUTHTOKEN, password);
-                login.setAccountAuthenticatorResult(intent.getExtras());
-                login.setResult(SASLoginActivity.RESULT_OK, intent);
-                login.finish();
+                //Credentials have changed - Let user sign in again
+                Toast.makeText(context, "Your password has changed", Toast.LENGTH_SHORT).show();
+                login.startActivity(new Intent(context, SASLoginActivity.class));
             }
+        } else {
+            //Login successful - fetch user data and store account
+
+            Document document = Jsoup.parse(body);
+            Element p;
+            try {
+                p = document.getElementsByClass("text-intro").get(0);
+            } catch(Exception e){
+                // Some error page has loaded - login was not successful
+                login.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
+                        login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
+                        Toast.makeText(context, "Unknown error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return;
+            }
+            String name = p.text().substring(5, p.text().indexOf("Student ID#:"));
+            student.setName(name);
+
+            MainActivity.loggedIn = true;
+            Toast.makeText(context, "Account added", Toast.LENGTH_SHORT).show();
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(termNames.size() == 0) {
+                        webView.setWebViewClient(new WebViewClient() {
+                            @Override
+                            public void onPageFinished(WebView view, String url) {
+                                view.loadUrl("javascript:window.sasConfig.getTerms('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
+                                super.onPageFinished(view, url);
+                            }
+                        });
+                        webView.loadUrl(resources.getString(R.string.get_terms_url));
+                    }
+                }
+            });
+
+            String accountType = "UWI";
+            String username = student.getIdNumber();
+            String password = student.getPassword();
+            Account sasAccount = new Account(username, accountType);
+            mAccountManager = AccountManager.get(login);
+            mAccountManager.addAccountExplicitly(sasAccount, password, null);
+
+            final Intent intent = new Intent();
+            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
+            intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType);
+            intent.putExtra(AccountManager.KEY_AUTHTOKEN, password);
+            login.setAccountAuthenticatorResult(intent.getExtras());
+            login.setResult(SASLoginActivity.RESULT_OK, intent);
+            login.finish();
+          fixNavDrawerAfterLogin();
         }
+    }
+
+    @JavascriptInterface
+    public void passiveLogin(String body, String data){
+        if(body.contains("Authorization Failure") || body.contains("Invalid login information")) {
+            // Login failed - handle error
+
+            //Credentials have changed - Let user sign in again
+            Toast.makeText(context, "Your password has changed", Toast.LENGTH_SHORT).show();
+            login.startActivity(new Intent(context, SASLoginActivity.class));
+
+        } else {
+            //Login successful - fetch user data
+            switch (data){
+                case "timetable":
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final String formData = "name_var=bmenu.P_RegMnu&term_in=" + term;
+                            webView.setWebViewClient(new WebViewClient() {
+                                @Override
+                                public void onPageFinished(WebView view, String url) {
+                                    // TODO: Fetch all courses for the current semester
+                                    view.setWebViewClient(new WebViewClient() {
+                                        @Override
+                                        public void onPageFinished(WebView view, String url) {
+                                            System.out.println("Loading courses");
+                                            view.loadUrl("javascript:window.sasConfig.loadCourses('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
+                                            super.onPageFinished(view, url);
+                                        }
+                                    });
+                                    view.loadUrl(resources.getString(R.string.detailschedule_get));
+                                    super.onPageFinished(view, url);
+                                }
+                            });
+                            webView.postUrl("http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwcklibs.P_StoreTerm", formData.getBytes());
+                        }
+                    });
+                    break;
+                case "transcript":
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.setWebViewClient(new WebViewClient(){
+                                @Override
+                                public void onPageFinished(WebView view, String url) {
+                                    view.loadUrl("javascript:window.sasConfig.loadTranscript('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
+                                    super.onPageFinished(view, url);
+                                }
+                            });
+                            String formData = "levl=UG&tprt=WEB";
+                            webView.postUrl(resources.getString(R.string.transcript_post), formData.getBytes());
+                        }
+                    });
+                    break;
+            }
+
+        }
+    }
+
+    public void fixNavDrawerAfterLogin(){
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                NavigationView navigationView = (NavigationView) mActivity.findViewById(R.id.nav_drawer);
+
+                View header = navigationView.getHeaderView(0);
+
+                final TextView username = (TextView) header.findViewById(R.id.username),
+                        idNUmber = (TextView) header.findViewById(R.id.id_number);
+
+                username.setText(student.getName());
+                idNUmber.setText(student.getIdNumber());
+
+                TermsAdapter terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
+                terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                terms.addAll(termNames);
+                Spinner termSelector = (Spinner) header.findViewById(R.id.term);
+                termSelector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener)mActivity);
+                termSelector.setAdapter(terms);
+                setTerms(terms);
+
+                final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
+                final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
+                final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
+
+                registration.setTitle("View timetable");
+                transcript.setVisible(true);
+                logout.setVisible(true);
+                transcript.setEnabled(false);
+                logout.setEnabled(false);
+            }
+        });
     }
 
     @JavascriptInterface
@@ -164,6 +307,10 @@ public class SASConfig {
 
     public TermsAdapter getTerms() {
         return terms;
+    }
+
+    public void setTerms(TermsAdapter terms){
+        this.terms = terms;
     }
 
     public void selectTerm(final String term) {
@@ -216,6 +363,18 @@ public class SASConfig {
             timeTable.addCourse(course);
         }
         student.setTimeTable(timeTable);
+        student.addTimeTable(timeTable, term);
+
+        if(timetableActivity != null) {
+            timetableActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    timetableActivity.updateCourses();
+                    swipe1.setRefreshing(false);
+                }
+            });
+        }
+
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -237,13 +396,13 @@ public class SASConfig {
 
     @JavascriptInterface
     public void loadTranscript(String body){
+
         Transcript transcript = new Transcript();
         Document document = Jsoup.parse(body);
         Elements tables = document.getElementsByTag("table");
         Element studentInformationTable = tables.get(5);
         Elements tds = studentInformationTable.getElementsByClass("dddefault");
         Elements ths = studentInformationTable.getElementsByClass("ddlabel");
-        String name = tds.get(0).ownText();
         String degreeType = tds.get(1).ownText();
         String program = tds.get(2).ownText();
         String faculty = tds.get(3).ownText();
@@ -267,13 +426,9 @@ public class SASConfig {
             startTermIndex = 15;
             startCourseIndex = 18;
         }
-
-        System.out.println("Minor: " + minor);
-        System.out.println("Start term index: " + startTermIndex);
         while(true){
             Term term = new Term();
             String termName = ths.get(startTermIndex).text().substring(6);
-            System.out.println("Term: " + termName);
             term.setName(termName);
             List<Term.Course> courses = new ArrayList<>();
              while(true){
@@ -281,7 +436,6 @@ public class SASConfig {
                  String subject, code, title, score, grade, creditHours;
                  try {
                      subject = tds.get(startCourseIndex).ownText();
-                     System.out.println("Subject: " + subject);
                      code = tds.get(startCourseIndex+1).ownText();
                      title = tds.get(startCourseIndex + 4).text().substring(0, tds.get(startCourseIndex + 4).text().indexOf("Final"));
                      score = tds.get(startCourseIndex + 4).text().substring(tds.get(startCourseIndex + 4).text().indexOf("Final") + 6);
@@ -290,7 +444,6 @@ public class SASConfig {
                  } catch (StringIndexOutOfBoundsException e){
                      startCourseIndex -= 1;
                      subject = tds.get(startCourseIndex).ownText();
-                     System.out.println("Subject: " + subject);
                      code = tds.get(startCourseIndex+1).ownText();
                      title = tds.get(startCourseIndex + 4).text();
                      score = "In Progress";
@@ -308,7 +461,6 @@ public class SASConfig {
                  courses.add(course);
                  try {
                      if (tds.get(startCourseIndex + 8).text().contains(".00")) {
-                         System.out.println("Error recovery: " + tds.get(startCourseIndex + 8).text());
                          startCourseIndex += 18;
                          break;
                      } else {
@@ -330,9 +482,20 @@ public class SASConfig {
                 break;
             }
         }
-        System.out.println("No. of terms: " +  terms.size());
         transcript.setTerms(terms);
         student.setTranscript(transcript);
+
+        if(transcriptAdapter != null && transcriptActivity != null) {
+            transcriptActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    transcriptAdapter.updateTerms(student.getTranscript().getTerms());
+                    swipe2.setRefreshing(false);
+                }
+            });
+
+        }
+
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -442,5 +605,25 @@ public class SASConfig {
 
     public void setLogin(AccountAuthenticatorActivity login) {
         this.login = login;
+    }
+
+    public void setTimetableActivity(SASTimetableActivity timetableActivity) {
+        this.timetableActivity = timetableActivity;
+    }
+
+    public void setSwipe1(SwipeRefreshLayout swipe1) {
+        this.swipe1 = swipe1;
+    }
+
+    public void setTranscriptActivity(SASTranscriptActivity transcriptActivity) {
+        this.transcriptActivity = transcriptActivity;
+    }
+
+    public void setTranscriptAdapter(SASTranscriptAdapter transcriptAdapter) {
+        this.transcriptAdapter = transcriptAdapter;
+    }
+
+    public void setSwipe2(SwipeRefreshLayout swipe2) {
+        this.swipe2 = swipe2;
     }
 }

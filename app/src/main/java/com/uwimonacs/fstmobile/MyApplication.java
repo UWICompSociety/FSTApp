@@ -2,6 +2,7 @@ package com.uwimonacs.fstmobile;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.webkit.WebView;
 
 import com.activeandroid.ActiveAndroid;
@@ -19,12 +20,21 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ActiveAndroid.initialize(this);
+        context = getApplicationContext();
         webView = new WebView(getApplicationContext());
         webView.getSettings().setJavaScriptEnabled(true);
-        sasConfig = new SASConfig();
-        sasConfig.initialize(getResources(), getApplicationContext());
+        try {
+            sasConfig = SASConfig.load(SASConfig.class, 0);
+        } catch (SQLiteException e){}
+        if(sasConfig != null) {
+            sasConfig.initialize(getResources(), context);
+            sasConfig.unSerialize();
+        }
+        else {
+            sasConfig = new SASConfig();
+            sasConfig.initialize(getResources(), context);
+        }
         webView.addJavascriptInterface(sasConfig, "sasConfig");
-        context = getApplicationContext();
     }
 
     public static WebView getWebView(){

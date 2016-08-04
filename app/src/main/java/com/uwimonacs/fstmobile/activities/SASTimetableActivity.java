@@ -1,10 +1,15 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CalendarView;
 
 import com.uwimonacs.fstmobile.MyApplication;
@@ -18,15 +23,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class SASTimetableActivity extends AppCompatActivity {
+@SuppressWarnings("FieldCanBeLocal")
+public class SASTimetableActivity extends AppCompatActivity
+        implements SwipeRefreshLayout.OnRefreshListener {
+    private SASConfig sasConfig;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private WebView webView;
+    private AccountManager manager;
+    private Account account;
+    private List<Course> courses;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sastimetable);
+        sasConfig = MyApplication.getSasConfig();
+        manager = AccountManager.get(this);
+        account = manager.getAccountsByType("UWI")[0];
+        webView = MyApplication.getWebView();
 
-        final SASConfig sasConfig = MyApplication.getSasConfig();
-        final List<Course> courses = sasConfig.student.getTimeTable().getCourses();
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.timetable_swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        updateCourses();
         final CalendarView calendarView = (CalendarView) findViewById(R.id.sas_timetable);
         calendarView.setDate(System.currentTimeMillis());
 
@@ -49,6 +69,8 @@ public class SASTimetableActivity extends AppCompatActivity {
             }
         }
         final SASTimetableAdapter adapter = new SASTimetableAdapter(localCourses, dates, this);
+        sasConfig.setTimetableActivity(this);
+        sasConfig.setSwipe1(swipeRefreshLayout);
         recyclerView.setAdapter(adapter);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -68,6 +90,10 @@ public class SASTimetableActivity extends AppCompatActivity {
                 adapter.updateCourses(localCourses, newDate);
             }
         });
+    }
+
+    public void updateCourses(){
+        this.courses = sasConfig.student.getTimeTable().getCourses();
     }
 
     @Override
@@ -113,5 +139,20 @@ public class SASTimetableActivity extends AppCompatActivity {
             }
         }
         return between;
+    }
+
+    @Override
+    public void onRefresh() {
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                view.loadUrl("javascript:window.sasConfig.passiveLogin('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'timetable');");
+                super.onPageFinished(view, url);
+            }
+        });
+        String idNumber = sasConfig.student.getIdNumber();
+        String password = manager.getPassword(account);
+        String formData = "sid="+idNumber+"&PIN="+password;
+        webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
     }
 }
