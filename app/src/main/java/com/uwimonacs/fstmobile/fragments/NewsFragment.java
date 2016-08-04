@@ -7,11 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -83,9 +85,23 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void setUpRecyclerView() {
-        newsListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+       // newsListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         newsListView.setHasFixedSize(true);
+
+        final GridLayoutManager gm = new GridLayoutManager(getActivity(), 2, 1, false);
+        newsListView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                newsListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int i = newsListView.getMeasuredWidth();
+                float f = getActivity().getResources().getDimension(R.dimen.card_width);
+                i = (int) Math.floor((float) i / f);
+                gm.setSpanCount(i);
+                gm.requestLayout();
+            }
+        });
+        newsListView.setLayoutManager(gm);
 
         newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
 
