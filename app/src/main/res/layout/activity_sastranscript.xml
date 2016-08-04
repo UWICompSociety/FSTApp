@@ -6,11 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#e5e5e5"
-    tools:context="com.uwimonacs.fstmobile.activities.SASTranscriptActivity">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#e5e5e5"
+        tools:context="com.uwimonacs.fstmobile.activities.SASTranscriptActivity">
+        <View
+            android:id="@+id/circle_target"
+            android:layout_height="0dp"
+            android:layout_width="0dp" />
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

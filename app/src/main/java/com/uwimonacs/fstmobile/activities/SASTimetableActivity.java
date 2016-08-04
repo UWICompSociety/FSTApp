@@ -2,6 +2,7 @@ package com.uwimonacs.fstmobile.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 @SuppressWarnings("FieldCanBeLocal")
 public class SASTimetableActivity extends AppCompatActivity
         implements SwipeRefreshLayout.OnRefreshListener {
@@ -36,12 +39,20 @@ public class SASTimetableActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_sastimetable);
         sasConfig = MyApplication.getSasConfig();
         manager = AccountManager.get(this);
         account = manager.getAccountsByType("UWI")[0];
         webView = MyApplication.getWebView();
+
+        setContentView(R.layout.activity_sastimetable);
+        if(isFirstTime()){
+            //Show tutorial
+            new MaterialShowcaseView.Builder(this)
+                    .setTarget(findViewById(R.id.circle_target))
+                    .setDismissText("GOT IT")
+                    .setContentText("Swipe down to refresh your timetable")
+                    .show();
+        }
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.timetable_swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -94,6 +105,18 @@ public class SASTimetableActivity extends AppCompatActivity
 
     public void updateCourses(){
         this.courses = sasConfig.student.getTimeTable().getCourses();
+    }
+
+    private boolean isFirstTime() {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("TimetableActivity", false);
+        if (!ranBefore) {
+            // first time
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("TimetableActivity", true);
+            editor.apply();
+        }
+        return !ranBefore;
     }
 
     @Override

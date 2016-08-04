@@ -2,6 +2,7 @@ package com.uwimonacs.fstmobile.activities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.SASTranscriptAdapter;
 import com.uwimonacs.fstmobile.models.SASConfig;
-import com.uwimonacs.fstmobile.models.Transcript;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class SASTranscriptActivity extends AppCompatActivity implements
 SwipeRefreshLayout.OnRefreshListener{
@@ -37,6 +38,15 @@ SwipeRefreshLayout.OnRefreshListener{
         webView = MyApplication.getWebView();
 
         setContentView(R.layout.activity_sastranscript);
+        if(isFirstTime()){
+            //Show tutorial
+            new MaterialShowcaseView.Builder(this)
+                    .setTarget(findViewById(R.id.circle_target))
+                    .setDismissText("GOT IT")
+                    .setContentText("Swipe down to refresh your transcript")
+                    .show();
+        }
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.transcript_swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -71,6 +81,18 @@ SwipeRefreshLayout.OnRefreshListener{
         sasConfig.setTranscriptActivity(this);
         sasConfig.setSwipe2(swipeRefreshLayout);
         institutionCredit.setAdapter(adapter);
+    }
+
+    private boolean isFirstTime() {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("TranscriptActivity", false);
+        if (!ranBefore) {
+            // first time
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("TranscriptActivity", true);
+            editor.apply();
+        }
+        return !ranBefore;
     }
 
     @Override
