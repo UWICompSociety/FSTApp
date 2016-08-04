@@ -19,8 +19,7 @@
     <style name="AppTheme.NoActionBar.VideosListActivity"/>
     <style name="AppTheme.NoActionBar.ScholarshipActivity"/>
     <style name="AppTheme.NoActionBar.ContactsActivity"/>
-
-    <style name="AppTheme.Settings"/>
+    <style name="AppTheme.NoActionBar.Settings"/>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
