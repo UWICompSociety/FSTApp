@@ -53,12 +53,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                     intent.putExtra("story", newsList.get(pos).getStory());
                     Pair<View, String> p1 = Pair.create((View) newsTitle, "news_title");
                     Pair<View, String> p2 = Pair.create((View) newsImage, "news_image");
-                    ActivityOptionsCompat options =
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2);
-                    if(Build.VERSION.SDK_INT >= 21)
-                        v.getContext().startActivity(intent, options.toBundle());
-                    else
+                    try {
+                        ActivityOptionsCompat options =
+                                ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2);
+                        if(Build.VERSION.SDK_INT >= 21)
+                            v.getContext().startActivity(intent, options.toBundle());
+                        else
+                            v.getContext().startActivity(intent);
+                    } catch (NullPointerException e){
                         v.getContext().startActivity(intent);
+                    }
                 }
             });
         }

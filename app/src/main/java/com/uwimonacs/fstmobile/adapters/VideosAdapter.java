@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -75,6 +76,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             holder.vDescription.setText(item.getDescription());
         } else {
             holder.vDescription.setText(R.string.no_description);
+        }
+
+        if(position != (mVideos.size() - 1)) {
+            holder.divider.setVisibility(View.VISIBLE);
         }
 
         // Display the overlay if the video has already been played.

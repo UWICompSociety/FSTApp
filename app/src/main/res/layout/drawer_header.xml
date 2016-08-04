@@ -10,7 +10,7 @@
             android:id="@+id/queens_way"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/queens_way"
+            android:background="#000000"
             android:alpha="0.5"
             android:transitionName="queens_way"/>
     </LinearLayout>
