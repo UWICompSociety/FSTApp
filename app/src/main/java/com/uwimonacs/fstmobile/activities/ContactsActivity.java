@@ -7,8 +7,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -25,15 +23,13 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ContactListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.Contact;
-import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.sync.ContactSync;
 
 import java.util.ArrayList;
@@ -45,7 +41,6 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     private List<Contact> contacts = new ArrayList<>();
     private ContactListAdapter contactListAdapter;
     private String contactsUrl = Constants.CONTACTS_URL;
-    private Connect connect;
     private Toolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
@@ -66,8 +61,6 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         setUpToolBar();
 
         setUpSwipeRefresh();
-
-        connect = new Connect(this);
 
         getContactsFromDatabase();   // get all contacts from phone database
 
@@ -151,14 +144,14 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet() {
+    private static boolean hasInternet() {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }

@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ScholarshipAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.sync.ScholarshipSync;
 
@@ -46,7 +46,6 @@ public class ScholarshipActivity extends AppCompatActivity
     private List<Scholarship> schols = new ArrayList<>();
     private ScholarshipAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
@@ -65,8 +64,6 @@ public class ScholarshipActivity extends AppCompatActivity
         setupReveal();
 
         setUpToolBar(); // set up properties for toolbar such as title
-
-        connect = new Connect(this); // used to heck connectivity
 
         setUpSwipeRefresh(); // set up swipe down to refresh
 
@@ -228,15 +225,15 @@ public class ScholarshipActivity extends AppCompatActivity
 
     private boolean isConnected(){
 
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet()
+    private static boolean hasInternet()
     {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }

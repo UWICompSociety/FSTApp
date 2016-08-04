@@ -3,7 +3,7 @@ package com.uwimonacs.fstmobile.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.uwimonacs.fstmobile.helper.GsonExclude;
+import com.uwimonacs.fstmobile.util.GsonExclude;
 import com.uwimonacs.fstmobile.models.FAQ;
 
 import java.io.IOException;

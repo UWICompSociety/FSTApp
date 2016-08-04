@@ -27,8 +27,8 @@ import android.view.MenuItem;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.FaqListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.sync.FAQSync;
 
@@ -40,7 +40,6 @@ public class FAQActivity extends AppCompatActivity
     private List<FAQ> faqs;
     private FaqListAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
@@ -59,8 +58,6 @@ public class FAQActivity extends AppCompatActivity
         setupReveal();
 
         setUpToolBar();
-
-        connect = new Connect(this);
 
         setUpSwipeRefresh();
 
@@ -198,14 +195,14 @@ public class FAQActivity extends AppCompatActivity
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet() {
+    private static boolean hasInternet() {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }

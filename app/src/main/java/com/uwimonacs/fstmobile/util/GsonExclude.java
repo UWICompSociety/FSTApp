@@ -17,7 +17,7 @@
  * along with OurVLE.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.uwimonacs.fstmobile.helper;
+package com.uwimonacs.fstmobile.util;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

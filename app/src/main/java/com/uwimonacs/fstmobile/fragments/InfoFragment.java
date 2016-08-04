@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -18,7 +17,6 @@ import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
 import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
-import com.uwimonacs.fstmobile.helper.Connect;
 
 public class InfoFragment extends Fragment
         implements View.OnClickListener {

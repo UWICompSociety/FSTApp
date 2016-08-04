@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.NewsListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.sync.NewsSync;
 
@@ -34,7 +34,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView newsListView;
     private List<News> newsItems;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
@@ -57,8 +56,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initViews(); //initialize the views
 
         setUpSwipeRefresh();
-
-        connect = new Connect(this.getActivity());
 
         getNewsFromDatabase(); // gets news items from the database
 
@@ -126,15 +123,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(getActivity());
     }
 
-    private boolean hasInternet()
+    private static boolean hasInternet()
     {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }
