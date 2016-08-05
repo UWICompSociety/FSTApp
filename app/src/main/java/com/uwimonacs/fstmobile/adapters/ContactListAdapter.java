@@ -1,10 +1,12 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,11 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
-
 import com.uwimonacs.fstmobile.models.Contact;
-import com.uwimonacs.fstmobile.models.FAQ;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,45 +28,79 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     public class ContactViewHolder extends RecyclerView.ViewHolder  {
         final TextView name;
-        final TextView number;
 
         public ContactViewHolder(View v) {
             super(v);
 
             name = (TextView) v.findViewById(R.id.contact_name);
-            number = (TextView) v.findViewById(R.id.contact_number);
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = ContactViewHolder.this.getAdapterPosition();
-                    final String number = contacts.get(pos).getNumber();
-                    if (!TextUtils.isEmpty(number)) {
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + number ));
-                        v.getContext().startActivity(intent);  // start dialer activity
+
+                    final Contact contact = contacts.get(pos);
+
+                    final String name = contact.getName();
+                    final String telNum = contact.getNumber();
+
+                    final AlertDialog dialog = new AlertDialog.Builder(v.getContext()).create();
+                    final LayoutInflater inflater = LayoutInflater.from(ctxt);
+
+                    @SuppressLint("InflateParams")
+                    // Pass null as the parent view because its going in the dialog layout
+                    final View dialogView = inflater.inflate(R.layout.dialog_content_contact_info, null);
+
+                    final TextView telNumView = (TextView) dialogView.findViewById(R.id.telNumView);
+
+                    telNumView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!TextUtils.isEmpty(telNum)) {
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse("tel:" + telNum ));
+                                v.getContext().startActivity(intent);  // start dialer activity
+                            }
+                        }
+                    });
+
+                    telNumView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(final View v) {
+                            if (!TextUtils.isEmpty(telNum)) {
+                                final ClipboardManager clipboard =
+                                        (ClipboardManager) v.getContext()
+                                                .getSystemService(Context.CLIPBOARD_SERVICE);
+
+                                clipboard.setPrimaryClip(ClipData.newPlainText("number", telNum));
+
+                                Toast.makeText(v.getContext(), R.string.toast_text_copied,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            return  true;
+                        }
+                    });
+
+// TODO: Add the data for these fields
+//                    final TextView emailView = (TextView) dialogView.findViewById(R.id.emailView);
+//                    final TextView websiteView =
+//                            (TextView) dialogView.findViewById(R.id.websiteView);
+
+                    if (!TextUtils.isEmpty(telNum)) {
+                        telNumView.setText(telNum);
+                    } else {
+                        telNumView.setText(android.R.string.emptyPhoneNumber);
                     }
-                }
-            });
 
-            v.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    final int pos = ContactViewHolder.this.getAdapterPosition();
-                    final String number = contacts.get(pos).getNumber();
-
-                    if (!TextUtils.isEmpty(number)) {
-                        final ClipboardManager clipboard = (ClipboardManager)
-                                v.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-
-                        final ClipData clip = ClipData.newPlainText("number", number);
-
-                        clipboard.setPrimaryClip(clip);
-
-                        Toast.makeText(v.getContext(), "Text copied", Toast.LENGTH_SHORT).show();
+                    if (!TextUtils.isEmpty(name)) {
+                        dialog.setTitle(name);
+                    } else {
+                        dialog.setTitle(android.R.string.unknownName);
                     }
 
-                    return  true;
+                    dialog.setView(dialogView);
+                    dialog.show();
                 }
             });
         }
@@ -89,13 +121,12 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
-        holder.name.setText(contacts.get(position).getName()); // sets name of contact
-        holder.number.setText(contacts.get(position).getNumber()); // sets number of contact
+        holder.name.setText(contacts.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return contacts.size(); // returns number of contacts
+        return contacts.size();
     }
 
     public void updateContacts(List<Contact> newContacts) {

@@ -1,10 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,18 +19,10 @@
     <style name="AppTheme.NoActionBar.VideosListActivity"/>
     <style name="AppTheme.NoActionBar.ScholarshipActivity"/>
     <style name="AppTheme.NoActionBar.ContactsActivity"/>
-
-    <style name="AppTheme.Settings"/>
+    <style name="AppTheme.NoActionBar.Settings"/>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="card.native.material_large_image_content_outer_layout" parent="card.native.content_outer_layout">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-    </style>
 
 </resources>

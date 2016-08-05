@@ -1,4 +1,4 @@
-package com.uwimonacs.fstmobile.helper;
+package com.uwimonacs.fstmobile.util;
 
 public class Constants {
     public static final String CONTACTS_URL =

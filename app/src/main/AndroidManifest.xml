@@ -20,7 +20,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/fstlogo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -38,7 +38,7 @@
 
         <activity
             android:name=".activities.SASLoginActivity"
-            android:theme="@style/AppTheme.SASLogin" />
+            android:theme="@style/AppTheme.NoActionBar.SASLogin" />
         <activity
             android:name=".activities.SASTimetableActivity" >
             <meta-data
@@ -131,7 +131,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.Settings">
+            android:theme="@style/AppTheme.NoActionBar.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />

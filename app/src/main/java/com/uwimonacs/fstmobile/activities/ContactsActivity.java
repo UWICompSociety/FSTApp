@@ -1,13 +1,15 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,18 +18,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ContactListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.Contact;
-import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.sync.ContactSync;
 
 import java.util.ArrayList;
@@ -39,13 +41,13 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     private List<Contact> contacts = new ArrayList<>();
     private ContactListAdapter contactListAdapter;
     private String contactsUrl = Constants.CONTACTS_URL;
-    private Connect connect;
     private Toolbar toolbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private SearchView searchView;
+    private CardView root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +56,11 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         initViews();
 
+        setupReveal();
+
         setUpToolBar();
 
         setUpSwipeRefresh();
-
-        connect = new Connect(this);
 
         getContactsFromDatabase();   // get all contacts from phone database
 
@@ -71,7 +73,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         setUpProgressBar(); //set up progress bar
 
-        new LoadContactsTask(this).execute(""); // runs the contacts sync task
+        new LoadContactsTask(this).execute(); // runs the contacts sync task
     }
 
     private void initViews() {
@@ -81,11 +83,42 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView)findViewById(R.id.img_placeholder);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        root = (CardView) findViewById(R.id.root);
+    }
+
+    private void setupReveal(){
+        if(Build.VERSION.SDK_INT >= 21) {
+            root.setVisibility(View.INVISIBLE);
+            ViewTreeObserver observer = root.getViewTreeObserver();
+            if(observer.isAlive()){
+                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularReveal();
+                        if(Build.VERSION.SDK_INT < 16)
+                            root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        else
+                            root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void circularReveal(){
+        int cx = root.getWidth() / 2;
+        int cy = root.getHeight() / 2;
+        float finalRadius = (float) Math.max(root.getWidth(), root.getHeight());
+        Animator anim = ViewAnimationUtils.createCircularReveal(root, cx, cy, 0, finalRadius);
+        anim.setDuration(1000);
+        root.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setUpToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Contacts");
+        getSupportActionBar().setTitle(R.string.title_activity_contacts);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -111,14 +144,14 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet() {
+    private static boolean hasInternet() {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }
@@ -128,7 +161,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        new LoadContactsTask(this).execute(""); // runs the contacts sync task
+        new LoadContactsTask(this).execute(); // runs the contacts sync task
     }
 
     @Override
@@ -200,7 +233,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         return filteredModelList;
     }
 
-    private class LoadContactsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadContactsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadContactsTask(Context ctxt)
@@ -221,7 +254,7 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final ContactSync contactSync = new ContactSync(contactsUrl);
 
             if (!isConnected()) { // if there is no internet connection

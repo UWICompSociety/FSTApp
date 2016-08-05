@@ -20,7 +20,11 @@
             android:id="@+id/newsDetail_header"
             android:layout_width="fill_parent"
             android:layout_height="200.0dip"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:transitionName="news_image"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            tools:background="@android:color/black"/>
         <TextView
             android:textSize="30.0sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -28,6 +32,7 @@
             android:paddingTop="10.0dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:transitionName="news_title"
             tools:text="Title of the News Story" />
 
         <TextView
@@ -38,6 +43,7 @@
             android:paddingBottom="20.0dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="An academic community can be defined as a set of people that share similar academic interest. This course has taught me the importance of being in an academic community. It has taught me what it takes to be considered part of an academic community. Critical reading and writing plays an important part in being part of an academic community. There have been many tough times in this course but it has been to know that I have a better understanding of critical reading and writing. I understand now, the importance of reading critically and how to differentiate between different types of sources and to filter out the false information from the good. This course has set me on a journey to be a better member in my academic community and helped me to better understand how to properly contribute back to my academic community.  One important skill I’ve learnt during critical reading is finding and evaluating sources for information. The Internet is crowded with information and not all of this information may be factual or originate from credible sources. Through several classes in the library I have learnt of resources such as UWILink and Google Scholar which has helped me to find credible information quicker and more efficiently. I found this new found skill important because when writing scholarly pieces of my own in the future, it is important I find credible sources from which I can reference  to use in my own work and because of the information learnt from the course, I am much more equipped to do so.  Critical reading has taught me a lot, one thing it has taught me is writing in a more structured and more scholarly manner. Before critical reading my writing style was very untidy and incoherent. My sentences were structured improperly and my essays did not give a clear understanding of the topic that it was supposed to discuss. This course has taught me the importance of stating a clear topic sentence and thesis statement. It has also taught me the difference between a topic and thesis statement. With the knowledge I have gained, the essays that I write now are much more structured and more coherent. A clear understanding of the topic being discussed is now easily identifiable in my essays.  Critical reading had been very challenging. It’s one of the hardest things to do something you hate but you still have to do it. I have spent weeks with this course wondering to myself, what was the point of me choosing this course or what was the point of me having to do it.  Most times I wish this course was not necessary to get a degree but unfortunately. I have always been a person that acts stubborn when given a task that I displease doing. I put out very little effort into things that seem unnecessary and annoying and that attitude has caused me to not perform as well as I should have. If its one thing this course has taught me is that life is hard and sometimes life throws at you some challenges that proves itself a nuisance and brings up the don’t care attitude but that’s the thing that separates successful people from those that just float and contribute little to the world. The successful people never give up, even when their stuck with an annoying challenge. The successful tackle challenges and gets them out of their path while unsuccessful people just run from their problems and give up. So as annoying as this challenge was, I am somewhat glad that I chose this subject because it reminded me that life is not just roses and cakes, it’s hard and it’s filled with lots of challenges. " />
+            android:textIsSelectable="true"
+            tools:text="@string/placeholder_lorem_ipsum" />
     </LinearLayout>
 </ScrollView>

@@ -7,17 +7,19 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.SASLogin">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <!--<style name="AppTheme.SASLogin">-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+    <!--</style>-->
+
+    <style name="AppTheme.NoActionBar.SASLogin">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="AppTheme.Settings">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <style name="AppTheme.NoActionBar.Settings">
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar.PlayerActivity">
@@ -25,7 +27,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar.FAQActivity">
-        <item name="android:statusBarColor">#1B5E20</item>
+        <item name="android:statusBarColor">#FFA000</item>
     </style>
 
     <style name="AppTheme.NoActionBar.VideosListActivity">
@@ -33,7 +35,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar.ScholarshipActivity">
-        <item name="android:statusBarColor">#4A148C</item>
+        <item name="android:statusBarColor">#E64A19</item>
     </style>
 
     <style name="AppTheme.NoActionBar.ContactsActivity">

@@ -1,12 +1,16 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -15,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,8 +28,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ScholarshipAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.sync.ScholarshipSync;
 
@@ -40,13 +46,13 @@ public class ScholarshipActivity extends AppCompatActivity
     private List<Scholarship> schols = new ArrayList<>();
     private ScholarshipAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private RecyclerView rv;
     private SearchView searchView;
+    private CardView root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +61,9 @@ public class ScholarshipActivity extends AppCompatActivity
 
         initViews(); // initalize the views in the activity
 
-        setUpToolBar(); // set up properties for toolbar such as title
+        setupReveal();
 
-        connect = new Connect(this); // used to heck connectivity
+        setUpToolBar(); // set up properties for toolbar such as title
 
         setUpSwipeRefresh(); // set up swipe down to refresh
 
@@ -72,7 +78,7 @@ public class ScholarshipActivity extends AppCompatActivity
 
         setUpProgressBar();
 
-        new LoadScholsTask(this).execute("");  // refresh items from internet
+        new LoadScholsTask(this).execute();  // refresh items from internet
     }
 
     private void initViews() {
@@ -82,6 +88,37 @@ public class ScholarshipActivity extends AppCompatActivity
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         rv = (RecyclerView) findViewById(R.id.rv);
+        root = (CardView) findViewById(R.id.root);
+    }
+
+    private void setupReveal(){
+        if(Build.VERSION.SDK_INT >= 21) {
+            root.setVisibility(View.INVISIBLE);
+            ViewTreeObserver observer = root.getViewTreeObserver();
+            if(observer.isAlive()){
+                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularReveal();
+                        if(Build.VERSION.SDK_INT < 16)
+                            root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        else
+                            root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void circularReveal(){
+        int cx = root.getWidth() / 2;
+        int cy = root.getHeight() / 2;
+        float finalRadius = (float) Math.max(root.getWidth(), root.getHeight());
+        Animator anim = ViewAnimationUtils.createCircularReveal(root, cx, cy, 0, finalRadius);
+        anim.setDuration(1000);
+        root.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setUpToolBar() {
@@ -188,15 +225,15 @@ public class ScholarshipActivity extends AppCompatActivity
 
     private boolean isConnected(){
 
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet()
+    private static boolean hasInternet()
     {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }
@@ -210,10 +247,10 @@ public class ScholarshipActivity extends AppCompatActivity
      */
     @Override
     public void onRefresh() {
-        new LoadScholsTask(this).execute("");
+        new LoadScholsTask(this).execute();
     }
 
-    private class LoadScholsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadScholsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadScholsTask(Context ctxt) {
@@ -233,7 +270,7 @@ public class ScholarshipActivity extends AppCompatActivity
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final ScholarshipSync scholSync = new ScholarshipSync(Constants.SCHOL_URL);
 
             if (!isConnected()) { // if there is no internet connection

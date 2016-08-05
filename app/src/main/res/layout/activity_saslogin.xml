@@ -5,12 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/queens_way"
     tools:context="com.uwimonacs.fstmobile.activities.SASLoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="250dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/queens_way"
+            android:transitionName="queens_way"/>
     </LinearLayout>
 
     <LinearLayout

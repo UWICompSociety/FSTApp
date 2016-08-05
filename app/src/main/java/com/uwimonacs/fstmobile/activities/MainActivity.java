@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -23,13 +25,19 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
+import com.uwimonacs.fstmobile.adapters.TermsAdapter;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
+import com.uwimonacs.fstmobile.models.TimeTable;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity
@@ -45,6 +53,7 @@ implements AdapterView.OnItemSelectedListener{
     private Account mAccount;
     private AccountManager mAccountManager;
     public static boolean loggedIn = false;
+    private AppCompatActivity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +76,18 @@ implements AdapterView.OnItemSelectedListener{
             toggle.syncState();
         }
 
-        setUpSAS();
+        navigationView = (NavigationView) findViewById(R.id.nav_drawer);
+
+        setNavDrawerListener();
+
+        if(!doesDatabaseAccountExist())
+            setUpSAS();
 
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
 
         pager = (ViewPager)findViewById(R.id.pager);
 
-        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager());
+        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), this);
 
         pager.setAdapter(tabPagerAdapter);
 
@@ -82,14 +96,23 @@ implements AdapterView.OnItemSelectedListener{
     }
 
     @Override
-    protected void onResume() {
-        if (sasConfig.termNames.size() == 0 && loggedIn) {
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setTitle("View timetable");
-            setUpSAS();
-            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(true);
-            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(true);
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (sasConfig.student != null) {
+            sasConfig.serialize();
+            sasConfig.save();
+            sasConfig.student.serialize();
+            sasConfig.student.save();
+        }
+        super.onPause();
     }
 
     @Override
@@ -103,61 +126,98 @@ implements AdapterView.OnItemSelectedListener{
         }
     }
 
-    public void setUpSAS() {
+    public boolean doesDatabaseAccountExist(){
+        try {
+            SASConfig sasConfig1 = (SASConfig) new Select().from(SASConfig.class).execute().get(0);
+            Student student = (Student) new Select().from(Student.class).execute().get(0);
+            if(student != null && sasConfig1 != null) {
+                init();
+                sasConfig.student = student;
+                sasConfig.student.unSerialize();
+
+                sasConfig1.unSerialize();
+                sasConfig.termNames = sasConfig1.termNames;
+                sasConfig.termValues = sasConfig1.termValues;
+
+                loggedIn = true;
+
+                fixNavDrawerForDatabase();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void init(){
         sasConfig = MyApplication.getSasConfig();
         sasConfig.setmActivity(this);
         webView = MyApplication.getWebView();
         mAccountManager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
         mAccounts = mAccountManager.getAccountsByType("UWI");
-        navigationView = (NavigationView) findViewById(R.id.nav_drawer);
+        if(mAccounts.length > 0)
+            mAccount = mAccounts[0];
+    }
+
+    public void setUpSAS() {
+        init();
+        if (mAccounts.length > 0) {
+            //Log in with single account
+            login();
+        } else {
+            //Allow user to log in
+            cleanUpNavDrawer();
+        }
+
+    }
+
+    public void login(){
 
         final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
         final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
         final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
-        assert navigationView != null;
 
-        if (mAccounts.length > 0) {
-            registration.setEnabled(false);
-            transcript.setEnabled(false);
-            logout.setEnabled(false);
-            mAccount = mAccounts[0];
-            //Login with single account
-            final String username = mAccount.name;
-            final String password = mAccountManager.getPassword(mAccount);
-            final String formData = "sid=" + username + "&PIN=" + password;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    webView.setWebViewClient(new WebViewClient(){
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            final Student student = new Student(username);
-                            student.setPassword(password);
-                            sasConfig.student = student;
-                            view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'main');");
-                            super.onPageFinished(view, url);
-                        }
-                    });
-                    webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
-                }
-            });
-        } else {
-            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
-            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
-            navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
-        }
+        registration.setEnabled(false);
+        transcript.setEnabled(false);
+        logout.setEnabled(false);
+        final String username = mAccount.name;
+        final String password = mAccountManager.getPassword(mAccount);
+        final String formData = "sid=" + username + "&PIN=" + password;
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                final Student student = new Student(username);
+                student.setPassword(password);
+                sasConfig.student = student;
+                view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'main');");
+                super.onPageFinished(view, url);
+            }
+        });
+        webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
+    }
+
+    public void setNavDrawerListener(){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                drawer.closeDrawers();
                 switch (item.getItemId()) {
                     case R.id.sas_registration:
                         if (!loggedIn) {
+                            ImageView queensWay = (ImageView) findViewById(R.id.queens_way);
+                            Pair<View, String> pair = Pair.create((View)queensWay,"queens_way");
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pair);
                             Intent intent = new Intent(getApplicationContext(), SASLoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setAction("MainActivity");
-                            startActivity(intent);
+                            if(Build.VERSION.SDK_INT >= 21)
+                                startActivity(intent, options.toBundle());
+                            else
+                                startActivity(intent);
                         } else {
+                            drawer.closeDrawers();
                             Intent intent = new Intent(getApplicationContext(), SASTimetableActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -165,18 +225,22 @@ implements AdapterView.OnItemSelectedListener{
                         return true;
 
                     case R.id.sas_transcript:
+                        drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), SASTranscriptActivity.class));
                         return true;
 
                     case R.id.sas_logout:
+                        drawer.closeDrawers();
                         removeAccount();
                         return true;
 
                     case R.id.settings:
+                        drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
 
                     default:
+                        drawer.closeDrawers();
                         return true;
                 }
             }
@@ -211,11 +275,15 @@ implements AdapterView.OnItemSelectedListener{
                         }
 
                         sasConfig.student = null;
-                        //ActivityCompat.finishAffinity(activity);
+                        sasConfig.getTerms().clear();
+
+                        new Delete().from(SASConfig.class).execute();
+                        new Delete().from(Student.class).execute();
+
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                cleanUp();
+                                cleanUpNavDrawer();
                             }
                         });
                     }
@@ -233,13 +301,41 @@ implements AdapterView.OnItemSelectedListener{
         alertDialog.show();
     }
 
-    public void cleanUp(){
-        ((TextView)findViewById(R.id.username)).setText("SAS User");
-        ((TextView)findViewById(R.id.id_number)).setText("620012345");
-        sasConfig.getTerms().clear();
+    public void cleanUpNavDrawer(){
+
+        View header = navigationView.getHeaderView(0);
+
+        ((TextView)header.findViewById(R.id.username)).setText("SAS User");
+        ((TextView)header.findViewById(R.id.id_number)).setText("620012345");
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
+    }
+
+    public void fixNavDrawerForDatabase(){
+        View header = navigationView.getHeaderView(0);
+
+        final TextView username = (TextView) header.findViewById(R.id.username),
+                idNUmber = (TextView) header.findViewById(R.id.id_number);
+
+        username.setText(sasConfig.student.getName());
+        idNUmber.setText(sasConfig.student.getIdNumber());
+
+        TermsAdapter terms = new TermsAdapter(this, android.R.layout.simple_spinner_item);
+        terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        terms.addAll(sasConfig.termNames);
+        Spinner termSelector = (Spinner) header.findViewById(R.id.term);
+        termSelector.setOnItemSelectedListener(this);
+        termSelector.setAdapter(terms);
+        sasConfig.setTerms(terms);
+
+        final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
+        final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
+        final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
+
+        registration.setEnabled(true);
+        transcript.setEnabled(true);
+        logout.setEnabled(true);
     }
 
     @Override
@@ -249,30 +345,35 @@ implements AdapterView.OnItemSelectedListener{
         * and invoke a JS callback to get all the courses for that term
         * */
         final String term = sasConfig.termValues.get(pos);
-        if (!term.equals(sasConfig.term)) {
+
+        TimeTable timeTable = sasConfig.student.getTimeTable(term);
+        if(timeTable != null){
+            //We already have the timetable
+            sasConfig.selectTerm(term);
+            sasConfig.student.setTimeTable(timeTable);
+        } else if (!term.equals(sasConfig.term)) {
+            //We don't have the timetable we need to get it
             final Menu menu = navigationView.getMenu();
             final MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
 
             sasConfig.selectTerm(term);
-            final String formData = "name_var=bmenu.P_RegMnu&term_in=" + term;
+
+            String formData;
+            try {
+                formData = "sid=" + sasConfig.student.getIdNumber() + "&PIN=" + mAccountManager.getPassword(mAccount);
+            } catch (IllegalArgumentException e){
+                formData = "sid=" + sasConfig.student.getIdNumber() + "&PIN=" + sasConfig.student.getPassword();
+            }
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    System.out.println("Term selected: " + term);
                     // TODO: Fetch all courses for the current semester
-                    view.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            view.loadUrl("javascript:window.sasConfig.loadCourses('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>');");
-                            super.onPageFinished(view, url);
-                        }
-                    });
-                    view.loadUrl(getResources().getString(R.string.detailschedule_get));
+                    view.loadUrl("javascript:window.sasConfig.passiveLogin('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'timetable');");
                     super.onPageFinished(view, url);
                 }
             });
-            webView.postUrl("http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwcklibs.P_StoreTerm", formData.getBytes());
+            webView.postUrl(getResources().getString(R.string.login_post), formData.getBytes());
         }
     }
 

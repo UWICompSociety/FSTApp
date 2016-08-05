@@ -5,31 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:scrollbars="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:paddingTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="UWI Open Scholarship"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail"
-            android:paddingTop="10dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc interdum neque eget nisi convallis pretium. Proin porttitor tellus quis nisl cursus, vel finibus nulla varius. Ut euismod mi non nibh vulputate, condimentum aliquam est semper. Nullam ac ornare odio. Nunc non lectus lacinia, maximus nibh non, congue sem. In varius ipsum purus, at posuere libero dignissim finibus. Sed egestas ipsum sit amet nunc varius scelerisque. Nulla non libero blandit dui rutrum porta. Praesent tincidunt, libero quis convallis consequat, turpis tortor fringilla ante, et feugiat dolor enim vitae lorem. Nullam et neque ut diam mollis commodo. Sed eget justo quis nunc imperdiet malesuada vel vulputate metus. Sed eget efficitur libero, non ullamcorper magna. Ut auctor gravida lacus, sit amet lobortis justo. Donec et neque ligula. Suspendisse scelerisque maximus varius. Proin metus felis, aliquam ac facilisis vel, dictum semper nisl."/>
+        <com.mukesh.MarkdownView
+            android:id="@+id/markdown_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
     </LinearLayout>
 

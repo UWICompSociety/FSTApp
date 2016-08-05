@@ -4,6 +4,7 @@
     <!-- Activity Titles -->
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_contacts">Contacts</string>
 
     <!-- Menu Option Titles -->
     <string name="action_settings">Settings</string>
@@ -15,10 +16,10 @@
     <!-- YouTube Related -->
     <string name="title_activity_player">VideoListActivity</string>
     <string name="no_description">No description</string>
-    <string name="videos_activity_title">Videos</string>
+    <string name="title_activity_videos">Videos</string>
     <string name="watch_externally">Watch on YouTube</string>
-    <string name="api_key">AIzaSyDL2ZqeB3uGYmqv8jJgITwS4N9eFyBz4IA</string>
-    <string name="channel_id">UCLSsrbKRNkPZF9_bTds6yAw</string>
+    <string name="api_key" translatable="false">AIzaSyDL2ZqeB3uGYmqv8jJgITwS4N9eFyBz4IA</string>
+    <string name="channel_id" translatable="false">UCLSsrbKRNkPZF9_bTds6yAw</string>
     <string name="required_fields">items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)</string>
 
     <!-- SAS Related -->
@@ -88,11 +89,10 @@
     <string name="play_services_not_installed">Google Play Services is not installed on this device</string>
 
     <!-- MapBox Related -->
-    <string name="access_token">pk.eyJ1IjoiamFzb25oaW5kczEzIiwiYSI6ImNpcXZ2NWhhYzAwM2hmcW04cjMxMnFkYXMifQ.1jBTcb1cHOSSKx6uPpOWvQ</string>
+    <string name="access_token" translatable="false">pk.eyJ1IjoiamFzb25oaW5kczEzIiwiYSI6ImNpcXZ2NWhhYzAwM2hmcW04cjMxMnFkYXMifQ.1jBTcb1cHOSSKx6uPpOWvQ</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_expandable_scholarship">ExpandableScholarshipActivity</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 
@@ -103,5 +103,8 @@
     <string name="sas_logout">Log out</string>
     <string name="settings">Settings</string>
     <string name="forgot_password">Can\'t log in?</string>
+
+    <!-- Toast shown when text is copied to the clipboard -->
+    <string name="toast_text_copied">Text copied</string>
 
 </resources>

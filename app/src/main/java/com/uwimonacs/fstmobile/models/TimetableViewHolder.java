@@ -8,13 +8,15 @@ import android.widget.TextView;
 import com.uwimonacs.fstmobile.R;
 
 public class TimetableViewHolder extends RecyclerView.ViewHolder {
-    public TextView codeTitle, times, venue;
-    public LinearLayout classCard;
-    public TimetableViewHolder(View itemView) {
-        super(itemView);
-        classCard = (LinearLayout) itemView;
-        codeTitle = (TextView) itemView.findViewById(R.id.timetable_course_code_title);
-        times = (TextView) itemView.findViewById(R.id.timetable_times);
-        venue = (TextView) itemView.findViewById(R.id.timetable_venue);
+    public final TextView codeTitle, times, venue;
+    public final LinearLayout classCard;
+
+    public TimetableViewHolder(View v) {
+        super(v);
+
+        classCard = (LinearLayout) v;
+        codeTitle = (TextView) v.findViewById(R.id.timetable_course_code_title);
+        times = (TextView) v.findViewById(R.id.timetable_times);
+        venue = (TextView) v.findViewById(R.id.timetable_venue);
     }
 }

@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,8 +21,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.NewsListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.sync.NewsSync;
 
@@ -31,13 +34,17 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView newsListView;
     private List<News> newsItems;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
+    private AppCompatActivity activity;
 
     public NewsFragment() {
         /* required empty constructor */
+    }
+
+    public void setActivity(AppCompatActivity activity){
+        this.activity = activity;
     }
 
     @Nullable
@@ -50,8 +57,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         setUpSwipeRefresh();
 
-        connect = new Connect(this.getActivity());
-
         getNewsFromDatabase(); // gets news items from the database
 
         if (newsItems.size() > 0) { // if there are new items present remove place holder image and text
@@ -63,7 +68,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         setUpProgressBar();
 
-        new LoadNewsTask(this.getActivity()).execute(""); // refresh the news items from internet
+        new LoadNewsTask(this.getActivity()).execute(); // refresh the news items from internet
 
         return view;
     }
@@ -77,11 +82,27 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void setUpRecyclerView() {
-        newsListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+       // newsListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         newsListView.setHasFixedSize(true);
 
+        final GridLayoutManager gm = new GridLayoutManager(getActivity(), 2, 1, false);
+        newsListView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                newsListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int i = newsListView.getMeasuredWidth();
+                float f = getActivity().getResources().getDimension(R.dimen.card_width);
+                i = (int) Math.floor((float) i / f);
+                gm.setSpanCount(i);
+                gm.requestLayout();
+            }
+        });
+        newsListView.setLayoutManager(gm);
+
         newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
+
+        newsListAdapter.setActivity(activity);
 
         newsListView.setAdapter(newsListAdapter);
     }
@@ -102,15 +123,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(getActivity());
     }
 
-    private boolean hasInternet()
+    private static boolean hasInternet()
     {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }
@@ -120,10 +141,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        new LoadNewsTask(getActivity()).execute("");
+        new LoadNewsTask(getActivity()).execute();
     }
 
-    private class LoadNewsTask extends AsyncTask<String,Integer,Boolean>  {
+    private class LoadNewsTask extends AsyncTask<Void,Void,Boolean>  {
         final Context ctxt;
 
         public LoadNewsTask(Context ctxt)
@@ -144,7 +165,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final NewsSync newsSync = new NewsSync(Constants.NEWS_URL);
 
             if (!isConnected()) {  // if there is no internet connection

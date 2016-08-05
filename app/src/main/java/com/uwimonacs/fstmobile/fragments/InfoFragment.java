@@ -1,10 +1,12 @@
 package com.uwimonacs.fstmobile.fragments;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,6 @@ import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
 import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
-import com.uwimonacs.fstmobile.helper.Connect;
 
 public class InfoFragment extends Fragment
         implements View.OnClickListener {
@@ -46,19 +47,43 @@ public class InfoFragment extends Fragment
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.faq:
-                v.getContext().startActivity(new Intent(v.getContext(), FAQActivity.class));
+                Pair<View, String> faqPair = Pair.create(v,"faq_card");
+                ActivityOptionsCompat faqOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), faqPair);
+                if(Build.VERSION.SDK_INT < 21)
+                    v.getContext().startActivity(new Intent(v.getContext(), FAQActivity.class));
+                else
+                    v.getContext().startActivity(new Intent(v.getContext(), FAQActivity.class), faqOptions.toBundle());
                 break;
 
             case R.id.videos:
-                v.getContext().startActivity(new Intent(v.getContext(), VideoListActivity.class));
+                Pair<View, String> videosPair = Pair.create(v,"video_card");
+                ActivityOptionsCompat videosOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), videosPair);
+                if(Build.VERSION.SDK_INT < 21)
+                    v.getContext().startActivity(new Intent(v.getContext(), VideoListActivity.class));
+                else
+                    v.getContext().startActivity(new Intent(v.getContext(), VideoListActivity.class), videosOptions.toBundle());
                 break;
 
             case R.id.scholarships:
-                v.getContext().startActivity(new Intent(v.getContext(), ScholarshipActivity.class));
+                Pair<View, String> scholPair = Pair.create(v,"scholarship_card");
+                ActivityOptionsCompat scholOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), scholPair);
+                if(Build.VERSION.SDK_INT < 21)
+                    v.getContext().startActivity(new Intent(v.getContext(), ScholarshipActivity.class));
+                else
+                    v.getContext().startActivity(new Intent(v.getContext(), ScholarshipActivity.class), scholOptions.toBundle());
                 break;
 
             case R.id.contacts:
-                v.getContext().startActivity(new Intent(v.getContext(), ContactsActivity.class));
+                Pair<View, String> contactPair = Pair.create(v,"contact_card");
+                ActivityOptionsCompat contactOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), contactPair);
+                if(Build.VERSION.SDK_INT < 21)
+                    v.getContext().startActivity(new Intent(v.getContext(), ContactsActivity.class));
+                else
+                    v.getContext().startActivity(new Intent(v.getContext(), ContactsActivity.class), contactOptions.toBundle());
                 break;
 
             default:

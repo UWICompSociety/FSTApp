@@ -6,40 +6,53 @@ package com.uwimonacs.fstmobile.models;
  */
 public class VideoItem {
 
-    private String title;
-    private String description;
-    private String thumbnailURL;
-    private String id;
+    private String mId;
+
+    private String mTitle;
+
+    private String mDesc;
+
+    private String mThumbnailURL;
+
+    private boolean mAlreadyPlayed = false;
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     public String getDescription() {
-        return description;
+        return mDesc;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.mDesc = description;
     }
 
-    public String getThumbnailURL() {
-        return thumbnailURL;
+    public String getThumbnailUrl() {
+        return mThumbnailURL;
     }
 
-    public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
+    public void setThumbnailUrl(String thumbnailURL) {
+        this.mThumbnailURL = thumbnailURL;
+    }
+
+    public boolean getAlreadyPlayed() {
+        return mAlreadyPlayed;
+    }
+
+    public void setAlreadyPlayed(boolean alreadyPlayed) {
+        mAlreadyPlayed = alreadyPlayed;
     }
 
     public String getId() {
-        return id;
+        return mId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.mId = id;
     }
 }

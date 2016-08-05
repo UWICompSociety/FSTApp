@@ -1,144 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootCoordinatorLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
 
-    <ScrollView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none" >
+        tools:targetApi="21">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v7.widget.CardView
+            android:id="@+id/faq"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:transitionName="faq_card">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/faq"
-                android:clickable="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10.0dip"
-                android:background="?android:selectableItemBackground">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:background="#FFC107"
+                    app:srcCompat="@drawable/ic_help_outline_black_24dp"/>
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dip"
-                        android:scaleType="fitCenter"
-                        android:background="#4CAF50"
-                        android:src="@mipmap/ic_faqicon"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="24dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="24dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:text="@string/title_activity_faq" />
 
-                    <TextView
-                        android:padding="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:text="FAQ" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/videos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:transitionName="video_card">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/videos"
-                android:clickable="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10.0dip"
-                android:background="?android:selectableItemBackground">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:background="#2196F3"
+                    app:srcCompat="@drawable/ic_videocam_black_24dp"/>
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dip"
-                        android:scaleType="fitCenter"
-                        android:background="#2196F3"
-                        android:src="@mipmap/ic_video"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="24dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="24dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:text="@string/title_activity_videos" />
 
-                    <TextView
-                        android:padding="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:text="Videos" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/scholarships"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:transitionName="scholarship_card">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/scholarships"
-                android:clickable="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10.0dip"
-                android:background="?android:selectableItemBackground">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:background="#FF5722"
+                    app:srcCompat="@drawable/ic_school_black_24dp"/>
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dip"
-                        android:scaleType="fitCenter"
-                        android:background="#9C27B0"
-                        android:src="@drawable/ic_school_black_24dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="24dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="24dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:text="@string/title_activity_scholarship" />
 
-                    <TextView
-                        android:padding="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:text="Scholarships &amp; Bursaries" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:transitionName="contact_card">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/contacts"
-                android:clickable="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10.0dip"
-                android:background="?android:selectableItemBackground">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" >
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:background="#9E9E9E"
+                    app:srcCompat="@drawable/ic_people_black_24dp"/>
 
-                    <ImageView
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dip"
-                        android:scaleType="fitCenter"
-                        android:background="#9E9E9E"
-                        android:src="@mipmap/ic_contacts"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="24dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="24dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:text="@string/title_activity_contacts" />
 
-                    <TextView
-                        android:padding="16dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:text="Contacts" />
+            </LinearLayout>
 
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-        </LinearLayout>
-    </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</ScrollView>

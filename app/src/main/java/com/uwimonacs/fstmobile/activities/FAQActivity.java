@@ -1,11 +1,15 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -13,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,8 +27,8 @@ import android.view.MenuItem;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.FaqListAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.sync.FAQSync;
 
@@ -34,13 +40,13 @@ public class FAQActivity extends AppCompatActivity
     private List<FAQ> faqs;
     private FaqListAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Connect connect;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private Toolbar toolbar;
     private RecyclerView faqList;
     private SearchView searchView;
+    private CardView root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +55,9 @@ public class FAQActivity extends AppCompatActivity
 
         initViews();
 
-        setUpToolBar();
+        setupReveal();
 
-        connect = new Connect(this);
+        setUpToolBar();
 
         setUpSwipeRefresh();
 
@@ -66,7 +72,7 @@ public class FAQActivity extends AppCompatActivity
 
         setUpProgressBar();
 
-        new LoadFAQsTask(this).execute("");
+        new LoadFAQsTask(this).execute();
     }
 
     private void setUpToolBar() {
@@ -81,6 +87,37 @@ public class FAQActivity extends AppCompatActivity
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         faqList = (RecyclerView)findViewById(R.id.faqlist);
+        root = (CardView) findViewById(R.id.root);
+    }
+
+    private void setupReveal(){
+        if(Build.VERSION.SDK_INT >= 21) {
+            root.setVisibility(View.INVISIBLE);
+            ViewTreeObserver observer = root.getViewTreeObserver();
+            if(observer.isAlive()){
+                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularReveal();
+                        if(Build.VERSION.SDK_INT < 16)
+                            root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        else
+                            root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void circularReveal(){
+        int cx = root.getWidth() / 2;
+        int cy = root.getHeight() / 2;
+        float finalRadius = (float) Math.max(root.getWidth(), root.getHeight());
+        Animator anim = ViewAnimationUtils.createCircularReveal(root, cx, cy, 0, finalRadius);
+        anim.setDuration(1000);
+        root.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setUpSwipeRefresh() {
@@ -158,14 +195,14 @@ public class FAQActivity extends AppCompatActivity
     }
 
     private boolean isConnected() {
-        return connect.isConnected();
+        return ConnectUtils.isConnected(this);
     }
 
-    private boolean hasInternet() {
+    private static boolean hasInternet() {
         boolean hasInternet;
 
         try {
-            hasInternet = connect.haveInternetConnectivity();
+            hasInternet = ConnectUtils.haveInternetConnectivity();
         } catch(Exception e) {
             hasInternet = false;
         }
@@ -197,10 +234,10 @@ public class FAQActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        new LoadFAQsTask(this).execute("");
+        new LoadFAQsTask(this).execute();
     }
 
-    private class LoadFAQsTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadFAQsTask extends AsyncTask<Void,Void,Boolean> {
         final Context ctxt;
 
         public LoadFAQsTask(Context ctxt)
@@ -222,7 +259,7 @@ public class FAQActivity extends AppCompatActivity
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final FAQSync faqSync = new FAQSync(Constants.FAQS_URL);
 
             if (!isConnected()) { //if there is no internet connection

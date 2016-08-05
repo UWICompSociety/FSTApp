@@ -1,11 +1,20 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -14,16 +23,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.VideosAdapter;
-import com.uwimonacs.fstmobile.helper.Connect;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +44,13 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
     private RecyclerView videosFound;
     private VideosAdapter adapter;
     private List<VideoItem> videos = new ArrayList<>();
-    private Connect connect;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private SearchView searchView;
     private Toolbar toolbar;
+    private CardView videoCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,8 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         setContentView(R.layout.activity_videos);
 
         initViews();
+
+        setupReveal();
 
         setUpToolBar();
 
@@ -57,13 +72,19 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
             tv_placeholder.setVisibility(View.GONE);
         }
 
-        connect = new Connect(this);
         videosFound = (RecyclerView) findViewById(R.id.videos_found);
 
         setUpRecyclerView();
 
-        new LoadVideosTask(this).execute("");
+        final LoadVideosTask task = new LoadVideosTask(this,
+                swipeRefreshLayout,
+                progressBar,
+                img_placeholder,
+                tv_placeholder,
+                videos,
+                adapter);
 
+        task.execute();
     }
 
     private void initViews() {
@@ -72,6 +93,37 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         tv_placeholder = (TextView) findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView) findViewById(R.id.img_placeholder);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        videoCard = (CardView) findViewById(R.id.card_placeholder);
+    }
+
+    private void setupReveal(){
+        if(Build.VERSION.SDK_INT >= 21) {
+            videoCard.setVisibility(View.INVISIBLE);
+            ViewTreeObserver observer = videoCard.getViewTreeObserver();
+            if(observer.isAlive()){
+                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularReveal();
+                        if(Build.VERSION.SDK_INT < 16)
+                            videoCard.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        else
+                            videoCard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void circularReveal(){
+        int cx = videoCard.getWidth() / 2;
+        int cy = videoCard.getHeight() / 2;
+        float finalRadius = (float) Math.max(videoCard.getWidth(), videoCard.getHeight());
+        Animator anim = ViewAnimationUtils.createCircularReveal(videoCard, cx, cy, 0, finalRadius);
+        anim.setDuration(1000);
+        videoCard.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setUpSwipeRefresh() {
@@ -89,7 +141,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
     private void setUpToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.videos_activity_title);
+        getSupportActionBar().setTitle(R.string.title_activity_videos);
     }
 
     private void setUpRecyclerView() {
@@ -101,7 +153,15 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
     @Override
     public void onRefresh() {
-        new LoadVideosTask(this).execute("");
+        final LoadVideosTask task = new LoadVideosTask(this,
+                swipeRefreshLayout,
+                progressBar,
+                img_placeholder,
+                tv_placeholder,
+                videos,
+                adapter);
+
+        task.execute();
     }
 
     @Override
@@ -172,45 +232,45 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         return filteredModelList;
     }
 
-    private boolean isConnected() {
-        return connect.isConnected();
-    }
+    private static class LoadVideosTask extends AsyncTask<Void,Void,Boolean> {
+        private final WeakReference<Context> mCtxtRef;
+        private final WeakReference<ImageView> mImageViewRef;
+        private final WeakReference<TextView> mTextViewRef;
+        private WeakReference<List<VideoItem>> mVideosRef;
+        private final WeakReference<SwipeRefreshLayout> mSwipeRefreshLayoutRef;
+        private final WeakReference<ProgressBar> mProgressBarRef;
+        private final WeakReference<VideosAdapter> mVideosAdapterRef;
 
-    private boolean hasInternet()
-    {
-        boolean hasInternet;
-
-        try {
-            hasInternet = connect.haveInternetConnectivity();
-        } catch(Exception e) {
-            hasInternet = false;
-        }
-
-        return  hasInternet;
-
-    }
-    private class LoadVideosTask extends AsyncTask<String,Integer,Boolean> {
-        final Context ctxt;
-
-        public LoadVideosTask(Context ctxt)
-        {
-            this.ctxt = ctxt;
+        public LoadVideosTask(Context ctxt,
+                              SwipeRefreshLayout swipeRefreshLayout,
+                              ProgressBar progressBar,
+                              ImageView iv,
+                              TextView tv,
+                              List<VideoItem> videos,
+                              VideosAdapter adapter) {
+            mCtxtRef = new WeakReference<>(ctxt);
+            mSwipeRefreshLayoutRef = new WeakReference<>(swipeRefreshLayout);
+            mProgressBarRef = new WeakReference<>(progressBar);
+            mImageViewRef = new WeakReference<>(iv);
+            mTextViewRef = new WeakReference<>(tv);
+            mVideosRef = new WeakReference<>(videos);
+            mVideosAdapterRef = new WeakReference<>(adapter);
         }
 
         @Override
         protected void onPreExecute() {
-            img_placeholder.setVisibility(View.GONE);
-            tv_placeholder.setVisibility(View.GONE);
+            mImageViewRef.get().setVisibility(View.GONE);
+            mTextViewRef.get().setVisibility(View.GONE);
 
-            if (videos.size() == 0) { // check if any faqs are present
-                progressBar.setVisibility(View.VISIBLE);
-                if (swipeRefreshLayout.isRefreshing())
-                    progressBar.setVisibility(View.GONE);
+            if (mVideosRef.get().size() == 0) { // check if any videos are present
+                mProgressBarRef.get().setVisibility(View.VISIBLE);
+                if (mSwipeRefreshLayoutRef.get().isRefreshing())
+                    mProgressBarRef.get().setVisibility(View.GONE);
             }
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             if (!isConnected()) { // if there is no internet connection
                 return false;
             }
@@ -219,14 +279,27 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
                 return false;
             }
 
-            final YoutubeConnector yc = new YoutubeConnector(ctxt);
-            videos = yc.search();
+            final Context context = mCtxtRef.get();
+            if (context != null) {
+                final YoutubeConnector yc = new YoutubeConnector(context);
 
-            if (videos == null) {
-                return false;
-            }
+                List<VideoItem> videos = mVideosRef.get();
+                if (videos != null) {
+                    videos = yc.search();
+                    mVideosRef.clear();
+                    mVideosRef = new WeakReference<>(videos);
 
-            if (videos.size() == 0) {
+                    if (videos == null) {
+                        return false;
+                    }
+
+                    if (videos.size() == 0) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
                 return false;
             }
 
@@ -235,16 +308,80 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
 
         @Override
         protected void onPostExecute(Boolean result) {
-            swipeRefreshLayout.setRefreshing(false);
-            progressBar.setVisibility(View.GONE);
+            if (isCancelled()) {
+                return;
+            }
+
+            final SwipeRefreshLayout swipeRefreshLayout = mSwipeRefreshLayoutRef.get();
+            if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            final ProgressBar progressBar = mProgressBarRef.get();
+            if (progressBar != null) {
+                progressBar.setVisibility(View.GONE);
+            }
+
             if (result) {
-                adapter.updateVideos(videos);
+                final VideosAdapter adapter = mVideosAdapterRef.get();
+                if (adapter != null) {
+                    final List<VideoItem> videos = mVideosRef.get();
+                    if (videos != null) {
+                        adapter.updateVideos(videos);
+                    }
+                }
             } else {
-                if (videos.size() == 0) {
-                    img_placeholder.setVisibility(View.VISIBLE);
-                    tv_placeholder.setVisibility(View.VISIBLE);
+                final List<VideoItem> videos = mVideosRef.get();
+                if (videos != null) {
+                    if (videos.size() == 0) {
+                        final ImageView imageView = mImageViewRef.get();
+                        if (imageView != null) {
+                            imageView.setVisibility(View.VISIBLE);
+                        }
+
+                        final TextView textView = mTextViewRef.get();
+                        if (textView != null) {
+                            textView.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
             }
+        }
+
+        private boolean isConnected() {
+            final Context context = mCtxtRef.get();
+            if (context != null) {
+                final ConnectivityManager cm =
+                        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            } else {
+                return false;
+            }
+        }
+
+        private static boolean hasInternet() {
+            boolean result;
+
+            try {
+                final URL url = new URL("http://www.google.com");
+
+                final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("GET");
+
+                if (conn.getResponseCode() == 200)
+                    result = true;   // internet is present
+                else {
+                    result = false;  // no internet present
+                }
+            } catch (Exception e) {
+                result = false;
+            }
+
+            return result;
         }
     }
 }

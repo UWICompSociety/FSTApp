@@ -12,13 +12,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
 import com.uwimonacs.fstmobile.adapters.SearchResultsAdapter;
-import com.uwimonacs.fstmobile.helper.Constants;
+import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.Place;
 import com.uwimonacs.fstmobile.sync.PlaceSync;
 
@@ -115,7 +114,7 @@ public class PlacesFragment extends Fragment {
         places.add(place);
     }
 
-    private class LoadPlacesTask extends AsyncTask<String,Integer,Boolean> {
+    private class LoadPlacesTask extends AsyncTask<Void,Void,Boolean> {
         final Context context;
 
         public LoadPlacesTask() {
@@ -128,7 +127,7 @@ public class PlacesFragment extends Fragment {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             final PlaceSync placeSync = new PlaceSync(Constants.PLACE_URL);
             return placeSync.syncPlaces();
         }

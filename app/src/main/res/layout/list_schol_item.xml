@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contact_info"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
+
         android:id="@+id/schol_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="20dp"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
         android:paddingRight="16dp"
@@ -24,6 +26,7 @@
         android:id="@+id/schol_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
         android:paddingRight="16dp"
@@ -31,6 +34,6 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="A small scholarship handed down by the bursary" />
+        tools:text="@string/placeholder_lorem_ipsum" />
 
 </LinearLayout>

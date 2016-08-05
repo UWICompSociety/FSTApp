@@ -2,28 +2,29 @@ package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PlayerActivity;
-import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.VideoViewHolder;
-import com.uwimonacs.fstmobile.models.YoutubeConnector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
-    private List<VideoItem> videos = new ArrayList<>();
-    private final Context context;
-    private String filter = "";
+    private List<VideoItem> mVideos = new ArrayList<>();
+    private final Context mContext;
+    private String mFilter = "";
 
     /**
      * Handles the setting up of the YouTube Android API
@@ -32,12 +33,15 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
      * @param context
      */
     public VideosAdapter(final Context context) {
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item, parent, false);
+        View itemView =
+                LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.video_item, parent, false);
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,9 +49,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                 *   Passes information to the Player activity so it can load the
                 *   correct video set UI elements accordingly
                 * */
-                final TextView title = (TextView) v.findViewById(R.id.video_title),
-                        description =  (TextView) v.findViewById(R.id.video_description),
-                        id = (TextView) v.findViewById(R.id.video_id);
+                final TextView title = (TextView) v.findViewById(R.id.video_title);
+                final TextView description = (TextView) v.findViewById(R.id.video_description);
+                final TextView id = (TextView) v.findViewById(R.id.video_id);
+
                 final Intent intent = new Intent(v.getContext(), PlayerActivity.class);
                 intent.putExtra("VIDEO_ID", id.getText().toString());
                 intent.putExtra("VIDEO_TITLE", title.getText().toString());
@@ -55,31 +60,50 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
+
         return new VideoViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(VideoViewHolder holder, int position) {
-        final VideoItem item = videos.get(position);
+        final VideoItem item = mVideos.get(position);
         // Loads a thumbnail from its URL into the ImageView at bind time
-        Picasso.with(context).load(item.getThumbnailURL()).into(holder.vThumbnail);
+        Picasso.with(mContext).load(item.getThumbnailUrl()).into(holder.vThumbnail);
         holder.vTitle.setText(item.getTitle());
         holder.vId.setText(item.getId());
         //Provides a fallback string in case a video has no description
         if (TextUtils.isEmpty(item.getDescription())) {
             holder.vDescription.setText(item.getDescription());
-        }
-        else
+        } else {
             holder.vDescription.setText(R.string.no_description);
+        }
+
+        if(position != (mVideos.size() - 1)) {
+            holder.divider.setVisibility(View.VISIBLE);
+        }
+
+        // Display the overlay if the video has already been played.
+        if (item.getAlreadyPlayed()) {
+            styleVideoAsViewed(holder.itemView);
+        }
+    }
+
+    /**
+     * Show the video as Viewed. We display a semi-transparent grey overlay over the video
+     * thumbnail.
+     */
+    private void styleVideoAsViewed(View videoItemView) {
+        ImageView thumbnailView = (ImageView) videoItemView.findViewById(R.id.video_thumbnail);
+        thumbnailView.setColorFilter(ContextCompat.getColor(mContext, R.color.video_scrim_watched));
     }
 
     @Override
     public int getItemCount() {
-        return videos.size();
+        return mVideos.size();
     }
 
     public void updateVideos(List<VideoItem> new_videos) {
-        this.videos = new ArrayList<>(new_videos);
+        this.mVideos = new ArrayList<>(new_videos);
         notifyDataSetChanged();
     }
 
@@ -87,12 +111,12 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
-        this.filter = filter;
+        this.mFilter = filter;
     }
 
     private void applyAndAnimateRemovals(List<VideoItem> newModels) {
-        for (int i = videos.size() - 1; i >= 0; i--) {
-            final VideoItem model = videos.get(i);
+        for (int i = mVideos.size() - 1; i >= 0; i--) {
+            final VideoItem model = mVideos.get(i);
             if (!newModels.contains(model)) {
                 removeItem(i);
             }
@@ -102,7 +126,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private void applyAndAnimateAdditions(List<VideoItem> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
             final VideoItem model = newModels.get(i);
-            if (!videos.contains(model)) {
+            if (!mVideos.contains(model)) {
                 addItem(i, model);
             }
         }
@@ -111,7 +135,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private void applyAndAnimateMovedItems(List<VideoItem> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
             final VideoItem model = newModels.get(toPosition);
-            final int fromPosition = videos.indexOf(model);
+            final int fromPosition = mVideos.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
@@ -119,19 +143,19 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     public VideoItem removeItem(int position) {
-        final VideoItem model = videos.remove(position);
+        final VideoItem model = mVideos.remove(position);
         notifyItemRemoved(position);
         return model;
     }
 
     public void addItem(int position, VideoItem model) {
-        videos.add(position, model);
+        mVideos.add(position, model);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final VideoItem model = videos.remove(fromPosition);
-        videos.add(toPosition, model);
+        final VideoItem model = mVideos.remove(fromPosition);
+        mVideos.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 }

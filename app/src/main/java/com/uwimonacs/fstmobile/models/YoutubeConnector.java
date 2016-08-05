@@ -69,7 +69,7 @@ public class YoutubeConnector {
                 SearchResultSnippet snippet = result.getSnippet();
                 item.setTitle(snippet.getTitle());
                 item.setDescription(snippet.getDescription());
-                item.setThumbnailURL(snippet.getThumbnails().getDefault().getUrl());
+                item.setThumbnailUrl(snippet.getThumbnails().getDefault().getUrl());
                 item.setId(result.getId().getVideoId());
                 items.add(item);
             }
