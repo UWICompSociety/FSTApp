@@ -3,17 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="250dp"
     xmlns:tools="http://schemas.android.com/tools">
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/queens_way"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/queens_way"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#000000"
-            android:alpha="0.5"
-            android:transitionName="queens_way"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:alpha="0.5"
+        android:transitionName="queens_way"/>
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/term"
