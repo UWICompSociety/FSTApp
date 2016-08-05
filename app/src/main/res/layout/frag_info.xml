@@ -31,7 +31,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:scaleType="fitCenter"
-                    android:background="#4CAF50"
+                    android:background="#FFC107"
                     app:srcCompat="@drawable/ic_help_outline_black_24dp"/>
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:scaleType="fitCenter"
-                    android:background="#9C27B0"
+                    android:background="#FF5722"
                     app:srcCompat="@drawable/ic_school_black_24dp"/>
 
                 <TextView
