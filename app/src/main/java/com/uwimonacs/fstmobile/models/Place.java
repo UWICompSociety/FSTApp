@@ -6,12 +6,14 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Matthew on 7/19/2016.
  */
 
 @Table(name="Place")
-public class Place extends Model {
+public class Place extends Model implements Serializable{
 
 
     @SerializedName("id")

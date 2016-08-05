@@ -82,7 +82,7 @@ public class PlacesFragment extends Fragment {
                 * */
                 else {
                     newText = newText.toLowerCase();
-                    final List<Place> searchResults = new ArrayList<>();
+                    final ArrayList<Place> searchResults = new ArrayList<>();
                     for (int i = 0; i < places.size(); i++) {
                         final String name = places.get(i).getShortname().toLowerCase();
                         if (name.contains(newText))
