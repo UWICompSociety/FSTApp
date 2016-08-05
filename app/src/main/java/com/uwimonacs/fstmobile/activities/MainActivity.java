@@ -93,6 +93,8 @@ implements AdapterView.OnItemSelectedListener{
 
         tabLayout.setupWithViewPager(pager);
 
+
+
     }
 
     @Override

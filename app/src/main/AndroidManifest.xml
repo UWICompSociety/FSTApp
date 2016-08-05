@@ -136,6 +136,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
+        <meta-data android:name="AA_DB_NAME" android:value="fstmobile.db" />
+
+        <!-- DB Version -->
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+
+        <!-- Models -->
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.uwimonacs.fstmobile.models.Contact,com.uwimonacs.fstmobile.models.FAQ, com.uwimonacs.fstmobile.models.News,com.uwimonacs.fstmobile.models.Place,com.uwimonacs.fstmobile.models.Scholarship,com.uwimonacs.fstmobile.models.SASConfig,com.uwimonacs.fstmobile.models.Student"/>
     </application>
 
 </manifest>

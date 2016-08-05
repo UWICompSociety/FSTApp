@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 @Table(name="Place")
-public class Place extends Model implements Serializable{
+public class Place extends Model{
 
 
     @SerializedName("id")
@@ -35,6 +35,24 @@ public class Place extends Model implements Serializable{
     @SerializedName("department")
     @Column(name="department")
     String department;
+
+    public Place()
+    {
+        super();
+    }
+
+    public Place(int id,String fullname,String shortname,String location,String department)
+    {
+        super();
+        this.placeId = id;
+        this.fullname = fullname;
+        this.shortname = shortname;
+        this.location = location;
+        this.department = department;
+    }
+
+
+
 
 
     public int getPlaceId() {
