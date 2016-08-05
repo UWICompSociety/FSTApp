@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,15 +15,26 @@ import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PlayerActivity;
 import com.uwimonacs.fstmobile.models.VideoItem;
-import com.uwimonacs.fstmobile.models.VideoViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
+public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder> {
     private List<VideoItem> mVideos = new ArrayList<>();
     private final Context mContext;
     private String mFilter = "";
+
+    public static class VideoViewHolder extends RecyclerView.ViewHolder {
+        public final ImageView vThumbnail;
+        public final TextView vTitle;
+
+        public VideoViewHolder(View v) {
+            super(v);
+
+            vThumbnail = (ImageView) v.findViewById(R.id.video_thumbnail);
+            vTitle = (TextView) v.findViewById(R.id.video_title);
+        }
+    }
 
     /**
      * Handles the setting up of the YouTube Android API
@@ -38,53 +48,40 @@ public class VideosAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView =
-                LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.video_item, parent, false);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+        return new VideoViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(VideoViewHolder vh, int position) {
+        final VideoItem item = mVideos.get(position);
+        // Loads a thumbnail from its URL into the ImageView at bind time
+        Picasso.with(mContext).load(item.getThumbnailUrl()).into(vh.vThumbnail);
+        vh.vTitle.setText(item.getTitle());
+
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                *   Passes information to the Player activity so it can load the
-                *   correct video set UI elements accordingly
-                * */
-                final TextView title = (TextView) v.findViewById(R.id.video_title);
-                final TextView description = (TextView) v.findViewById(R.id.video_description);
-                final TextView id = (TextView) v.findViewById(R.id.video_id);
-
                 final Intent intent = new Intent(v.getContext(), PlayerActivity.class);
-                intent.putExtra("VIDEO_ID", id.getText().toString());
-                intent.putExtra("VIDEO_TITLE", title.getText().toString());
-                intent.putExtra("VIDEO_DESC", description.getText().toString());
+                intent.putExtra("VIDEO_ID", item.getId());
+                intent.putExtra("VIDEO_TITLE", item.getTitle());
+
+                String desc = item.getDescription();
+                //Provides a fallback string in case a video has no description
+                if (TextUtils.isEmpty(desc)) {
+                    desc = mContext.getText(R.string.no_description).toString();
+                }
+
+                intent.putExtra("VIDEO_DESC", desc);
                 v.getContext().startActivity(intent);
             }
         });
 
-        return new VideoViewHolder(itemView);
-    }
-
-    @Override
-    public void onBindViewHolder(VideoViewHolder holder, int position) {
-        final VideoItem item = mVideos.get(position);
-        // Loads a thumbnail from its URL into the ImageView at bind time
-        Picasso.with(mContext).load(item.getThumbnailUrl()).into(holder.vThumbnail);
-        holder.vTitle.setText(item.getTitle());
-        holder.vId.setText(item.getId());
-        //Provides a fallback string in case a video has no description
-        if (TextUtils.isEmpty(item.getDescription())) {
-            holder.vDescription.setText(item.getDescription());
-        } else {
-            holder.vDescription.setText(R.string.no_description);
-        }
-
-        if(position != (mVideos.size() - 1)) {
-            holder.divider.setVisibility(View.VISIBLE);
-        }
-
         // Display the overlay if the video has already been played.
         if (item.getAlreadyPlayed()) {
-            styleVideoAsViewed(holder.itemView);
+            styleVideoAsViewed(vh.itemView);
         }
     }
 
