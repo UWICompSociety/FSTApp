@@ -301,12 +301,7 @@ implements AdapterView.OnItemSelectedListener{
         alertDialog.show();
     }
 
-    public void cleanUpNavDrawer(){
-
-        View header = navigationView.getHeaderView(0);
-
-        ((TextView)header.findViewById(R.id.username)).setText("SAS User");
-        ((TextView)header.findViewById(R.id.id_number)).setText("620012345");
+    public void cleanUpNavDrawer() {
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
         navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);

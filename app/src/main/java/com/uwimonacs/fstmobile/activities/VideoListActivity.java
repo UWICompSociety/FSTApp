@@ -4,14 +4,11 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -33,6 +30,7 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.VideosAdapter;
 import com.uwimonacs.fstmobile.models.VideoItem;
 import com.uwimonacs.fstmobile.models.YoutubeConnector;
+import com.uwimonacs.fstmobile.util.DividerItemDecoration;
 
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -145,6 +143,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
     }
 
     private void setUpRecyclerView() {
+        videosFound.addItemDecoration(new DividerItemDecoration(this));
         videosFound.setHasFixedSize(true);
         videosFound.setLayoutManager(new LinearLayoutManager(this));
         adapter = new VideosAdapter(getApplicationContext());
