@@ -3,6 +3,7 @@ package com.uwimonacs.fstmobile.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ import java.util.List;
 public class PlacesCategoriesAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
-    private List<Place> places;
+    private ArrayList<Place> places;
     private List<String> departments;
 
     public PlacesCategoriesAdapter(Context context, List<Place> places) {
@@ -110,10 +111,13 @@ public class PlacesCategoriesAdapter
                 @Override
                 public void onClick(View v) {
                     Intent mapIntent = new Intent(v.getContext(), MapActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("places", places);
                     mapIntent.putExtra("location", place.getLocation());
                     mapIntent.putExtra("department",place.getDepartment());
                     mapIntent.putExtra("shortname",name);
                     mapIntent.putExtra("fullname",place.getFullname());
+                    mapIntent.putExtra("placesList", bundle);
                     v.getContext().startActivity(mapIntent);
                 }
             });
