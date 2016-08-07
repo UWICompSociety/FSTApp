@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.sync;
 
+import com.activeandroid.ActiveAndroid;
 import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.rest.RestContact;
 
@@ -28,11 +29,16 @@ public class ContactSync {
         if (contacts.size() == 0) // if the contacts list is empty
             return false;
 
+        ActiveAndroid.beginTransaction();
+        try {
+            for (int i = 0; i < contacts.size(); i++) {
+                final Contact contact = contacts.get(i);
 
-        for (int i = 0; i < contacts.size(); i++) {
-            final Contact contact = contacts.get(i);
-
-            Contact.findOrCreateFromJson(contact); // saves contact to database
+                Contact.findOrCreateFromJson(contact); // saves contact to database
+            }
+                ActiveAndroid.setTransactionSuccessful();
+        }finally {
+            ActiveAndroid.endTransaction();
         }
 
         return true;

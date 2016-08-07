@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.sync;
 
+import com.activeandroid.ActiveAndroid;
 import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.rest.RestScholarship;
 
@@ -25,9 +26,15 @@ public class ScholarshipSync {
         if (schols.size() == 0)
             return false;
 
-        for (int i = 0; i < schols.size(); i++) {
-            Scholarship schol = schols.get(i);
-            Scholarship.findOrCreateFromJson(schol);
+        ActiveAndroid.beginTransaction();
+        try {
+            for (int i = 0; i < schols.size(); i++) {
+                Scholarship schol = schols.get(i);
+                Scholarship.findOrCreateFromJson(schol);
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        }finally {
+            ActiveAndroid.endTransaction();
         }
 
         return true;

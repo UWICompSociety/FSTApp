@@ -75,7 +75,7 @@ public class PlacesCategoriesAdapter
         final List<Place> tempPlaces = new ArrayList<>();
 
         for (int i = 0; i < places.size(); i++) {
-            if (places.get(i).getDepartment().equals(department) && !places.get(i).getFullname().contains("Building")) {
+            if (places.get(i).getDepartment().equals(department) && !places.get(i).getShortname().contains("Building")) {
                 placeNames.add(places.get(i).getShortname());
                 tempPlaces.add(places.get(i));
             }

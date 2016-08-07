@@ -1,4 +1,5 @@
 package com.uwimonacs.fstmobile.sync;
+import com.activeandroid.ActiveAndroid;
 import com.uwimonacs.fstmobile.models.Place;
 import com.uwimonacs.fstmobile.rest.RestPlace;
 
@@ -27,11 +28,16 @@ public class PlaceSync {
         if (places.size() == 0) // if the place list is empty
             return false;
 
+        ActiveAndroid.beginTransaction();
+        try {
+            for (int i = 0; i < places.size(); i++) {
+                Place place = places.get(i);
 
-        for (int i = 0; i < places.size(); i++) {
-            Place place = places.get(i);
-
-            Place.findOrCreateFromJson(place); // saves places to database
+                Place.findOrCreateFromJson(place); // saves places to database
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        }finally {
+            ActiveAndroid.endTransaction();
         }
 
         return true;

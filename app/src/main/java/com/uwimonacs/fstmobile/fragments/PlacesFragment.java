@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
@@ -108,11 +109,7 @@ public class PlacesFragment extends Fragment {
         places = new Select().all().from(Place.class).execute();
     }
 
-    private void initializePlaces(){
-        //Fail safe in case database fetch fails
-        Place place = new Place();
-        places.add(place);
-    }
+
 
     private class LoadPlacesTask extends AsyncTask<Void,Void,Boolean> {
         final Context context;
@@ -123,7 +120,7 @@ public class PlacesFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-          //  Toast.makeText(context,"Loading Places..",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Loading Places..",Toast.LENGTH_SHORT).show();
         }
 
         @Override

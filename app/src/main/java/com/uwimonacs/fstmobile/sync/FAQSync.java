@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.sync;
 
+import com.activeandroid.ActiveAndroid;
 import com.uwimonacs.fstmobile.models.FAQ;
 import com.uwimonacs.fstmobile.rest.RestFAQ;
 
@@ -25,9 +26,15 @@ public class FAQSync {
         if (faqs.size() == 0)
             return false;
 
-        for (int i = 0; i < faqs.size(); i++) {
-            FAQ faq = faqs.get(i);
-            FAQ.findOrCreateFromJson(faq);
+        ActiveAndroid.beginTransaction();
+        try {
+            for (int i = 0; i < faqs.size(); i++) {
+                FAQ faq = faqs.get(i);
+                FAQ.findOrCreateFromJson(faq);
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        }finally {
+            ActiveAndroid.endTransaction();
         }
 
         return true;
