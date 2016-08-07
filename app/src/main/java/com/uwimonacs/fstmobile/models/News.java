@@ -38,6 +38,15 @@ public class News extends Model {
     String image_url;
 
 
+    @SerializedName("created")
+    @Column(name="created")
+    String created;
+
+    @SerializedName("news_url")
+    @Column(name="url")
+    String url;
+
+
     int image;
 
 
@@ -116,6 +125,22 @@ public class News extends Model {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public static News findOrCreateFromJson(News new_news) {

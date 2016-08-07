@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -43,6 +44,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
                     final String name = contact.getName();
                     final String telNum = contact.getNumber();
+                    final String email = contact.getEmail();
+                    final String website = contact.getWebsite();
 
                     final AlertDialog dialog = new AlertDialog.Builder(v.getContext()).create();
                     final LayoutInflater inflater = LayoutInflater.from(ctxt);
@@ -52,6 +55,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                     final View dialogView = inflater.inflate(R.layout.dialog_content_contact_info, null);
 
                     final TextView telNumView = (TextView) dialogView.findViewById(R.id.telNumView);
+
+                    final TextView emailView = (TextView)dialogView.findViewById(R.id.emailView);
+
+                    final TextView websiteView = (TextView)dialogView.findViewById(R.id.websiteView);
+
+                    final View telSectionView = dialogView.findViewById(R.id.telLayoutView);
+                    final View emailSectionView = dialogView.findViewById(R.id.emailLayoutView);
+                    final View websiteSectionView = dialogView.findViewById(R.id.websiteLayoutView);
 
                     telNumView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -82,15 +93,62 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                         }
                     });
 
-// TODO: Add the data for these fields
-//                    final TextView emailView = (TextView) dialogView.findViewById(R.id.emailView);
-//                    final TextView websiteView =
-//                            (TextView) dialogView.findViewById(R.id.websiteView);
+                    emailView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!TextUtils.isEmpty(email)) {
+                                Intent send = new Intent(Intent.ACTION_SENDTO);
+                                String uriText = "mailto:" + Uri.encode(email);
+                                Uri uri = Uri.parse(uriText);
+                                send.setData(uri);
+                                try{
+                                    v.getContext().startActivity(Intent.createChooser(send, "Send mail..."));  // start email activity
+                                }catch(ActivityNotFoundException a)
+                                {
+                                    Toast.makeText(ctxt,"No app present",Toast.LENGTH_SHORT).show(); //incase email app not on found
+                                }
+
+                            }
+                        }
+                    });
+
+                    websiteView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!TextUtils.isEmpty(website)) {
+                                String url = website;
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                try{
+                                    v.getContext().startActivity(i);  // start email activity
+                                }catch(ActivityNotFoundException a)
+                                {
+                                    Toast.makeText(ctxt,"No app present",Toast.LENGTH_SHORT).show(); //incase no browser is present
+                                }
+
+                            }
+                        }
+                    });
+
 
                     if (!TextUtils.isEmpty(telNum)) {
                         telNumView.setText(telNum);
                     } else {
                         telNumView.setText(android.R.string.emptyPhoneNumber);
+                    }
+
+                    if(!TextUtils.isEmpty(email) && !email.equals("None"))
+                    {
+                        emailView.setText(email);
+                    }else{
+                        emailSectionView.setVisibility(View.GONE);
+                    }
+
+                    if(!TextUtils.isEmpty(website) && !website.equals("None"))
+                    {
+                        websiteView.setText(website);
+                    }else{
+                        websiteSectionView.setVisibility(View.GONE);
                     }
 
                     if (!TextUtils.isEmpty(name)) {

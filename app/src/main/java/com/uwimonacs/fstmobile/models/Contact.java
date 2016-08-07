@@ -27,6 +27,16 @@ public class Contact extends Model {
     @Column(name = "number")
     private String number;
 
+    @SerializedName("email")
+    @Column(name = "email")
+    private String email;
+
+    @SerializedName("website")
+    @Column(name="website")
+    private String website;
+
+
+
     public Contact()
     {
         super();
@@ -64,6 +74,22 @@ public class Contact extends Model {
 
     public void setContactId(int contactId) {
         this.contactId = contactId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public static Contact findOrCreateFromJson(Contact new_contact) {
