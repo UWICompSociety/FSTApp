@@ -231,7 +231,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
         return filteredModelList;
     }
 
-    private static class LoadVideosTask extends AsyncTask<Void,Void,Boolean> {
+    private class LoadVideosTask extends AsyncTask<Void,Void,Boolean> {
         private final WeakReference<Context> mCtxtRef;
         private final WeakReference<ImageView> mImageViewRef;
         private final WeakReference<TextView> mTextViewRef;
@@ -282,7 +282,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
             if (context != null) {
                 final YoutubeConnector yc = new YoutubeConnector(context);
 
-                List<VideoItem> videos = mVideosRef.get();
+                videos = mVideosRef.get();
                 if (videos != null) {
                     videos = yc.search();
                     mVideosRef.clear();
@@ -324,13 +324,13 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
             if (result) {
                 final VideosAdapter adapter = mVideosAdapterRef.get();
                 if (adapter != null) {
-                    final List<VideoItem> videos = mVideosRef.get();
+                    videos = mVideosRef.get();
                     if (videos != null) {
                         adapter.updateVideos(videos);
                     }
                 }
             } else {
-                final List<VideoItem> videos = mVideosRef.get();
+                videos = mVideosRef.get();
                 if (videos != null) {
                     if (videos.size() == 0) {
                         final ImageView imageView = mImageViewRef.get();
@@ -361,7 +361,7 @@ public class VideoListActivity extends AppCompatActivity implements SwipeRefresh
             }
         }
 
-        private static boolean hasInternet() {
+        private  boolean hasInternet() {
             boolean result;
 
             try {
