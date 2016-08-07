@@ -98,6 +98,7 @@ public class Contact extends Model {
                 new Select().from(Contact.class).where("contactId = ?", contactId).executeSingle();
         if (existingContact != null) {
             // found and return existing
+            UpdateContact(existingContact,new_contact);
             return existingContact;
         } else {
             // create and return new user
@@ -105,5 +106,15 @@ public class Contact extends Model {
             contact.save();
             return contact;
         }
+    }
+
+    private static void UpdateContact(Contact old_contact,Contact new_contact)
+    {
+        old_contact.setName(new_contact.getName());
+        old_contact.setNumber(new_contact.getNumber());
+        old_contact.setEmail(new_contact.getEmail());
+        old_contact.setWebsite(new_contact.getWebsite());
+        old_contact.save();
+
     }
 }

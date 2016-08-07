@@ -96,6 +96,8 @@ public class Scholarship extends Model {
         if (existingSchol != null)
         {
             // found and return existing
+            //return existingSchol;
+            UpdateScholarship(existingSchol,new_schol);
             return existingSchol;
         }
 
@@ -106,5 +108,13 @@ public class Scholarship extends Model {
             schol.save();
             return schol;
         }
+    }
+
+    static void UpdateScholarship(Scholarship old_schol,Scholarship new_schol)
+    {
+        old_schol.setTitle(new_schol.getTitle());
+        old_schol.setDescription(new_schol.getDescription());
+        old_schol.setDetail(new_schol.getDetail());
+        old_schol.save();
     }
 }

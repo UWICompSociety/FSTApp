@@ -64,6 +64,7 @@ public class FAQ extends Model {
         if (existingFAQ != null)
         {
             // found and return existing
+            UpdateFAQ(existingFAQ,new_faq);
             return existingFAQ;
         }
 
@@ -74,5 +75,12 @@ public class FAQ extends Model {
             faq.save();
             return faq;
         }
+    }
+
+    static void UpdateFAQ(FAQ old_faq,FAQ new_faq)
+    {
+        old_faq.setQuestion(new_faq.getQuestion());
+        old_faq.setAnswer(new_faq.getAnswer());
+        old_faq.save();
     }
 }

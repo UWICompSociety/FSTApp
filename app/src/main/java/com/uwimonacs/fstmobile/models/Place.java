@@ -101,6 +101,7 @@ public class Place extends Model{
                 new Select().from(Place.class).where("placeId = ?", placeId).executeSingle();
         if (existingPlace != null) {
             // found and return existing
+            UpdatePlace(existingPlace,new_place);
             return existingPlace;
         } else {
             // create and return new place
@@ -108,5 +109,14 @@ public class Place extends Model{
             place.save();
             return place;
         }
+    }
+
+    private static void UpdatePlace(Place old_place,Place new_place)
+    {
+        old_place.setFullname(new_place.getFullname());
+        old_place.setShortname(new_place.getShortname());
+        old_place.setDepartment(new_place.getDepartment());
+        old_place.setLocation(new_place.getLocation());
+        old_place.save();
     }
 }

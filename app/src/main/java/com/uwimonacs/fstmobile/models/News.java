@@ -47,7 +47,6 @@ public class News extends Model {
     String url;
 
 
-    int image;
 
 
     public News()
@@ -55,13 +54,12 @@ public class News extends Model {
         super();
     }
     //Constructor Method
-    public News(int id, int image, String title, String description, String story){
+    public News(int id, String title, String description, String story){
 
         super();
 
         this.newsId = id;
         this.title = title;
-        this.image =image;
         this.description = description;
         this.storyDetail = story;
     }
@@ -85,9 +83,6 @@ public class News extends Model {
         return newsId;
     }
 
-    public int getImage() {
-        return image;
-    }
 
     /*Setters*/
     public void setTitle(String newTitle){
@@ -115,17 +110,8 @@ public class News extends Model {
         this.image_url = image_url;
     }
 
-    public String getStoryDetail() {
-        return storyDetail;
-    }
 
-    public void setStoryDetail(String storyDetail) {
-        this.storyDetail = storyDetail;
-    }
 
-    public void setImage(int image) {
-        this.image = image;
-    }
 
     public String getCreated() {
         return created;
@@ -149,6 +135,7 @@ public class News extends Model {
                 new Select().from(News.class).where("newsId = ?", newsId).executeSingle();
         if (existingNews != null) {
             // found and return existing
+            UpdateNews(existingNews,new_news);
             return existingNews;
         } else {
             // create and return new user
@@ -156,6 +143,18 @@ public class News extends Model {
             news.save();
             return news;
         }
+    }
+
+    private static void UpdateNews(News old_news,News new_news)
+    {
+        old_news.setTitle(new_news.getTitle());
+        old_news.setDescription(new_news.getDescription());
+        old_news.setStory(new_news.getStory());
+        old_news.setCreated(new_news.getCreated());
+        old_news.setImage_url(new_news.getImage_url());
+        old_news.setUrl(new_news.getUrl());
+        old_news.save();
+
     }
 
 
