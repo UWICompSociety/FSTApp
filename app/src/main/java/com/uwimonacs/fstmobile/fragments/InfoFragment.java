@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.ContactsActivity;
 import com.uwimonacs.fstmobile.activities.FAQActivity;
+import com.uwimonacs.fstmobile.activities.GalleryActivity;
 import com.uwimonacs.fstmobile.activities.ScholarshipActivity;
 import com.uwimonacs.fstmobile.activities.VideoListActivity;
 
@@ -27,6 +28,7 @@ public class InfoFragment extends Fragment
         final CardView card_videos = (CardView) v.findViewById(R.id.videos);
         final CardView card_scholarships = (CardView) v.findViewById(R.id.scholarships);
         final CardView card_contacts = (CardView) v.findViewById(R.id.contacts);
+        final CardView card_gallery = (CardView)v.findViewById(R.id.gallery);
 
         /*
          * The event handler is registered at runtime instead of in the onClick XML attribute of
@@ -36,6 +38,7 @@ public class InfoFragment extends Fragment
         card_videos.setOnClickListener(this);
         card_scholarships.setOnClickListener(this);
         card_contacts.setOnClickListener(this);
+        card_gallery.setOnClickListener(this);
 
         return v;
     }
@@ -57,6 +60,10 @@ public class InfoFragment extends Fragment
 
             case R.id.contacts:
                 v.getContext().startActivity(new Intent(v.getContext(), ContactsActivity.class));
+                break;
+
+            case R.id.gallery:
+                v.getContext().startActivity(new Intent(v.getContext(),GalleryActivity.class));
                 break;
 
             default:

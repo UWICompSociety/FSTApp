@@ -14,12 +14,18 @@
     </style>
 
     <style name="AppTheme.NoActionBar.SASLogin" />
-    <style name="AppTheme.NoActionBar.PlayerActivity"/>
-    <style name="AppTheme.NoActionBar.FAQActivity"/>
-    <style name="AppTheme.NoActionBar.VideosListActivity"/>
-    <style name="AppTheme.NoActionBar.ScholarshipActivity"/>
-    <style name="AppTheme.NoActionBar.ContactsActivity"/>
-    <style name="AppTheme.NoActionBar.Settings"/>
+
+    <style name="AppTheme.NoActionBar.PlayerActivity" />
+
+    <style name="AppTheme.NoActionBar.FAQActivity" />
+
+    <style name="AppTheme.NoActionBar.VideosListActivity" />
+
+    <style name="AppTheme.NoActionBar.ScholarshipActivity" />
+
+    <style name="AppTheme.NoActionBar.ContactsActivity" />
+
+    <style name="AppTheme.NoActionBar.Settings" />
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
