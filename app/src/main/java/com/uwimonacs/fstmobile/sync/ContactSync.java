@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Created by Matthew on 7/5/2016.
  */
 public class ContactSync {
+
     private final String url;
     private ArrayList<Contact> contacts = new ArrayList<>();
 
