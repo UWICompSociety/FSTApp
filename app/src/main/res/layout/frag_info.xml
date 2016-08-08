@@ -2,7 +2,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none">
@@ -10,8 +9,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:targetApi="21">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
             android:id="@+id/faq"
@@ -19,8 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:transitionName="faq_card">
+            android:foreground="?android:selectableItemBackground">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -53,8 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:transitionName="video_card">
+            android:foreground="?android:selectableItemBackground">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -87,8 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:transitionName="scholarship_card">
+            android:foreground="?android:selectableItemBackground">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -121,8 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:clickable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:transitionName="contact_card">
+            android:foreground="?android:selectableItemBackground">
 
             <LinearLayout
                 android:orientation="vertical"

@@ -1,15 +1,11 @@
 package com.uwimonacs.fstmobile.activities;
 
-import android.animation.Animator;
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -18,8 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,7 +41,6 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
     private TextView tv_placeholder;
     private ProgressBar progressBar;
     private SearchView searchView;
-    private CardView root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +49,21 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
 
         initViews();
 
-        setupReveal();
-
         setUpToolBar();
 
         setUpSwipeRefresh();
 
         getContactsFromDatabase();   // get all contacts from phone database
 
-        if (contacts.size() > 0) {//if there are new items present remove place holder image and text
+        //if there are new items present remove place holder image and text
+        if (contacts.size() > 0) {
             img_placeholder.setVisibility(View.GONE);
             tv_placeholder.setVisibility(View.GONE);
         }
 
-        setUpRecyclerView(); //set up recycler view
+        setUpRecyclerView();
 
-        setUpProgressBar(); //set up progress bar
+        setUpProgressBar();
 
         new LoadContactsTask(this).execute(); // runs the contacts sync task
     }
@@ -83,37 +75,6 @@ public class ContactsActivity extends AppCompatActivity implements SwipeRefreshL
         tv_placeholder = (TextView)findViewById(R.id.txt_notpresent);
         img_placeholder = (ImageView)findViewById(R.id.img_placeholder);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        root = (CardView) findViewById(R.id.root);
-    }
-
-    private void setupReveal(){
-        if(Build.VERSION.SDK_INT >= 21) {
-            root.setVisibility(View.INVISIBLE);
-            ViewTreeObserver observer = root.getViewTreeObserver();
-            if(observer.isAlive()){
-                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        circularReveal();
-                        if(Build.VERSION.SDK_INT < 16)
-                            root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        else
-                            root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
-            }
-        }
-    }
-
-    @SuppressLint("NewApi")
-    private void circularReveal(){
-        int cx = root.getWidth() / 2;
-        int cy = root.getHeight() / 2;
-        float finalRadius = (float) Math.max(root.getWidth(), root.getHeight());
-        Animator anim = ViewAnimationUtils.createCircularReveal(root, cx, cy, 0, finalRadius);
-        anim.setDuration(1000);
-        root.setVisibility(View.VISIBLE);
-        anim.start();
     }
 
     private void setUpToolBar() {
