@@ -112,6 +112,7 @@ public class SASConfig extends Model {
      */
     @JavascriptInterface
     public void Login(String body, String activity){
+        System.out.println(body);
         if(body.contains("Authorization Failure") || body.contains("Invalid login information")) {
             // Login failed - handle error
 
@@ -138,13 +139,19 @@ public class SASConfig extends Model {
             try {
                 p = document.getElementsByClass("text-intro").get(0);
             } catch(Exception e){
-                // Some error page has loaded - login was not successful
+                // Some error page has loaded - login was not successful; Retry
                 login.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
-                        login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
-                        Toast.makeText(context, "Unknown error occurred", Toast.LENGTH_SHORT).show();
+                        final String formData = "sid=" + student.getIdNumber() + "&PIN=" + student.getPassword();
+                        webView.setWebViewClient(new WebViewClient(){
+                            @Override
+                            public void onPageFinished(WebView view, String url) {
+                                view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'login');");
+                                super.onPageFinished(view, url);
+                            }
+                        });
+                        webView.postUrl(resources.getString(R.string.login_post), formData.getBytes());
                     }
                 });
                 return;
