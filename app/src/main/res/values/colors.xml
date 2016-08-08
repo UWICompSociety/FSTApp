@@ -7,4 +7,6 @@
     <color name="tab_unselected">#77ffffff</color>
 
     <color name="video_scrim_watched">#b3f1f1f1</color>
+
+    <color name="blue">#7ecce8</color>
 </resources>

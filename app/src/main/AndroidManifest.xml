@@ -35,20 +35,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.SASLoginActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin" />
-        <activity
-            android:name=".activities.SASTimetableActivity" >
+        <activity android:name=".activities.SASTimetableActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.VideoListActivity"
-            android:theme="@style/AppTheme.NoActionBar.VideosListActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar.VideosListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -77,7 +75,6 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity android:name=".activities.ScholarshipDetailsActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ScholarshipActivity" />
@@ -114,6 +111,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
         <activity android:name=".activities.MapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -122,7 +120,8 @@
 
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
-        <activity android:name=".activities.SASTranscriptActivity"
+        <activity
+            android:name=".activities.SASTranscriptActivity"
             android:label="@string/transcript_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -137,15 +136,37 @@
                 android:value=".activities.MainActivity" />
         </activity>
 
-        <meta-data android:name="AA_DB_NAME" android:value="fstmobile.db" />
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="fstmobile.db" />
 
         <!-- DB Version -->
-        <meta-data android:name="AA_DB_VERSION" android:value="2" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="2" />
 
         <!-- Models -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.uwimonacs.fstmobile.models.Contact,com.uwimonacs.fstmobile.models.FAQ, com.uwimonacs.fstmobile.models.News,com.uwimonacs.fstmobile.models.Place,com.uwimonacs.fstmobile.models.Scholarship,com.uwimonacs.fstmobile.models.SASConfig,com.uwimonacs.fstmobile.models.Student"/>
+            android:value="com.uwimonacs.fstmobile.models.Contact,com.uwimonacs.fstmobile.models.FAQ, com.uwimonacs.fstmobile.models.News,com.uwimonacs.fstmobile.models.Place,com.uwimonacs.fstmobile.models.Scholarship,com.uwimonacs.fstmobile.models.SASConfig,com.uwimonacs.fstmobile.models.Student" />
+
+        <activity
+            android:name=".activities.GalleryActivity"
+            android:label="@string/title_activity_gallery"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+
+        </activity>
+        <activity
+            android:name=".activities.GalleryDetailActivity"
+            android:label="@string/title_activity_gallery_detail"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GalleryActivity" />
+        </activity>
     </application>
 
 </manifest>

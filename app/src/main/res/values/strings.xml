@@ -6,6 +6,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_contacts">Contacts</string>
 
+
     <!-- Menu Option Titles -->
     <string name="action_settings">Settings</string>
     <string name="action_schol">Scholarships and Bursaries</string>
@@ -106,7 +107,8 @@
 
     <!-- Toast shown when text is copied to the clipboard -->
     <string name="toast_text_copied">Text copied</string>
-
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="title_activity_gallery_detail">GalleryDetailActivity</string>
 
 
 </resources>
