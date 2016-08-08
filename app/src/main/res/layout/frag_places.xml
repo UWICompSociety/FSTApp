@@ -1,17 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
     <android.support.v7.widget.SearchView
         android:id="@+id/frag_places_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_below="@+id/frag_places_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/frag_places_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/frag_places_item"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/frag_places_recyclerview"
+        android:id="@+id/frag_places_search_results_recyclerview"
+        android:layout_below="@+id/frag_places_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/frag_places_item"/>
-</LinearLayout>
+        android:visibility="gone"
+        tools:listitem="@layout/frag_places_search_results_item"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        />
+    <ImageView
+
+        android:id="@+id/img_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/notpresent"
+        android:layout_weight="1"
+        android:layout_centerInParent="true"/>
+    <TextView
+
+        android:id="@+id/txt_notpresent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  No Places Loaded\n Check Connectivity"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:layout_weight="1"
+        android:layout_below="@+id/img_placeholder"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

@@ -18,6 +18,15 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textColor="#000000"
-            tools:text="Category" />
+            tools:text="PCLT" />
+        <TextView
+            android:id="@+id/frag_places_search_results_item_category_fullname"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:alpha="0.65"
+            tools:text="Pre Clinical Lecture Theatre" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

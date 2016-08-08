@@ -36,6 +36,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @Override
     public void onBindViewHolder(final SearchResultsAdapter.SearchResultsHolder holder, final int position) {
         holder.result.setText(searchResults.get(position).getShortname());
+        holder.fullname.setText(searchResults.get(position).getFullname());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +66,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     public static class SearchResultsHolder extends RecyclerView.ViewHolder{
         public final TextView result;
+        public final TextView fullname;
         public final CardView cardView;
 
         public SearchResultsHolder(View v) {
@@ -72,6 +74,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
             cardView = (CardView) v;
             result = (TextView) v.findViewById(R.id.frag_places_search_results_item_category_name);
+            fullname = (TextView)v.findViewById(R.id.frag_places_search_results_item_category_fullname);
         }
     }
 }
