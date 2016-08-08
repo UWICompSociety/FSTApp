@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 @Table(name="Place")
-public class Place extends Model{
+public class Place extends Model implements Serializable{
 
 
     @SerializedName("id")
