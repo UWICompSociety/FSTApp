@@ -51,24 +51,6 @@ SwipeRefreshLayout.OnRefreshListener{
         swipeRefreshLayout.setOnRefreshListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //        Transcript transcript = sasConfig.student.getTranscript();
-//        TextView degreeType = (TextView) findViewById(R.id.degree_type),
-//                program = (TextView) findViewById(R.id.program),
-//                faculty = (TextView) findViewById(R.id.faculty),
-//                major = (TextView) findViewById(R.id.major),
-//                minor = (TextView) findViewById(R.id.minor);
-//
-//        String sDegree = "Degree type: " + transcript.getDegree(),
-//                sProgram = "Program: " + transcript.getProgram(),
-//                sFaculty = "Faculty: " + transcript.getFaculty(),
-//                sMajor = "Major: " + transcript.getMajor(),
-//                sMinor = "Minor: " + transcript.getMinor();
-//
-//        degreeType.setText(sDegree);
-//        program.setText(sProgram);
-//        faculty.setText(sFaculty);
-//        major.setText(sMajor);
-//        minor.setText(sMinor);
 
         final RecyclerView institutionCredit = (RecyclerView) findViewById(R.id.institution_credit);
         institutionCredit.setHasFixedSize(true);
@@ -76,11 +58,16 @@ SwipeRefreshLayout.OnRefreshListener{
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         institutionCredit.setLayoutManager(layoutManager);
-        SASTranscriptAdapter adapter = new SASTranscriptAdapter();
+        final SASTranscriptAdapter adapter = new SASTranscriptAdapter();
         sasConfig.setTranscriptAdapter(adapter);
         sasConfig.setTranscriptActivity(this);
         sasConfig.setSwipe2(swipeRefreshLayout);
-        institutionCredit.setAdapter(adapter);
+        new Runnable(){
+            @Override
+            public void run() {
+                institutionCredit.setAdapter(adapter);
+            }
+        }.run();
     }
 
     private boolean isFirstTime() {

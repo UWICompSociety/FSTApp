@@ -4,19 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimeTable {
-    int semester;
     List<Course> courses;
 
     public TimeTable(){
         this.courses = new ArrayList<>();
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
     }
 
     public List<Course> getCourses() {

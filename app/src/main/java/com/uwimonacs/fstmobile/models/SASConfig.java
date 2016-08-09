@@ -4,10 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +32,6 @@ import com.uwimonacs.fstmobile.activities.MainActivity;
 import com.uwimonacs.fstmobile.activities.SASLoginActivity;
 import com.uwimonacs.fstmobile.activities.SASTimetableActivity;
 import com.uwimonacs.fstmobile.activities.SASTranscriptActivity;
-import com.uwimonacs.fstmobile.adapters.SASTimetableAdapter;
 import com.uwimonacs.fstmobile.adapters.SASTranscriptAdapter;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
 import com.uwimonacs.fstmobile.models.Transcript.Term;
@@ -54,7 +53,6 @@ public class SASConfig extends Model {
     public Student student;
     public Context context;
     public String term = "";
-    public int semester;
     private Resources resources;
 
     @Column(name = "term_values")
@@ -62,6 +60,9 @@ public class SASConfig extends Model {
 
     @Column(name = "term_names")
     private String serializedTermNames;
+
+    @Column(name = "ConfigID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    private int id = 0;
 
     public List<String> termValues;
     public List<String> termNames;
@@ -93,7 +94,6 @@ public class SASConfig extends Model {
         this.context = context;
         termValues = new ArrayList<>();
         termNames = new ArrayList<>();
-        semester = 1;
     }
 
     public void serialize(){
@@ -164,7 +164,7 @@ public class SASConfig extends Model {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(termNames.size() == 0) {
+                    if(termNames.size() == 0 || termValues.size() == 0) {
                         webView.setWebViewClient(new WebViewClient() {
                             @Override
                             public void onPageFinished(WebView view, String url) {
@@ -177,22 +177,26 @@ public class SASConfig extends Model {
                 }
             });
 
-            String accountType = "UWI";
-            String username = student.getIdNumber();
-            String password = student.getPassword();
-            Account sasAccount = new Account(username, accountType);
-            mAccountManager = AccountManager.get(login);
-            mAccountManager.addAccountExplicitly(sasAccount, password, null);
-
-            final Intent intent = new Intent();
-            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
-            intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType);
-            intent.putExtra(AccountManager.KEY_AUTHTOKEN, password);
-            login.setAccountAuthenticatorResult(intent.getExtras());
-            login.setResult(SASLoginActivity.RESULT_OK, intent);
-            login.finish();
-          fixNavDrawerAfterLogin();
+            addAccount();
+            fixNavDrawerAfterLogin();
         }
+    }
+
+    private void addAccount(){
+        String accountType = "UWI";
+        String username = student.getIdNumber();
+        String password = student.getPassword();
+        Account sasAccount = new Account(username, accountType);
+        mAccountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        mAccountManager.addAccountExplicitly(sasAccount, password, null);
+
+//        final Intent intent = new Intent();
+//        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
+//        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType);
+//        intent.putExtra(AccountManager.KEY_AUTHTOKEN, password);
+//        login.setAccountAuthenticatorResult(intent.getExtras());
+//        login.setResult(SASLoginActivity.RESULT_OK, intent);
+        login.finish();
     }
 
     @JavascriptInterface
@@ -202,7 +206,9 @@ public class SASConfig extends Model {
 
             //Credentials have changed - Let user sign in again
             Toast.makeText(context, "Your password has changed", Toast.LENGTH_SHORT).show();
-            login.startActivity(new Intent(context, SASLoginActivity.class));
+            Intent intent = new Intent(context, SASLoginActivity.class);
+            intent.setAction("MainActivity");
+            mActivity.startActivity(intent);
 
         } else {
             //Login successful - fetch user data
@@ -267,13 +273,13 @@ public class SASConfig extends Model {
                 username.setText(student.getName());
                 idNUmber.setText(student.getIdNumber());
 
-                TermsAdapter terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
-                terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                terms.addAll(termNames);
-                Spinner termSelector = (Spinner) header.findViewById(R.id.term);
-                termSelector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener)mActivity);
-                termSelector.setAdapter(terms);
-                setTerms(terms);
+//                TermsAdapter terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
+//                terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                terms.addAll(termNames);
+//                Spinner termSelector = (Spinner) header.findViewById(R.id.term);
+//                termSelector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener)mActivity);
+//                termSelector.setAdapter(terms);
+//                setTerms(terms);
 
                 final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
                 final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
@@ -328,7 +334,6 @@ public class SASConfig extends Model {
     @JavascriptInterface
     public void loadCourses(String body){
         TimeTable timeTable = new TimeTable();
-        timeTable.setSemester(semester);
         Document doc = Jsoup.parse(body);
         Elements tables = doc.select("table.datadisplaytable");
         for(int i=0; i<(tables.size()-1); i+=2){
