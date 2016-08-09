@@ -1,18 +1,30 @@
 package com.uwimonacs.fstmobile.activities;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.annotations.PolygonOptions;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.services.Constants;
+import com.mapbox.services.commons.ServicesException;
+import com.mapbox.services.commons.geojson.LineString;
+import com.mapbox.services.commons.models.Position;
+import com.mapbox.services.directions.v5.DirectionsCriteria;
+import com.mapbox.services.directions.v5.MapboxDirections;
+import com.mapbox.services.directions.v5.models.DirectionsResponse;
+import com.mapbox.services.directions.v5.models.DirectionsRoute;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.Place;
 
@@ -20,7 +32,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapActivity extends AppCompatActivity {
+
     private MapView mapView;
     private MapboxMap map;
     private String location;
@@ -29,6 +46,7 @@ public class MapActivity extends AppCompatActivity {
     private String fullname;
     private List<Place> places;
     private HashMap<String, Integer> colors;
+    private DirectionsRoute currentRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +98,23 @@ public class MapActivity extends AppCompatActivity {
                         .title(fullname)
                         .snippet(snip));
 
+                //final Position origin = Position.fromCoordinates(-76.750189,18.005988); //For Testing
+                final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
+                final Position destination = Position.fromCoordinates(lon,lat);
+
+                map.setOnInfoWindowClickListener(new MapboxMap.OnInfoWindowClickListener() {
+                    @Override
+                    public boolean onInfoWindowClick(@NonNull Marker marker) {
+                        try{
+                            getRoute(origin, destination);
+                        }catch(ServicesException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    }
+                });
+
                 for (Place place : places) {
                     if (place.getFullname().contains("Building")) {
                         try {
@@ -116,6 +151,60 @@ public class MapActivity extends AppCompatActivity {
                 .addAll(polygon)
                 .fillColor(color));
 
+    }
+
+    private void getRoute(Position origin, Position destination) throws ServicesException {
+
+        MapboxDirections client = new MapboxDirections.Builder()
+                .setOrigin(origin)
+                .setDestination(destination)
+                .setProfile(DirectionsCriteria.PROFILE_WALKING)
+                .setAccessToken(getString(R.string.access_token))
+                .build();
+
+        client.enqueueCall(new Callback<DirectionsResponse>() {
+            @Override
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                if (response.body() == null) {
+                    Toast.makeText(MapActivity.this, "No routes found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+                    currentRoute = response.body().getRoutes().get(0);
+                    Toast.makeText(MapActivity.this, "Route is " + currentRoute.getDistance() + " meters long.", Toast.LENGTH_SHORT).show();
+
+                    // Draw the route on the map
+                    drawRoute(currentRoute);
+                }catch(Exception e)
+                {
+                    Toast.makeText(MapActivity.this, "Cannot Find Route", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                Toast.makeText(MapActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void drawRoute(DirectionsRoute route) {
+        // Convert LineString coordinates into LatLng[]
+        LineString lineString = LineString.fromPolyline(route.getGeometry(), Constants.OSRM_PRECISION_V5);
+        List<Position> coordinates = lineString.getCoordinates();
+        LatLng[] points = new LatLng[coordinates.size()];
+        for (int i = 0; i < coordinates.size(); i++) {
+            points[i] = new LatLng(
+                    coordinates.get(i).getLatitude(),
+                    coordinates.get(i).getLongitude());
+        }
+
+        // Draw Points on MapView
+        map.addPolyline(new PolylineOptions()
+                .add(points)
+                .color(Color.parseColor("#009688"))
+                .width(5));
     }
 
     @Override
