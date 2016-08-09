@@ -17,6 +17,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -273,22 +274,17 @@ public class SASConfig extends Model {
                 username.setText(student.getName());
                 idNUmber.setText(student.getIdNumber());
 
-//                TermsAdapter terms = new TermsAdapter(mActivity, android.R.layout.simple_spinner_item);
-//                terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                terms.addAll(termNames);
-//                Spinner termSelector = (Spinner) header.findViewById(R.id.term);
-//                termSelector.setOnItemSelectedListener((AdapterView.OnItemSelectedListener)mActivity);
-//                termSelector.setAdapter(terms);
-//                setTerms(terms);
-
                 final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
                 final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
                 final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
 
                 registration.setTitle("View timetable");
+                registration.setEnabled(false);
+                registration.setActionView(new ProgressBar(mActivity));
                 transcript.setVisible(true);
                 logout.setVisible(true);
                 transcript.setEnabled(false);
+                transcript.setActionView(new ProgressBar(mActivity));
                 logout.setEnabled(false);
             }
         });
@@ -391,6 +387,7 @@ public class SASConfig extends Model {
             @Override
             public void run() {
                 ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(0).setEnabled(true);
+                ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(0).setActionView(null);
                 ((NavigationView)mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().getItem(2).setEnabled(true);
 
                 webView.setWebViewClient(new WebViewClient(){
@@ -511,6 +508,7 @@ public class SASConfig extends Model {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ((NavigationView) mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setActionView(null);
                 ((NavigationView) mActivity.findViewById(R.id.nav_drawer)).getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setEnabled(true);
             }
         });

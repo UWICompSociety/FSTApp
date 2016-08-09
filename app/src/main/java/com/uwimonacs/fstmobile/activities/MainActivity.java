@@ -3,8 +3,10 @@ package com.uwimonacs.fstmobile.activities;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,15 +22,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -171,13 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     public void setUpSAS() {
         init();
-        if (mAccounts.length > 0) {
-            //Log in with single account
-            login();
-        } else {
-            //Allow user to log in
-            cleanUpNavDrawer();
-        }
+        cleanUpNavDrawer();
 
     }
 
@@ -303,7 +300,7 @@ public class MainActivity extends AppCompatActivity
         new Delete().from(SASConfig.class).where("ConfigID = ?", 0).execute();
         new Delete().from(Student.class).where("id_number = ?", student.getIdNumber()).execute();
 
-        ActivityCompat.finishAffinity(this);
+        finishAffinity();
     }
 
     /**
@@ -369,6 +366,7 @@ public class MainActivity extends AppCompatActivity
             final Menu menu = navigationView.getMenu();
             final MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
+            item.setActionView(new ProgressBar(this));
 
             sasConfig.selectTerm(term);
 
