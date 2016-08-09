@@ -14,6 +14,7 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.ImageItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matthew on 8/8/2016.
@@ -22,9 +23,9 @@ public class GridViewAdapter extends ArrayAdapter {
 
     private Context context;
     private int resourceId;
-    private ArrayList images  = new ArrayList();
+    private List images  = new ArrayList();
 
-    public GridViewAdapter(Context context, int resourceId, ArrayList images) {
+    public GridViewAdapter(Context context, int resourceId, List images) {
         super(context, resourceId, images);
         this.resourceId = resourceId;
         this.context = context;
@@ -60,8 +61,16 @@ public class GridViewAdapter extends ArrayAdapter {
 
 
 
+
+
     static class ViewHolder {
         TextView imageTitle;
         ImageView image;
+    }
+
+    public void updatePhotos(List images)
+    {
+        this.images = images;
+        notifyDataSetChanged();
     }
 }

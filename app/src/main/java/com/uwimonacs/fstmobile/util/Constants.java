@@ -12,4 +12,9 @@ public class Constants {
             "https://infinite-citadel-20637.herokuapp.com/scholarship/";
 
     public static final String PLACE_URL = "https://infinite-citadel-20637.herokuapp.com/places/";
+
+
+    public static final String IMAGES_URL = "https://infinite-citadel-20637.herokuapp.com/images/";
+
+
 }
