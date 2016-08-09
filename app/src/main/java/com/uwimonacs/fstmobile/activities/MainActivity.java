@@ -87,7 +87,7 @@ implements AdapterView.OnItemSelectedListener{
 
         pager = (ViewPager)findViewById(R.id.pager);
 
-        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), this);
+        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager());
 
         pager.setAdapter(tabPagerAdapter);
 

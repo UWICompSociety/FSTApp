@@ -11,8 +11,6 @@ import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 
 public class NewsDetailActivity extends AppCompatActivity {
-    private Bundle extras;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +22,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("News");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
 
         final String title = extras.getString("title");
         final String story = extras.getString("story");
@@ -48,16 +46,5 @@ public class NewsDetailActivity extends AppCompatActivity {
             default:
                 return true;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        /*
-        * To reduce jagged backward transition
-        * */
-        TextView heading = (TextView)findViewById(R.id.newsDetail_Topic);
-        heading.setTextSize(24);
-        heading.setPadding(24, 34, 24, 0); //Do not change these values
-        supportFinishAfterTransition();
     }
 }
