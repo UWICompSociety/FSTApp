@@ -143,12 +143,12 @@
         <!-- DB Version -->
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="2" />
+            android:value="3" />
 
         <!-- Models -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.uwimonacs.fstmobile.models.Contact,com.uwimonacs.fstmobile.models.FAQ, com.uwimonacs.fstmobile.models.News,com.uwimonacs.fstmobile.models.Place,com.uwimonacs.fstmobile.models.Scholarship,com.uwimonacs.fstmobile.models.SASConfig,com.uwimonacs.fstmobile.models.Student" />
+            android:value="com.uwimonacs.fstmobile.models.Contact,com.uwimonacs.fstmobile.models.FAQ, com.uwimonacs.fstmobile.models.News,com.uwimonacs.fstmobile.models.Place,com.uwimonacs.fstmobile.models.Scholarship,com.uwimonacs.fstmobile.models.SASConfig,com.uwimonacs.fstmobile.models.Student,com.uwimonacs.fstmobile.models.ImageItem,com.uwimonacs.fstmobile.models.Event" />
 
         <activity
             android:name=".activities.GalleryActivity"
