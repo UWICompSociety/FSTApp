@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,8 @@ import com.uwimonacs.fstmobile.sync.NewsSync;
 
 import java.util.List;
 
-public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener {
     private View view;
     private NewsListAdapter newsListAdapter;
     private RecyclerView newsListView;
@@ -37,14 +36,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
-    private AppCompatActivity activity;
 
     public NewsFragment() {
         /* required empty constructor */
-    }
-
-    public void setActivity(AppCompatActivity activity){
-        this.activity = activity;
     }
 
     @Nullable
@@ -100,8 +94,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         newsListView.setLayoutManager(gm);
 
         newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
-
-        newsListAdapter.setActivity(activity);
 
         newsListView.setAdapter(newsListAdapter);
     }

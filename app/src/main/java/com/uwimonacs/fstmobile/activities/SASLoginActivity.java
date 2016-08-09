@@ -10,11 +10,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -96,9 +98,6 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                 showHelpDialog(v.getContext());
             }
         });
-
-        sasConfig = MyApplication.getSasConfig();
-        webView = MyApplication.getWebView();
     }
 
     private void showHelpDialog(Context context) {
@@ -168,6 +167,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
 
     public void createAccount(final String username, final String password){
         final String formData = "sid=" + username + "&PIN=" + password;
+        final AccountAuthenticatorActivity activity = this;
 
         runOnUiThread(new Runnable() {
             @Override
@@ -178,6 +178,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                         Student student = new Student(username);
                         student.setPassword(password);
                         sasConfig.student = student;
+                        sasConfig.setLogin(activity);
                         view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'login');");
                         super.onPageFinished(view, url);
                     }
@@ -188,10 +189,12 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
     }
 
     public void signIn(View v) {
+        sasConfig = MyApplication.getSasConfig();
+        webView = MyApplication.getWebView();
+        sasConfig.setLogin(this);
+
         final RelativeLayout progressBar = (RelativeLayout) findViewById(R.id.sas_login_progressbar);
         final LinearLayout mainLayout = (LinearLayout) findViewById(R.id.sas_login_mainlayout);
-
-        sasConfig.setLogin(this);
 
         final String username = id.getText().toString();
         final String password = pass.getText().toString();
@@ -201,7 +204,6 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
         else {
             mainLayout.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-
             createAccount(username, password);
         }
     }

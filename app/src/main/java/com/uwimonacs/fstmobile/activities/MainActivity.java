@@ -3,13 +3,16 @@ package com.uwimonacs.fstmobile.activities;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
@@ -21,11 +24,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -39,9 +45,11 @@ import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
 import com.uwimonacs.fstmobile.models.TimeTable;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity
-implements AdapterView.OnItemSelectedListener{
+        implements AdapterView.OnItemSelectedListener{
     private TabPagerAdapter tabPagerAdapter;
     private TabLayout tabLayout;
     private ViewPager pager;
@@ -87,7 +95,7 @@ implements AdapterView.OnItemSelectedListener{
 
         pager = (ViewPager)findViewById(R.id.pager);
 
-        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), this);
+        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager());
 
         pager.setAdapter(tabPagerAdapter);
 
@@ -166,21 +174,16 @@ implements AdapterView.OnItemSelectedListener{
 
     public void setUpSAS() {
         init();
-        if (mAccounts.length > 0) {
-            //Log in with single account
-            login();
-        } else {
-            //Allow user to log in
-            cleanUpNavDrawer();
-        }
+        cleanUpNavDrawer();
 
     }
 
     public void login(){
+        SubMenu subMenu = navigationView.getMenu().getItem(0).getSubMenu();
 
-        final MenuItem registration = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration);
-        final MenuItem transcript = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript);
-        final MenuItem logout = navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout);
+        final MenuItem registration = subMenu.findItem(R.id.sas_registration);
+        final MenuItem transcript = subMenu.findItem(R.id.sas_transcript);
+        final MenuItem logout = subMenu.findItem(R.id.sas_logout);
 
         registration.setEnabled(false);
         transcript.setEnabled(false);
@@ -233,7 +236,7 @@ implements AdapterView.OnItemSelectedListener{
 
                     case R.id.sas_logout:
                         drawer.closeDrawers();
-                        removeAccount();
+                        removeAccountDialog();
                         return true;
 
                     case R.id.settings:
@@ -249,45 +252,18 @@ implements AdapterView.OnItemSelectedListener{
         });
     }
 
-    public void removeAccount() {
-        final AppCompatActivity activity = this;
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+    public void removeAccountDialog() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setTitle("Logging out");
 
         alertDialogBuilder
-                .setMessage("This will remove your account from this device. \n" +
+                .setMessage("This will remove your account from this device and close the app. \n" +
                         "You can log in again")
                 .setCancelable(true)
                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        loggedIn = false;
-                        AccountManager manager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
-                        Account[] accounts = manager.getAccountsByType("UWI");
-                        Account account = new Account("dummy", "dummy");
-                        for (final Account listItem: accounts) {
-                            if (sasConfig.student.getIdNumber().equals(listItem.name))
-                                account = listItem;
-                        }
-
-                        if (Build.VERSION.SDK_INT < 22) {
-                            manager.removeAccount(account, null, null);
-                        } else {
-                            manager.removeAccount(account, activity, null, null);
-                        }
-
-                        sasConfig.student = null;
-                        sasConfig.getTerms().clear();
-
-                        new Delete().from(SASConfig.class).execute();
-                        new Delete().from(Student.class).execute();
-
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                cleanUpNavDrawer();
-                            }
-                        });
+                        removeAccount();
                     }
                 })
                 .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -303,20 +279,54 @@ implements AdapterView.OnItemSelectedListener{
         alertDialog.show();
     }
 
+    public void removeAccount(){
+        loggedIn = false;
+        AccountManager manager = (AccountManager)getSystemService(ACCOUNT_SERVICE);
+        Account[] accounts = manager.getAccountsByType("UWI");
+        Account account = new Account("dummy", "dummy");
+        Student student = sasConfig.student;
+        for (final Account listItem: accounts) {
+            if (student.getIdNumber().equals(listItem.name))
+                account = listItem;
+        }
+
+        if (Build.VERSION.SDK_INT < 22) {
+            manager.removeAccount(account, null, null);
+        } else {
+//            manager.removeAccount(account, this, null, null);
+            manager.removeAccountExplicitly(account);
+        }
+
+        new Delete().from(SASConfig.class).where("ConfigID = ?", 0).execute();
+        new Delete().from(Student.class).where("id_number = ?", student.getIdNumber()).execute();
+
+        finishAffinity();
+    }
+
+    /**
+     * Reset the navigation drawer to what it looked like before logging in
+     */
     public void cleanUpNavDrawer() {
-        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_registration).setTitle("Log in");
-        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_transcript).setVisible(false);
-        navigationView.getMenu().getItem(0).getSubMenu().findItem(R.id.sas_logout).setVisible(false);
+        TermsAdapter terms = new TermsAdapter(this, android.R.layout.simple_spinner_item);
+        terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        terms.addAll(new ArrayList<String>());
+        Spinner termSelector = (Spinner) navigationView.getHeaderView(0).findViewById(R.id.term);
+        termSelector.setAdapter(terms);
+
+        SubMenu subMenu = navigationView.getMenu().getItem(0).getSubMenu();
+        subMenu.findItem(R.id.sas_registration).setTitle("Log in");
+        subMenu.findItem(R.id.sas_transcript).setVisible(false);
+        subMenu.findItem(R.id.sas_logout).setVisible(false);
     }
 
     public void fixNavDrawerForDatabase(){
         View header = navigationView.getHeaderView(0);
 
         final TextView username = (TextView) header.findViewById(R.id.username),
-                idNUmber = (TextView) header.findViewById(R.id.id_number);
+                idNumber = (TextView) header.findViewById(R.id.id_number);
 
         username.setText(sasConfig.student.getName());
-        idNUmber.setText(sasConfig.student.getIdNumber());
+        idNumber.setText(sasConfig.student.getIdNumber());
 
         TermsAdapter terms = new TermsAdapter(this, android.R.layout.simple_spinner_item);
         terms.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -344,22 +354,26 @@ implements AdapterView.OnItemSelectedListener{
         final String term = sasConfig.termValues.get(pos);
 
         TimeTable timeTable = sasConfig.student.getTimeTable(term);
-        if(timeTable != null){
+        if (timeTable != null) {
             //We already have the timetable
             sasConfig.selectTerm(term);
             sasConfig.student.setTimeTable(timeTable);
+            final Menu menu = navigationView.getMenu();
+            final MenuItem viewTranscript = menu.getItem(0).getSubMenu().findItem(R.id.sas_transcript);
+            viewTranscript.setEnabled(true);
         } else if (!term.equals(sasConfig.term)) {
             //We don't have the timetable we need to get it
             final Menu menu = navigationView.getMenu();
             final MenuItem item = menu.getItem(0).getSubMenu().getItem(0);
             item.setEnabled(false);
+            item.setActionView(new ProgressBar(this));
 
             sasConfig.selectTerm(term);
 
             String formData;
             try {
                 formData = "sid=" + sasConfig.student.getIdNumber() + "&PIN=" + mAccountManager.getPassword(mAccount);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 formData = "sid=" + sasConfig.student.getIdNumber() + "&PIN=" + sasConfig.student.getPassword();
             }
             webView.setWebViewClient(new WebViewClient() {

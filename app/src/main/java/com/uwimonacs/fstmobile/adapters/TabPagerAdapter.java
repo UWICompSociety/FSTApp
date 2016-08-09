@@ -11,20 +11,16 @@ import com.uwimonacs.fstmobile.fragments.NewsFragment;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
     private static final CharSequence[] TAB_TITLES = {"News", "Info", "Places"};
-    private AppCompatActivity activity;
 
-    public TabPagerAdapter(FragmentManager fm, AppCompatActivity activity) {
+    public TabPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.activity = activity;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                NewsFragment newsFragment = new NewsFragment();
-                newsFragment.setActivity(activity);
-                return newsFragment;
+                return new NewsFragment();
             case 1:
                 return new InfoFragment();
             case 2:

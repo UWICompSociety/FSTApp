@@ -2,11 +2,6 @@ package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +23,6 @@ import java.util.List;
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
     private List<News> newsList;
     private final Context ctxt;
-    private AppCompatActivity activity;
 
     public class NewsViewHolder extends RecyclerView.ViewHolder {
         final TextView newsTitle;
@@ -51,18 +45,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                     intent.putExtra("image", newsList.get(pos).getImage_url());
                     intent.putExtra("title", newsList.get(pos).getTitle());
                     intent.putExtra("story", newsList.get(pos).getStory());
-                    Pair<View, String> p1 = Pair.create((View) newsTitle, "news_title");
-                    Pair<View, String> p2 = Pair.create((View) newsImage, "news_image");
-                    try {
-                        ActivityOptionsCompat options =
-                                ActivityOptionsCompat.makeSceneTransitionAnimation(activity, p1, p2);
-                        if(Build.VERSION.SDK_INT >= 21)
-                            v.getContext().startActivity(intent, options.toBundle());
-                        else
-                            v.getContext().startActivity(intent);
-                    } catch (NullPointerException e){
-                        v.getContext().startActivity(intent);
-                    }
+
+                    v.getContext().startActivity(intent);
                 }
             });
         }
@@ -97,9 +81,5 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     public void updateNews(List<News> new_news) {
         this.newsList = new ArrayList<>(new_news);
         notifyDataSetChanged();
-    }
-
-    public void setActivity(AppCompatActivity activity){
-        this.activity = activity;
     }
 }

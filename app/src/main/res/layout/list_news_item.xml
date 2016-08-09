@@ -20,9 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="172.0dip"
             android:scaleType="fitXY"
-            android:transitionName="news_image"
-            tools:background="@android:color/black"
-            tools:targetApi="LOLLIPOP"/>
+            tools:background="@android:color/black"/>
 
         <TextView
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -35,9 +33,7 @@
             android:paddingBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:transitionName="news_title"
-            tools:text="Faculty to Get New Buildings"
-            tools:targetApi="LOLLIPOP"/>
+            tools:text="Faculty to Get New Buildings" />
 
         <TextView
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"

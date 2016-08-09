@@ -20,7 +20,8 @@ import java.util.List;
 
 @Table(name = "Student")
 public class Student extends Model {
-    @Column(name = "id_number")
+
+    @Column(name = "id_number", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String idNumber;
 
     @Column(name = "name")
