@@ -109,6 +109,7 @@
     <string name="toast_text_copied">Text copied</string>
     <string name="title_activity_gallery">GalleryActivity</string>
     <string name="title_activity_gallery_detail">GalleryDetailActivity</string>
+    <string name="title_activity_event">EventActivity</string>
 
 
 </resources>
