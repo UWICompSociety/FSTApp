@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.Event;
+import com.uwimonacs.fstmobile.util.DateTimeParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         holder.eventNameText.setText(title);
         holder.eventDescText.setText(desc);
-        holder.eventDateText.setText(date);
+        holder.eventDateText.setText(DateTimeParser.parseDateTime(date));
 
     }
 

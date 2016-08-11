@@ -99,6 +99,8 @@ public class MapActivity extends AppCompatActivity {
                         .snippet(snip));
 
                 //final Position origin = Position.fromCoordinates(-76.750189,18.005988); //For Testing
+
+
                 final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
                 final Position destination = Position.fromCoordinates(lon,lat);
 
