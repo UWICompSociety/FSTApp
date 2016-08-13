@@ -136,7 +136,7 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     for (int i = 0; i < places.size(); i++) {
                         final String shortname = places.get(i).getShortname().toLowerCase();
                         final String fullname = places.get(i).getFullname().toLowerCase();
-                        if (shortname.contains(newText) || fullname.contains(newText))
+                        if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
                             searchResults.add(places.get(i));
                     }
                     searchResultsAdapter.updateSearchResults(searchResults);

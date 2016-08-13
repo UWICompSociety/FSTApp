@@ -34,7 +34,7 @@ public class DateTimeParser {
         String hrs = time_string[0];
         String mins = time_string[1];
 
-        
+
 
         date = getMonth(month) + " " +day+ " " + " "+ year+ " " + hrs+":"+mins;
 

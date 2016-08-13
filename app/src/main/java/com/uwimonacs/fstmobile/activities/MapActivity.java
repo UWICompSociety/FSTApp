@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
@@ -63,7 +64,8 @@ public class MapActivity extends AppCompatActivity {
         department = extras.getString("department");
         shortname = extras.getString("shortname");
         fullname = extras.getString("fullname");
-        places = (ArrayList<Place>)(getIntent().getBundleExtra("placesList").getSerializable("places"));
+       // places = (ArrayList<Place>)(getIntent().getBundleExtra("placesList").getSerializable("places"));
+        places = new Select().all().from(Place.class).execute();
 
         colors = new HashMap<>();
 
@@ -72,6 +74,7 @@ public class MapActivity extends AppCompatActivity {
         colors.put("Life Sciences",Color.parseColor("#ffa500"));
         colors.put("Computing",Color.parseColor("#551A8B"));
         colors.put("Chemistry",Color.parseColor("#FF69B4"));
+        colors.put("Geology",Color.parseColor("#7B1FA2"));
 
         mapView = (MapView) findViewById(R.id.mapview);
 
