@@ -43,14 +43,14 @@ public class GridViewAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.grid_gallery_item,parent,false);
             holder = new ViewHolder();
             holder.image = (ImageView)row.findViewById(R.id.image);
-            holder.imageTitle = (TextView)row.findViewById(R.id.text);
+            //holder.imageTitle = (TextView)row.findViewById(R.id.text);
             row.setTag(holder);
         }else{
             holder = (ViewHolder)row.getTag();
         }
 
         ImageItem imageItem = (ImageItem)images.get(position);
-        holder.imageTitle.setText(imageItem.getTitle());
+        //holder.imageTitle.setText(imageItem.getTitle());
         Picasso.with(context).load(imageItem.getUrl()).into(holder.image);
         return row;
 
@@ -64,7 +64,7 @@ public class GridViewAdapter extends ArrayAdapter {
 
 
     static class ViewHolder {
-        TextView imageTitle;
+        //TextView imageTitle;
         ImageView image;
     }
 
