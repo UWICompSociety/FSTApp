@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.uwimonacs.fstmobile">
+    package="com.uwimonacs.fstmobile" >
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -24,11 +24,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="icon, label">
+        tools:replace="icon, label" >
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,7 @@
         <activity
             android:name=".activities.SASLoginActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin" />
-        <activity android:name=".activities.SASTimetableActivity">
+        <activity android:name=".activities.SASTimetableActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -46,14 +46,14 @@
         <activity
             android:name=".activities.VideoListActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar.VideosListActivity">
+            android:theme="@style/AppTheme.NoActionBar.VideosListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.PlayerActivity"
-            android:theme="@style/AppTheme.NoActionBar.PlayerActivity">
+            android:theme="@style/AppTheme.NoActionBar.PlayerActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.VideoListActivity" />
@@ -61,7 +61,7 @@
         <activity
             android:name=".activities.FAQActivity"
             android:label="@string/title_activity_faq"
-            android:theme="@style/AppTheme.NoActionBar.FAQActivity">
+            android:theme="@style/AppTheme.NoActionBar.FAQActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -69,12 +69,12 @@
         <activity
             android:name=".activities.ScholarshipActivity"
             android:label="@string/title_activity_scholarship"
-            android:theme="@style/AppTheme.NoActionBar.ScholarshipActivity">
+            android:theme="@style/AppTheme.NoActionBar.ScholarshipActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.ScholarshipDetailsActivity">
+        <activity android:name=".activities.ScholarshipDetailsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ScholarshipActivity" />
@@ -82,7 +82,7 @@
         <activity
             android:name=".activities.ContactsActivity"
             android:label="@string/title_activity_contacts"
-            android:theme="@style/AppTheme.NoActionBar.ContactsActivity">
+            android:theme="@style/AppTheme.NoActionBar.ContactsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -90,7 +90,7 @@
         <activity
             android:name=".activities.NewsDetailActivity"
             android:label="@string/title_activity_news_detail"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -100,7 +100,7 @@
             android:name=".account.AuthenticationService"
             android:enabled="true"
             android:exported="true"
-            android:process=":auth">
+            android:process=":auth" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
 
@@ -112,7 +112,7 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".activities.MapActivity">
+        <activity android:name=".activities.MapActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -122,7 +122,7 @@
 
         <activity
             android:name=".activities.SASTranscriptActivity"
-            android:label="@string/transcript_label">
+            android:label="@string/transcript_label" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -130,7 +130,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar.Settings">
+            android:theme="@style/AppTheme.NoActionBar.Settings" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -153,7 +153,7 @@
         <activity
             android:name=".activities.GalleryActivity"
             android:label="@string/title_activity_gallery"
-            android:theme="@style/AppTheme.NoActionBar.GalleryActivity">
+            android:theme="@style/AppTheme.NoActionBar.GalleryActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -161,7 +161,7 @@
         <activity
             android:name=".activities.GalleryDetailActivity"
             android:label="@string/title_activity_gallery_detail"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.GalleryActivity" />
@@ -169,10 +169,13 @@
         <activity
             android:name=".activities.EventActivity"
             android:label="@string/title_activity_event"
-            android:theme="@style/AppTheme.NoActionBar.EventActivity">
+            android:theme="@style/AppTheme.NoActionBar.EventActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.PermissionsActivity"
+            android:theme="@style/Theme.Transparent">
         </activity>
     </application>
 

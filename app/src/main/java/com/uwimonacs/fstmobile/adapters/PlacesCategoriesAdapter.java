@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.MapActivity;
+import com.uwimonacs.fstmobile.activities.PermissionsActivity;
 import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class PlacesCategoriesAdapter
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mapIntent = new Intent(v.getContext(), MapActivity.class);
+                    Intent mapIntent = new Intent(v.getContext(), PermissionsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("places", places);
                     mapIntent.putExtra("location", place.getLocation());

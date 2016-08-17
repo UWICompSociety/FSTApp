@@ -53,8 +53,6 @@ public class MapActivity extends AppCompatActivity {
     private HashMap<String, Integer> colors;
     private DirectionsRoute currentRoute;
 
-    private static final int PERMISSIONS_LOCATION = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +81,6 @@ public class MapActivity extends AppCompatActivity {
         colors.put("Geology",Color.parseColor("#7B1FA2"));
 
         mapView = (MapView) findViewById(R.id.mapview);
-
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -91,18 +88,7 @@ public class MapActivity extends AppCompatActivity {
             public void onMapReady(MapboxMap mapboxMap) {
                 map = mapboxMap;
 
-                if ((ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
-                        (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
-                        (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) &&
-                        (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED)) {
-                    ActivityCompat.requestPermissions(MapActivity.this,
-                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                                    Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.INTERNET,
-                                    Manifest.permission.ACCESS_NETWORK_STATE}, PERMISSIONS_LOCATION);
-                }
-
-                mapboxMap.setMyLocationEnabled(true);
+                    mapboxMap.setMyLocationEnabled(true);
 
                 final String[] locals = location.split(",");
                 final String snip = department + " - " + shortname;
@@ -233,44 +219,34 @@ public class MapActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        if(mapView != null)
+            mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        if(mapView != null)
+            mapView.onPause();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        if(mapView != null)
+            mapView.onLowMemory();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        if(mapView != null)
+            mapView.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_LOCATION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MapActivity.this,"Permissions Granted.",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(MapActivity.this,"Permissions Denied, You cannot access map features.",Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
     }
 }
