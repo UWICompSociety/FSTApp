@@ -333,6 +333,7 @@ public class SASConfig extends Model {
         Document doc = Jsoup.parse(body);
         Elements tables = doc.select("table.datadisplaytable");
         for(int i=0; i<(tables.size()-1); i+=2){
+            System.out.println("Table # " + (i/2));
             Course course = new Course("","");
             Element tableDetail = tables.get(i),
                     tableTimes = tables.get(i+1);
@@ -351,24 +352,39 @@ public class SASConfig extends Model {
             Elements rows = tableTimes.getElementsByTag("td");
             String dateRange = rows.get(4).text();
             course.setDateRange(dateRange);
-            course.setInstructorName(rows.get(6).ownText().substring(0, rows.get(6).ownText().length()-3)); //Might need to be stripped
+            try {
+                course.setInstructorName(rows.get(6).ownText().substring(0, rows.get(6).ownText().length() - 3)); //Might need to be stripped
+            } catch (StringIndexOutOfBoundsException e){
+                //No instructor
+                course.setInstructorName(rows.get(6).text().substring(0, rows.get(6).text().length())); //Might need to be stripped
+            }
 
 
             rows = tableTimes.getElementsByTag("tr");
+            boolean incorrectTable= false;
             for(int j=1; j<rows.size(); j++){
-                Elements tds = rows.get(j).getElementsByTag("td");
-                ComponentDate date = new ComponentDate();
-                date.setTime(tds.get(1).text());
-                date.setVenue(tds.get(3).text());
-                date.setDayOfWeek(tds.get(2).text());
-                String start = dateRange.substring(0, dateRange.indexOf("-")-1),
-                        end = dateRange.substring(dateRange.indexOf("-")+2, dateRange.length());
-                List<Calendar> dates = setCalendarDates(start, end);
-                course.addDate(date);
-                course.setStart(dates.get(0));
-                course.setEnd(dates.get(1));
+                try {
+                    Elements tds = rows.get(j).getElementsByTag("td");
+                    ComponentDate date = new ComponentDate();
+                    date.setTime(tds.get(1).text());
+                    date.setVenue(tds.get(3).text());
+                    date.setDayOfWeek(tds.get(2).text());
+                    String start = dateRange.substring(0, dateRange.indexOf("-")-1),
+                            end = dateRange.substring(dateRange.indexOf("-")+2, dateRange.length());
+                    List<Calendar> dates = setCalendarDates(start, end);
+                    course.addDate(date);
+                    course.setStart(dates.get(0));
+                    course.setEnd(dates.get(1));
+                } catch (IndexOutOfBoundsException e){
+                    //Incorrect table
+                    i++;
+                    incorrectTable = true;
+                    break;
+                }
             }
-            timeTable.addCourse(course);
+            if(!incorrectTable) {
+                timeTable.addCourse(course);
+            }
         }
         student.setTimeTable(timeTable);
         student.addTimeTable(timeTable, term);
