@@ -44,4 +44,8 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
 </resources>
