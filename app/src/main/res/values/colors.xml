@@ -10,5 +10,7 @@
 
     <color name="blue">#7ecce8</color>
 
+    <color name="Black">#000</color>
+
     <color name="yellow">#FFFF00</color>
 </resources>

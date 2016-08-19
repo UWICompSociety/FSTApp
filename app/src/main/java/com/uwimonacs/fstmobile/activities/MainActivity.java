@@ -290,11 +290,14 @@ public class MainActivity extends AppCompatActivity
                 account = listItem;
         }
 
-        if (Build.VERSION.SDK_INT < 22) {
-            manager.removeAccount(account, null, null);
-        } else {
-//            manager.removeAccount(account, this, null, null);
-            manager.removeAccountExplicitly(account);
+        try {
+            if (Build.VERSION.SDK_INT < 22) {
+                manager.removeAccount(account, null, null);
+            } else {
+                manager.removeAccountExplicitly(account);
+            }
+        } catch (SecurityException e){
+            //Fail gracefully
         }
 
         new Delete().from(SASConfig.class).where("ConfigID = ?", 0).execute();

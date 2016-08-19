@@ -132,6 +132,17 @@ public class SASConfig extends Model {
                 Toast.makeText(context, "Your password has changed", Toast.LENGTH_SHORT).show();
                 login.startActivity(new Intent(context, SASLoginActivity.class));
             }
+        } else if(body.contains("Webpage not available") || body.contains("ERR_TIMED_OUT")){
+            // Network timeout - handle error
+            Toast.makeText(context, "Login failed. Check your internet connection and try again",
+                    Toast.LENGTH_SHORT).show();
+            login.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    login.findViewById(R.id.sas_login_progressbar).setVisibility(View.GONE);
+                    login.findViewById(R.id.sas_login_mainlayout).setVisibility(View.VISIBLE);
+                }
+            });
         } else {
             //Login successful - fetch user data and store account
 

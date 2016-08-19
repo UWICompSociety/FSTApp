@@ -31,6 +31,8 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
 
+import java.net.SocketTimeoutException;
+
 @SuppressLint("NewApi")
 public class SASLoginActivity extends AccountAuthenticatorActivity {
     private SASConfig sasConfig;
