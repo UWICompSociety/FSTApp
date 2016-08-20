@@ -45,6 +45,7 @@ dependencies {
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'com.github.deano2390:MaterialShowcaseView:1.1.0@aar'
     compile 'com.prolificinteractive:material-calendarview:1.4.0'
+    compile 'net.opacapp:multiline-collapsingtoolbar:1.2.2'
     compile ('com.google.code.gson:gson:2.7')
             {
                 exclude group: 'com.google.guava', module: 'guava-jdk5'
