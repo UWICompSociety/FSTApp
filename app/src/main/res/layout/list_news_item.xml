@@ -20,7 +20,9 @@
             android:layout_width="fill_parent"
             android:layout_height="172.0dip"
             android:scaleType="fitXY"
-            tools:background="@android:color/black"/>
+            android:transitionName="news_image"
+            tools:background="@android:color/black"
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"

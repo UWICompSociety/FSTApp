@@ -1,36 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:scrollbars="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <LinearLayout
-        android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
         android:paddingRight="16dp"
         android:paddingEnd="16dp"
+        android:orientation="vertical"
         android:paddingBottom="40.0dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-        <ImageView
-            android:id="@+id/newsDetail_header"
-            android:layout_width="fill_parent"
-            android:layout_height="200.0dip"
-            android:scaleType="fitCenter"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            tools:background="@android:color/black"/>
         <TextView
             android:textSize="30.0sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:id="@+id/newsDetail_Topic"
-            android:paddingTop="10.0dip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             tools:text="Title of the News Story" />
 
         <TextView
@@ -42,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
+            android:focusable="false"
             tools:text="@string/placeholder_lorem_ipsum" />
     </LinearLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

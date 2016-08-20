@@ -31,6 +31,11 @@
 
     <style name="AppTheme.NoActionBar.EventActivity" />
 
+    <style name="AppTheme.NoActionBar.NewsDetailActivity">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
