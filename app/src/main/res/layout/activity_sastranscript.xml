@@ -1,114 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/transcript_swiperefresh"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <LinearLayout
+    android:layout_height="match_parent"
+    tools:context="com.uwimonacs.fstmobile.activities.SASTranscriptActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="UnusedAttribute">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/colorPrimary">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7"
+                    android:background="#e5e5e5">
+                    <View
+                        android:id="@+id/circle_target"
+                        android:layout_height="0dp"
+                        android:layout_width="0dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textSize="25sp"-->
+                        <!--android:textColor="@color/colorPrimary"-->
+                        <!--android:text="@string/ug_transcript"/>-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textSize="20sp"
+                            android:text=" "/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginTop="16dp"
+                            android:text="Student Information"/>
+                        <TextView
+                            android:id="@+id/degree_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:text="Degree type: "/>
+                        <TextView
+                            android:id="@+id/program"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:text="Program: "/>
+                        <TextView
+                            android:id="@+id/faculty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:text="Faculty: "/>
+                        <TextView
+                            android:id="@+id/major"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:text="Major: "/>
+                        <TextView
+                            android:id="@+id/minor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:text="Minor: "/>
+                    </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/transcript_swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#e5e5e5"
-        tools:context="com.uwimonacs.fstmobile.activities.SASTranscriptActivity">
-        <View
-            android:id="@+id/circle_target"
-            android:layout_height="0dp"
-            android:layout_width="0dp" />
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-        <TextView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/institution_credit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/ug_transcript"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:textColor="#000"
-            android:layout_marginTop="8dp"
-            android:text="@string/not_official"/>
-    </LinearLayout>
-    <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="16dp"-->
-                <!--android:id="@+id/student_information">-->
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:orientation="vertical">-->
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:textSize="25sp"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:text="Student Information"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/degree_type"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#000"-->
-                <!--android:text="Degree type:"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/program"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#000"-->
-                <!--android:text="Program:"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/faculty"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#000"-->
-                <!--android:text="Faculty"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/major"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#000"-->
-                <!--android:text="Major"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/minor"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="#000"-->
-                <!--android:text="Minor"/>-->
-        <!--</LinearLayout>-->
-    <!--</android.support.v7.widget.CardView>-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/institution_credit"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/institution_credit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/activity_sastranscript_item"/>
-</LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="fill_parent"
+            tools:listitem="@layout/activity_sastranscript_item"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>
