@@ -17,6 +17,8 @@ import com.uwimonacs.fstmobile.R;
 
 public class NewsDetailActivity extends AppCompatActivity {
     private Toolbar toolbar;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout toolbarLayout;
     private Bundle extras;
     private String title;
     private String story;
@@ -34,8 +36,9 @@ public class NewsDetailActivity extends AppCompatActivity {
         init();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("News");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        appbarTitleBehaviour();
 
         newsStory.setText(story);
         newsTitle.setText(title);
@@ -46,6 +49,8 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     private void init(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
         extras = getIntent().getExtras();
         title = extras.getString("title");
         story = extras.getString("story");
@@ -53,6 +58,18 @@ public class NewsDetailActivity extends AppCompatActivity {
         newsHeader = (ImageView) findViewById(R.id.newsDetail_header);
         newsTitle = (TextView) findViewById(R.id.newsDetail_Topic);
         newsStory = (TextView) findViewById(R.id.newsStory);
+    }
+    
+    private void appbarTitleBehaviour(){
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(toolbarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(toolbarLayout))
+                    toolbarLayout.setTitle("News");
+                else
+                    toolbarLayout.setTitle(" ");
+            }
+        });
     }
 
     @Override
