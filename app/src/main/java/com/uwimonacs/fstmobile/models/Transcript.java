@@ -1,13 +1,16 @@
 package com.uwimonacs.fstmobile.models;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sultanofcardio on 7/28/16.
  */
 public class Transcript {
-    String degree, program, faculty, major, minor;
-    List<Term> terms;
+    private String degree, program, faculty, major, minor;
+    private List<Term> terms;
+    private double GPA, degreeGPA;
 
     public String getDegree() {
         return degree;
@@ -62,9 +65,72 @@ public class Transcript {
         this.terms = terms;
     }
 
+    public double getGPA() {
+        calculateGPA();
+        return GPA;
+    }
+
+    public void setGPA(double GPA) {
+        this.GPA = GPA;
+    }
+
+    private void calculateGPA(){
+        double totalQualityPoints = 0;
+        double totalCreditHours = 0;
+        for(Term term: terms){
+            totalCreditHours += term.getTotalCreditHours();
+            totalQualityPoints += term.getTotalQualityPoints();
+        }
+        this.GPA = totalQualityPoints/totalCreditHours;
+    }
+
+    public double getDegreeGPA() {
+        calculateDegreeGPA();
+        return degreeGPA;
+    }
+
+    public void setDegreeGPA(double degreeGPA) {
+        this.degreeGPA = degreeGPA;
+    }
+
+    private void calculateDegreeGPA(){
+        double totalDegreeQualityPoints = 0;
+        double totalDegreeCreditHours = 0;
+        for(Term term: terms){
+            totalDegreeCreditHours += term.getTotalDegreeCreditHours();
+            totalDegreeQualityPoints += term.getTotalDegreeQualityPoints();
+        }
+        this.degreeGPA = totalDegreeQualityPoints/totalDegreeCreditHours;
+    }
+
     public static class Term{
-        String name;
-        List<Course> courses;
+        private String name;
+        private List<Course> courses;
+        private double GPA;
+        private Map<String, Double> gradePoints = new HashMap<>();
+        private double totalCreditHours, totalQualityPoints;
+        private double totalDegreeCreditHours, totalDegreeQualityPoints;
+
+        public Term(){
+            initPoints();
+        }
+
+        private void initPoints(){
+            gradePoints.put("A+", 4.3);
+            gradePoints.put("A", 4.0);
+            gradePoints.put("A-", 3.7);
+            gradePoints.put("B+", 3.3);
+            gradePoints.put("B", 3.0);
+            gradePoints.put("B-", 2.7);
+            gradePoints.put("C+", 2.3);
+            gradePoints.put("C", 2.0);
+            gradePoints.put("C-", 1.7);
+            gradePoints.put("F1", 0.0);
+            gradePoints.put("F2", 0.0);
+            gradePoints.put("F3", 0.0);
+            gradePoints.put("FE", 0.0);
+            gradePoints.put("FC", 0.0);
+        }
 
         public List<Course> getCourses() {
             return courses;
@@ -80,6 +146,80 @@ public class Transcript {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public double getGPA() {
+            calculateGPA();
+            return GPA;
+        }
+
+        public void setGPA(double GPA) {
+            this.GPA = GPA;
+        }
+
+        private void calculateGPA(){
+            double qualityPoints = getTotalQualityPoints();
+            double creditHours = getTotalCreditHours();
+            GPA = qualityPoints/creditHours;
+        }
+
+        public double getTotalQualityPoints() {
+            double qualityPoints = 0;
+            for(Term.Course course: courses){
+                double points = this.gradePoints.get(course.getGrade());
+                double hours = Double.valueOf(course.getCreditHours());
+                qualityPoints += points * hours;
+            }
+            this.totalQualityPoints = qualityPoints;
+            return totalQualityPoints;
+        }
+
+        public void setTotalQualityPoints(double totalQualityPoints) {
+            this.totalQualityPoints = totalQualityPoints;
+        }
+
+        public double getTotalCreditHours() {
+            double creditHours = 0;
+            for(Term.Course course: courses){
+                creditHours += Double.valueOf(course.getCreditHours());
+            }
+            this.totalCreditHours = creditHours;
+            return totalCreditHours;
+        }
+
+        public void setTotalCreditHours(double totalCreditHours) {
+            this.totalCreditHours = totalCreditHours;
+        }
+
+        public double getTotalDegreeQualityPoints() {
+            double degreeQualityPoints = 0;
+            for(Term.Course course: courses){
+                if(!course.getCode().startsWith("1")) {
+                    double degreePoints = this.gradePoints.get(course.getGrade());
+                    double degreeHours = Double.valueOf(course.getCreditHours());
+                    degreeQualityPoints += degreePoints * degreeHours;
+                }
+            }
+            this.totalDegreeQualityPoints = degreeQualityPoints;
+            return totalDegreeQualityPoints;
+        }
+
+        public void setTotalDegreeQualityPoints(double totalDegreeQualityPoints) {
+            this.totalDegreeQualityPoints = totalDegreeQualityPoints;
+        }
+
+        public double getTotalDegreeCreditHours() {
+            double degreeCreditHours = 0;
+            for(Term.Course course: courses){
+                if(!course.getCode().startsWith("1"))
+                    degreeCreditHours += Double.valueOf(course.getCreditHours());
+            }
+            this.totalDegreeCreditHours = degreeCreditHours;
+            return totalDegreeCreditHours;
+        }
+
+        public void setTotalDegreeCreditHours(double totalDegreeCreditHours) {
+            this.totalDegreeCreditHours = totalDegreeCreditHours;
         }
 
         public static class Course{

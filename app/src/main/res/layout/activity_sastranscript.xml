@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="@color/colorPrimary">
+            app:contentScrim="#00BCD4">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7"
-                    android:background="#e5e5e5">
+                    android:background="#00BCD4">
                     <View
                         android:id="@+id/circle_target"
                         android:layout_height="0dp"
@@ -43,12 +43,6 @@
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin"
                         android:paddingTop="@dimen/activity_vertical_margin">
-                        <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textSize="25sp"-->
-                        <!--android:textColor="@color/colorPrimary"-->
-                        <!--android:text="@string/ug_transcript"/>-->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -114,6 +108,26 @@
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:text="Minor: "/>
+                        <TextView
+                            android:id="@+id/total_gpa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            tools:text="Cumulative GPA: "/>
+                        <TextView
+                            android:id="@+id/degree_gpa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            tools:text="Degree GPA: "/>
                     </LinearLayout>
             </LinearLayout>
 

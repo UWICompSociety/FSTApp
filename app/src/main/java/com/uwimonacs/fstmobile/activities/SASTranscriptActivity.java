@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
@@ -22,6 +23,8 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.SASTranscriptAdapter;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Transcript;
+
+import java.text.DecimalFormat;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
@@ -108,6 +111,20 @@ SwipeRefreshLayout.OnRefreshListener{
                 institutionCredit.setAdapter(adapter);
             }
         }.run();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Transcript transcript = sasConfig.student.getTranscript();
+        TextView cumulativeGPA = (TextView) findViewById(R.id.total_gpa),
+                degreeGPA = (TextView) findViewById(R.id.degree_gpa);
+
+        String scGPA = "Cumulative GPA: " + new DecimalFormat("#.00").format(transcript.getGPA()),
+                sdGPA = "Degree GPA: " + new DecimalFormat("#.00").format(transcript.getDegreeGPA());
+
+        cumulativeGPA.setText(scGPA);
+        degreeGPA.setText(sdGPA);
     }
 
     private boolean isFirstTime() {
