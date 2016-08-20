@@ -166,9 +166,13 @@ public class Transcript {
         public double getTotalQualityPoints() {
             double qualityPoints = 0;
             for(Term.Course course: courses){
-                double points = this.gradePoints.get(course.getGrade());
-                double hours = Double.valueOf(course.getCreditHours());
-                qualityPoints += points * hours;
+                try {
+                    double points = this.gradePoints.get(course.getGrade());
+                    double hours = Double.valueOf(course.getCreditHours());
+                    qualityPoints += points * hours;
+                } catch (NullPointerException e){
+                    //Course is in progress
+                }
             }
             this.totalQualityPoints = qualityPoints;
             return totalQualityPoints;
@@ -195,9 +199,13 @@ public class Transcript {
             double degreeQualityPoints = 0;
             for(Term.Course course: courses){
                 if(!course.getCode().startsWith("1")) {
-                    double degreePoints = this.gradePoints.get(course.getGrade());
-                    double degreeHours = Double.valueOf(course.getCreditHours());
-                    degreeQualityPoints += degreePoints * degreeHours;
+                    try {
+                        double degreePoints = this.gradePoints.get(course.getGrade());
+                        double degreeHours = Double.valueOf(course.getCreditHours());
+                        degreeQualityPoints += degreePoints * degreeHours;
+                    } catch(NullPointerException e){
+                        //Course is in progress
+                    }
                 }
             }
             this.totalDegreeQualityPoints = degreeQualityPoints;

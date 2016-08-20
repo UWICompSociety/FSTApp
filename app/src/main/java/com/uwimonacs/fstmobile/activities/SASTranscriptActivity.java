@@ -120,8 +120,8 @@ SwipeRefreshLayout.OnRefreshListener{
         TextView cumulativeGPA = (TextView) findViewById(R.id.total_gpa),
                 degreeGPA = (TextView) findViewById(R.id.degree_gpa);
 
-        String scGPA = "Cumulative GPA: " + new DecimalFormat("#.00").format(transcript.getGPA()),
-                sdGPA = "Degree GPA: " + new DecimalFormat("#.00").format(transcript.getDegreeGPA());
+        String scGPA = "Cumulative GPA: " + new DecimalFormat("0.00").format(transcript.getGPA()),
+                sdGPA = "Degree GPA: " + new DecimalFormat("0.00").format(transcript.getDegreeGPA());
 
         cumulativeGPA.setText(scGPA);
         degreeGPA.setText(sdGPA);

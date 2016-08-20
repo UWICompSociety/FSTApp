@@ -34,7 +34,7 @@ public class SASTranscriptAdapter extends RecyclerView.Adapter<TranscriptViewHol
     public void onBindViewHolder(TranscriptViewHolder holder, int position) {
         final Transcript.Term term = terms.get(position);
         holder.termName.setText(term.getName());
-        String termGPA = "GPA: " + new DecimalFormat("#.00").format(term.getGPA());
+        String termGPA = "GPA: " + new DecimalFormat("0.00").format(term.getGPA());
         holder.termGPA.setText(termGPA);
         final List<Transcript.Term.Course> courses = term.getCourses();
         holder.linearLayout.removeAllViews();
