@@ -3,9 +3,13 @@ package com.uwimonacs.fstmobile.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -119,6 +123,7 @@ public class GalleryActivity extends AppCompatActivity implements SwipeRefreshLa
     {
         gridAdapter = new GridViewAdapter(this, R.layout.grid_gallery_item, images);
         gridView.setAdapter(gridAdapter);
+        final AppCompatActivity activity = this;
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -128,8 +133,13 @@ public class GalleryActivity extends AppCompatActivity implements SwipeRefreshLa
                 intent.putExtra("title", item.getTitle());
                 intent.putExtra("url", item.getUrl());
 
-                //Start details activity
-                startActivity(intent);
+                if(Build.VERSION.SDK_INT >= 21){
+                    Pair<View, String> pair = Pair.create(v, "gallery_image");
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pair);
+                    startActivity(intent, options.toBundle());
+                } else
+                    //Start details activity
+                    startActivity(intent);
             }
         });
     }
