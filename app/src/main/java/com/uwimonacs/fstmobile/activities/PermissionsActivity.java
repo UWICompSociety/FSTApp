@@ -16,6 +16,7 @@ import com.uwimonacs.fstmobile.R;
 
 public class PermissionsActivity extends AppCompatActivity {
     private static final int PERMISSIONS_LOCATION = 0;
+    private AppCompatActivity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class PermissionsActivity extends AppCompatActivity {
         final String message = "We need your permission to access your location so we can give you " +
                 "directions to the room you're looking for. Select OK to proceed.";
 
-        final AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -61,6 +62,12 @@ public class PermissionsActivity extends AppCompatActivity {
                     }
                 })
                 .create();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                activity.finish();
+            }
+        });
         dialog.show();
     }
 
