@@ -1,9 +1,12 @@
 package com.uwimonacs.fstmobile.sync;
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
+import com.uwimonacs.fstmobile.models.Contact;
 import com.uwimonacs.fstmobile.models.Place;
 import com.uwimonacs.fstmobile.rest.RestPlace;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matthew on 7/19/2016.
@@ -30,6 +33,7 @@ public class PlaceSync {
 
         ActiveAndroid.beginTransaction();
         try {
+            deleteStaleData();
             for (int i = 0; i < places.size(); i++) {
                 Place place = places.get(i);
 
@@ -41,5 +45,23 @@ public class PlaceSync {
         }
 
         return true;
+    }
+
+    private void deleteStaleData()
+    {
+
+        List<Place> stale_places = new Select().all().from(Place.class).execute();
+        for(int i=0;i<stale_places.size();i++)
+        {
+            if(!doesPlaceExistInJson(stale_places.get(i)))
+            {
+                Place.delete(Place.class,stale_places.get(i).getId());
+            }
+        }
+    }
+
+    private boolean doesPlaceExistInJson(Place place)
+    {
+        return places.contains(place);
     }
 }

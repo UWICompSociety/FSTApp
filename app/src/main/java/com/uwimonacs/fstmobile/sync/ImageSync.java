@@ -1,12 +1,16 @@
 package com.uwimonacs.fstmobile.sync;
 
+import android.media.Image;
+
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.models.Event;
 import com.uwimonacs.fstmobile.models.ImageItem;
 import com.uwimonacs.fstmobile.rest.RestEvent;
 import com.uwimonacs.fstmobile.rest.RestImage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matthew on 8/8/2016.
@@ -34,7 +38,9 @@ public class ImageSync {
             return false;
 
         ActiveAndroid.beginTransaction();
+
         try {
+            deleteStaleData();
             for (int i = 0; i < imageItems.size(); i++) {
                 final ImageItem imageItem = imageItems.get(i);
 
@@ -46,5 +52,23 @@ public class ImageSync {
         }
 
         return true;
+    }
+
+    private void deleteStaleData()
+    {
+
+        List<ImageItem> stale_images = new Select().all().from(ImageItem.class).execute();
+        for(int i=0;i<stale_images.size();i++)
+        {
+            if(!doesImageExistInJson(stale_images.get(i)))
+            {
+                ImageItem.delete(ImageItem.class,stale_images.get(i).getId());
+            }
+        }
+    }
+
+    private boolean doesImageExistInJson(ImageItem items)
+    {
+        return imageItems.contains(items);
     }
 }

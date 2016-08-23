@@ -1,10 +1,13 @@
 package com.uwimonacs.fstmobile.sync;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.models.Event;
+import com.uwimonacs.fstmobile.models.ImageItem;
 import com.uwimonacs.fstmobile.rest.RestEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matthew on 8/8/2016.
@@ -33,6 +36,7 @@ public class EventSync {
 
         ActiveAndroid.beginTransaction();
         try {
+            deleteStaleData();
             for (int i = 0; i < events.size(); i++) {
                 final Event event = events.get(i);
 
@@ -44,5 +48,23 @@ public class EventSync {
         }
 
         return true;
+    }
+
+    private void deleteStaleData()
+    {
+
+        List<Event> stale_events = new Select().all().from(Event.class).execute();
+        for(int i=0;i<stale_events.size();i++)
+        {
+            if(!doesEventExistInJson(stale_events.get(i)))
+            {
+                Event.delete(Event.class,stale_events.get(i).getId());
+            }
+        }
+    }
+
+    private boolean doesEventExistInJson(Event event)
+    {
+        return events.contains(event);
     }
 }

@@ -1,10 +1,13 @@
 package com.uwimonacs.fstmobile.sync;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
+import com.uwimonacs.fstmobile.models.ImageItem;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.rest.RestNews;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matthew on 7/11/2016.
@@ -32,6 +35,7 @@ public class NewsSync {
 
         ActiveAndroid.beginTransaction();
         try {
+            deleteStaleData();
             for (int i = 0; i < newsItems.size(); i++) {
                 News news = newsItems.get(i);
 
@@ -43,5 +47,23 @@ public class NewsSync {
         }
 
         return true;
+    }
+
+    private void deleteStaleData()
+    {
+
+        List<News> stale_news = new Select().all().from(News.class).execute();
+        for(int i=0;i<stale_news.size();i++)
+        {
+            if(!doesNewsExistInJson(stale_news.get(i)))
+            {
+                News.delete(News.class,stale_news.get(i).getId());
+            }
+        }
+    }
+
+    private boolean doesNewsExistInJson(News news)
+    {
+        return newsItems.contains(news);
     }
 }

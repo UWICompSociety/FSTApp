@@ -34,7 +34,7 @@ public class GalleryDetailActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
 
-        getSupportActionBar().setTitle(title);
+        //getSupportActionBar().setTitle(title);
         String url = getIntent().getStringExtra("url");
 
         tvTitle = (TextView)findViewById(R.id.title);

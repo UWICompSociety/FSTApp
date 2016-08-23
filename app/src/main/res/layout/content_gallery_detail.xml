@@ -17,7 +17,7 @@
         android:scaleType="fitCenter"
         android:transitionName="gallery_image"
         tools:ignore="UnusedAttribute" />
-    <TextView
+   <!-- <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,6 +29,6 @@
         tools:text ="Image1"
         android:textColor="#fff"
         android:textSize="20sp"
-        style="@style/Theme.Transparent"/>
+        style="@style/Theme.Transparent"/>!-->
 
 </RelativeLayout>

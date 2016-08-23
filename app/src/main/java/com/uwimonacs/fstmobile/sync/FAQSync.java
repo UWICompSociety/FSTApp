@@ -1,10 +1,13 @@
 package com.uwimonacs.fstmobile.sync;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.models.FAQ;
+import com.uwimonacs.fstmobile.models.ImageItem;
 import com.uwimonacs.fstmobile.rest.RestFAQ;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FAQSync {
     private final String url;
@@ -28,6 +31,7 @@ public class FAQSync {
 
         ActiveAndroid.beginTransaction();
         try {
+            deleteStaleData();
             for (int i = 0; i < faqs.size(); i++) {
                 FAQ faq = faqs.get(i);
                 FAQ.findOrCreateFromJson(faq);
@@ -39,4 +43,24 @@ public class FAQSync {
 
         return true;
     }
+
+    private void deleteStaleData()
+    {
+
+        List<FAQ> stale_faqs = new Select().all().from(FAQ.class).execute();
+        for(int i=0;i<stale_faqs.size();i++)
+        {
+            if(!doesFAQExistInJson(stale_faqs.get(i)))
+            {
+                FAQ.delete(FAQ.class,stale_faqs.get(i).getId());
+            }
+        }
+    }
+
+    private boolean doesFAQExistInJson(FAQ faq)
+    {
+        return faqs.contains(faq);
+    }
+
+
 }
