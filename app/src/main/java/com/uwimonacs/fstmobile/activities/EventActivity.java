@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.activities;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
@@ -37,7 +39,7 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
     private List<Event> events = new ArrayList<>();
     private RecyclerView eventList;
     private EventListAdapter eventListAdapter;
-
+    public final static int CALENDAR_PERMISSION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
         eventList.setLayoutManager(new LinearLayoutManager(this));
         eventListAdapter = new EventListAdapter(this, events);
         eventList.setAdapter(eventListAdapter);
+
     }
 
     private void setUpSwipeRefresh() {
@@ -175,6 +178,31 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
                     tv_placeholder.setVisibility(View.VISIBLE);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CALENDAR_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    eventListAdapter.showDialog();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this,"Permission required.Can't add to calendar",Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
