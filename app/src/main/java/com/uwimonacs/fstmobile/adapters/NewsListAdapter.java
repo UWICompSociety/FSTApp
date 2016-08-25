@@ -2,9 +2,6 @@ package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +46,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                     intent.putExtra("title", newsList.get(pos).getTitle());
                     intent.putExtra("story", newsList.get(pos).getStory());
 
-                    if (android.os.Build.VERSION.SDK_INT >= 21) {
-                        Pair<View, String> pair = Pair.create((View)newsImage, newsImage.getTransitionName());
-                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((FragmentActivity)ctxt, pair);
-                        ctxt.startActivity(intent, options.toBundle());
-                    } else
-                        v.getContext().startActivity(intent);
+                    v.getContext().startActivity(intent);
                 }
             });
         }

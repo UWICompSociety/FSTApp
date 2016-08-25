@@ -93,8 +93,8 @@ public class NewsFragment extends Fragment
         });
         newsListView.setLayoutManager(gm);
 
-//        newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
-        newsListAdapter = new NewsListAdapter(getActivity(), newsItems);
+        newsListAdapter = new NewsListAdapter(view.getContext(), newsItems);
+
         newsListView.setAdapter(newsListAdapter);
     }
 
