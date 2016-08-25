@@ -33,7 +33,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar.VideosListActivity">
-        <item name="android:statusBarColor">#0D47A1</item>
+        <item name="android:statusBarColor">#1976D2</item>
     </style>
 
     <style name="AppTheme.NoActionBar.ScholarshipActivity">
@@ -46,6 +46,10 @@
 
     <style name="AppTheme.NoActionBar.EventActivity">
         <item name="android:statusBarColor">#388E3C</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.ContactsActivity">
+        <item name="android:statusBarColor">#455A64</item>
     </style>
 
     <style name="AppTheme.NoActionBar.NewsDetailActivity">

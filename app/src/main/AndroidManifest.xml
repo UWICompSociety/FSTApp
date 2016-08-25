@@ -22,7 +22,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/fstfinal"
+        android:icon="@drawable/fstlogo3"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
