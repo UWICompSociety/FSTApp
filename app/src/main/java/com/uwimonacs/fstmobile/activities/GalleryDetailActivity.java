@@ -34,10 +34,10 @@ public class GalleryDetailActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("title");
 
-        //getSupportActionBar().setTitle(title);
+        getSupportActionBar().setTitle("");
         String url = getIntent().getStringExtra("url");
 
-        tvTitle = (TextView)findViewById(R.id.title);
+    //    tvTitle = (TextView)findViewById(R.id.title);
         image = (TouchImageView)findViewById(R.id.image);
 
         image.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +47,7 @@ public class GalleryDetailActivity extends AppCompatActivity {
             }
         });
 
-        tvTitle.setText(title);
+//        tvTitle.setText(title);
         Picasso.with(this).load(url).into(image);
 
 
