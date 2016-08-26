@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.MapActivity;
+import com.uwimonacs.fstmobile.activities.PermissionsActivity;
 import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             @Override
             public void onClick(View v) {
                 final Place place = searchResults.get(position);
-                final Intent mapIntent = new Intent(v.getContext(), MapActivity.class);
+                final Intent mapIntent = new Intent(v.getContext(), PermissionsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("places", searchResults);
                 mapIntent.putExtra("location", place.getLocation());

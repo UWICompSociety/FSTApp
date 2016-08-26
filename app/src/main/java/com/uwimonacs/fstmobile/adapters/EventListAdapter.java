@@ -53,7 +53,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             eventDateText = (TextView) itemView.findViewById(R.id.eventDate);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+           /* itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
 
@@ -75,7 +75,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
 
                 }
-            });
+            });*/
         }
     }
 

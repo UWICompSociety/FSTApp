@@ -3,7 +3,7 @@ package com.uwimonacs.fstmobile.util;
 public class Constants {
 
 
-    public static final String HOST_URL =  "https://infinite-citadel-20637.herokuapp.com";
+    public static final String HOST_URL =  "http://fast.mona.uwi.edu";
 
 
     public static final String CONTACTS_URL = HOST_URL + "/contacts/";

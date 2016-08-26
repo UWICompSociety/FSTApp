@@ -8,6 +8,7 @@
                     android:id="@+id/sas_registration"
                     android:icon="@drawable/ic_event_black_24dp"
                     android:title="@string/sas_registration"
+                    android:visible="false"
                     android:titleCondensed="@string/sas_registration"/>
                 <item
                     android:id="@+id/sas_transcript"

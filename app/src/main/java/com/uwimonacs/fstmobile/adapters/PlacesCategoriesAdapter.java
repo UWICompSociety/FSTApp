@@ -157,6 +157,7 @@ public class PlacesCategoriesAdapter
 
     public void updatePlaces(List<Place> places){
         this.places = new ArrayList<>(places);
+        departments = new ArrayList<>();
         setUpDepartments();
         notifyDataSetChanged();
     }

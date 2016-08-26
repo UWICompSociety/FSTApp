@@ -55,6 +55,7 @@
             android:padding="8dp"
             android:layout_gravity="end"
             android:id="@+id/sharebtn"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_share_black_24dp"/>
 
     </LinearLayout>
