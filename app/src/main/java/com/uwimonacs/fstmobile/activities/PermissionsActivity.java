@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import com.uwimonacs.fstmobile.R;
 public class PermissionsActivity extends AppCompatActivity {
     private static final int PERMISSIONS_LOCATION = 0;
     private AppCompatActivity activity = this;
+    private static final int REQUEST_CODE =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +75,40 @@ public class PermissionsActivity extends AppCompatActivity {
     }
 
     private void startMapActivity(){
-        Intent intent = new Intent(this, MapActivity.class);
-        intent.putExtras(getIntent());
-        startActivity(intent);
-        finish();
+
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
+            buildAlertMessageNoGps();
+        }else{
+            Intent intent = new Intent(this, MapActivity.class);
+            intent.putExtras(getIntent());
+            startActivity(intent);
+            finish();
+        }
+
+
+
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),REQUEST_CODE);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -87,6 +120,18 @@ public class PermissionsActivity extends AppCompatActivity {
                 else
                     finish();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == 0){
+            String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if(provider != null){
+                startMapActivity();
+            }else{
+                Toast.makeText(this,"Gps Needs to be enabld",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
