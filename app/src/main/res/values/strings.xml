@@ -66,25 +66,25 @@
         <item>You have no Registration Time Ticket</item>
     </string-array>
     <!--  Links  -->
-    <string name="login_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_WWWLogin</string>
-    <string name="login_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_ValLogin</string>
-    <string name="webstart_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/web.startpage</string>
-    <string name="webagree_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/web.agree</string>
-    <string name="fstletter_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/uwm_fst.letter</string>
-    <string name="mainmenu_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu</string>
-    <string name="studentservices_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu</string>
-    <string name="registration_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu</string>
-    <string name="selectterm_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
-    <string name="selectterm_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
-    <string name="detailschedule_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
-    <string name="coursesearch_post">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwckgens.P_RegsGetCrse</string>
-    <string name="logout_get">http://sas.uwimona.edu.jm:9010/banndata1-srv_mona/twbkwbis.P_Logout</string>
+    <string name="login_get">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_WWWLogin</string>
+    <string name="login_post">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_ValLogin</string>
+    <string name="webstart_get">https://sas.mona.uwi.edu/banndata1-srv_mona/web.startpage</string>
+    <string name="webagree_post">https://sas.mona.uwi.edu/banndata1-srv_mona/web.agree</string>
+    <string name="fstletter_get">https://sas.mona.uwi.edu/banndata1-srv_mona/uwm_fst.letter</string>
+    <string name="mainmenu_get">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_MainMnu</string>
+    <string name="studentservices_get">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu</string>
+    <string name="registration_get">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu</string>
+    <string name="selectterm_get">https://sas.mona.uwi.edu/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
+    <string name="selectterm_post">https://sas.mona.uwi.edu/banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
+    <string name="detailschedule_get">https://sas.mona.uwi.edu/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
+    <string name="coursesearch_post">https://sas.mona.uwi.edu/banndata1-srv_mona/bwckgens.P_RegsGetCrse</string>
+    <string name="logout_get">https://sas.mona.uwi.edu/banndata1-srv_mona/twbkwbis.P_Logout</string>
 
 
-    <string name="timetable_url">https://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
-    <string name="get_terms_url">https://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
-    <string name="store_term_url">https://sas.uwimona.edu.jm:9010//banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
-    <string name="transcript_post">https://sas.uwimona.edu.jm:9010/banndata1-srv_mona/bwskotrn.P_ViewTran</string>
+    <string name="timetable_url">https://sas.mona.uwi.edu/banndata1-srv_mona/bwskfshd.P_CrseSchdDetl</string>
+    <string name="get_terms_url">https://sas.mona.uwi.edu/banndata1-srv_mona/bwskflib.P_SelDefTerm</string>
+    <string name="store_term_url">https://sas.mona.uwi.edu/banndata1-srv_mona/bwcklibs.P_StoreTerm</string>
+    <string name="transcript_post">https://sas.mona.uwi.edu/banndata1-srv_mona/bwskotrn.P_ViewTran</string>
 
     <!-- Map Related -->
     <string name="play_services_not_installed">Google Play Services is not installed on this device</string>
