@@ -48,7 +48,7 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="TextAppearance.Title" parent="TextAppearance.AppCompat.Title" >
+    <style name="TextAppearance.Title" parent="TextAppearance.AppCompat.Title">
         <item name="android:textSize">30sp</item>
     </style>
 

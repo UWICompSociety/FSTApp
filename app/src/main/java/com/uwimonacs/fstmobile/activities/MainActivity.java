@@ -243,6 +243,10 @@ public class MainActivity extends AppCompatActivity
                         drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
+                    case R.id.schedule:
+                        drawer.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                        return true;
 
                     default:
                         drawer.closeDrawers();

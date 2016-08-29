@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FST Mobile</string>
+    <string name="app_name">FaST</string>
 
     <!-- Activity Titles -->
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
@@ -110,6 +110,7 @@
     <string name="title_activity_gallery">GalleryActivity</string>
     <string name="title_activity_gallery_detail">GalleryDetailActivity</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
 
 
 </resources>

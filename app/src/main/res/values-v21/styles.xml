@@ -57,6 +57,7 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="Theme.Transparent" parent="Theme.AppCompat">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -69,7 +70,6 @@
     <style name="Splash" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
-
 
 
 </resources>
