@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.http.SslError;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -157,6 +159,11 @@ public class SASConfig extends Model {
                     public void run() {
                         final String formData = "sid=" + student.getIdNumber() + "&PIN=" + student.getPassword();
                         webView.setWebViewClient(new WebViewClient(){
+                            @Override
+                            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                                handler.proceed(); // Ignore SSL certificate errors
+                            }
+
                             @Override
                             public void onPageFinished(WebView view, String url) {
                                 view.loadUrl("javascript:window.sasConfig.Login('<body>'+document.getElementsByTagName('body')[0].innerHTML+'</body>', 'login');");

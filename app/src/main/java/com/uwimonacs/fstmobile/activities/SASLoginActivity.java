@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.http.SslError;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -176,7 +178,24 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
             public void run() {
                 webView.setWebViewClient(new WebViewClient(){
                     @Override
+                    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                        handler.proceed(); // Ignore SSL certificate errors
+                    }
+
+                    @Override
                     public void onPageFinished(WebView view, String url) {
+                        view.setWebViewClient(new WebViewClient(){
+                            @Override
+                            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                                handler.proceed(); // Ignore SSL certificate errors
+                            }
+
+                            @Override
+                            public void onPageFinished(WebView view, String url) {
+                                super.onPageFinished(view, url);
+                            }
+                        });
+
                         Student student = new Student(username);
                         student.setPassword(password);
                         sasConfig.student = student;
