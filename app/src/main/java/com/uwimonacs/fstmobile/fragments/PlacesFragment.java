@@ -67,7 +67,7 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
         categories.setLayoutManager(new LinearLayoutManager(getContext()));
         searchResultsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        placesCategoriesAdapter = new PlacesCategoriesAdapter(getContext(), places);
+        placesCategoriesAdapter = new PlacesCategoriesAdapter(getActivity(), places, categories);
         categories.setAdapter(placesCategoriesAdapter);
         searchResultsAdapter = new SearchResultsAdapter(getContext());
         searchResultsView.setAdapter(searchResultsAdapter);
@@ -177,7 +177,6 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         return  hasInternet;
     }
-
 
     private class LoadPlacesTask extends AsyncTask<Void,Void,Boolean> {
         final Context context;

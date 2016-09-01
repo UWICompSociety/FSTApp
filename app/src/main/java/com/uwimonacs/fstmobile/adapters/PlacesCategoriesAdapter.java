@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,10 +27,12 @@ public class PlacesCategoriesAdapter
     private final Context context;
     private ArrayList<Place> places;
     private List<String> departments;
+    private RecyclerView rv;
 
-    public PlacesCategoriesAdapter(Context context, List<Place> places) {
+    public PlacesCategoriesAdapter(Context context, List<Place> places, RecyclerView rv) {
         this.places = new ArrayList<>(places);
         departments = new ArrayList<>();
+        this.rv = rv;
         /*
         * Build a list of the names of the departments to act as the "category" names
         * for the expandable cards in the RecyclerView
@@ -60,6 +64,7 @@ public class PlacesCategoriesAdapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder vh, int position) {
         final CardView cardView = (CardView) vh.itemView; // an expandable CardView
+        final int pos = vh.getAdapterPosition();
 
         /*
         * Holds the list of places under a certain category. Visibility toggled between
@@ -143,6 +148,24 @@ public class PlacesCategoriesAdapter
                 else{
                     expandableArrow.setImageResource(R.drawable.ic_expand_less_black_24dp);
                     linearLayout.setVisibility(View.VISIBLE);
+                    /*
+                    * Causes RecyclerView to scroll to the bottom if at the last element
+                    * to reveal pseudo-hidden content
+                    * */
+                    if(pos == departments.size() - 1){
+                        System.out.println("You clicked me");
+                        ((FragmentActivity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rv.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        rv.scrollToPosition(departments.size() - 1);
+                                    }
+                                }, 50);
+                            }
+                        });
+                    }
                 }
             }
         });
