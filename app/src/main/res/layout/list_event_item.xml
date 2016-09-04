@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="25sp"
+        android:textSize="20sp"
         tools:text="Oritentation"/>
     <TextView
         android:id="@+id/eventDesc"
@@ -24,6 +24,6 @@
         android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Sep 8 2016 9 AM"/>
+        tools:text="Sep 8 2016"/>
 
 </LinearLayout>

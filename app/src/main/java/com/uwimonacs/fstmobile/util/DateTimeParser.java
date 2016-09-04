@@ -1,6 +1,9 @@
 package com.uwimonacs.fstmobile.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Matthew on 11/30/2015.
@@ -36,7 +39,7 @@ public class DateTimeParser {
 
 
 
-        date = getMonth(month) + " " +day+ " " + " "+ year+ " " + hrs+":"+mins;
+        date = getMonth(month) + " " +day+ " " + " "+ year;
 
 
 
@@ -79,5 +82,18 @@ public class DateTimeParser {
             default:
                 return "";
         }
+    }
+
+    public static long convertDateTimeToMilliseconds(String eventdate)
+    {
+        long timeInMilliseconds;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        try {
+            Date mDate = sdf.parse(eventdate);
+            timeInMilliseconds = mDate.getTime();
+        } catch (ParseException e) {
+            return 0;
+        }
+        return timeInMilliseconds;
     }
 }

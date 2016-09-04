@@ -26,8 +26,11 @@ import com.uwimonacs.fstmobile.sync.ContactSync;
 import com.uwimonacs.fstmobile.sync.EventSync;
 import com.uwimonacs.fstmobile.util.ConnectUtils;
 import com.uwimonacs.fstmobile.util.Constants;
+import com.uwimonacs.fstmobile.util.DateTimeParser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -58,6 +61,8 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
 
 
         getEventsFromDatabase();
+
+        sortEvents();
 
 
         //if there are new items present remove place holder image and text
@@ -102,6 +107,19 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
 
     private void getEventsFromDatabase() {
         events = new Select().all().from(Event.class).execute();
+    }
+
+    private void sortEvents()
+    {
+        Collections.sort(events,new Comparator<Event>() {
+            @Override
+            public int compare(Event lhs, Event rhs) {
+                if (DateTimeParser.convertDateTimeToMilliseconds(lhs.getDate()) < DateTimeParser.convertDateTimeToMilliseconds(rhs.getDate()))
+                    return -1;
+                else
+                    return 1;
+            }
+        });
     }
 
     private boolean isConnected() {
@@ -168,6 +186,8 @@ public class EventActivity extends AppCompatActivity implements SwipeRefreshLayo
             progressBar.setVisibility(View.GONE);
             if (result) { //if sync was successful
                 getEventsFromDatabase(); // get the freshly synced events from database
+
+                sortEvents();
 
                 // update the list view to show new events
                 eventListAdapter.updateEventList(events);
