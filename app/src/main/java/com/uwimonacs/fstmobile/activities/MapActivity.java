@@ -1,8 +1,14 @@
 package com.uwimonacs.fstmobile.activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -52,6 +58,9 @@ public class MapActivity extends AppCompatActivity {
     private List<Place> places;
     private HashMap<String, Integer> colors;
     private DirectionsRoute currentRoute;
+    public static final int REQUEST_CODE = 0;
+    double lat;
+    double lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +97,13 @@ public class MapActivity extends AppCompatActivity {
             public void onMapReady(MapboxMap mapboxMap) {
                 map = mapboxMap;
 
-                    mapboxMap.setMyLocationEnabled(true);
+                //mapboxMap.setMyLocationEnabled(true);
 
                 final String[] locals = location.split(",");
                 final String snip = department + " - " + shortname;
 
-                final double lat = Double.parseDouble(locals[0]);
-                final double lon = Double.parseDouble(locals[1]);
+                lat = Double.parseDouble(locals[0]);
+                lon = Double.parseDouble(locals[1]);
 
                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(
                         new CameraPosition.Builder().target(new LatLng(lat,lon)).build()));
@@ -108,14 +117,23 @@ public class MapActivity extends AppCompatActivity {
                 //final Position origin = Position.fromCoordinates(-76.750189,18.005988); //For Testing
 
 
-                final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
-                final Position destination = Position.fromCoordinates(lon,lat);
+               // final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
+                //final Position destination = Position.fromCoordinates(lon,lat);
 
                 map.setOnInfoWindowClickListener(new MapboxMap.OnInfoWindowClickListener() {
                     @Override
                     public boolean onInfoWindowClick(@NonNull Marker marker) {
                         try{
-                            getRoute(origin, destination);
+                            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+                            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                            {
+                              buildAlertMessageNoGps();
+                            }else {
+                                map.setMyLocationEnabled(true);
+                                final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
+                                final Position destination = Position.fromCoordinates(lon, lat);
+                                getRoute(origin, destination);
+                            }
                         }catch(ServicesException e)
                         {
                             e.printStackTrace();
@@ -160,6 +178,53 @@ public class MapActivity extends AppCompatActivity {
                 .addAll(polygon)
                 .fillColor(color));
 
+    }
+
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),REQUEST_CODE);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                        //finish();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == 0){
+            String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if(provider != null){
+                try{
+                    map.setMyLocationEnabled(true);
+                    if(map.isMyLocationEnabled())
+                    {
+                        final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
+                        final Position destination = Position.fromCoordinates(lon, lat);
+                        getRoute(origin, destination);
+                    }
+
+                }catch(ServicesException s)
+                {
+                    Toast.makeText(this,"Error occured",Toast.LENGTH_SHORT).show();
+                }catch (NullPointerException n)
+                {
+                    Toast.makeText(this,"Location still not set\n Try clicking again",Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this,"Gps Needs to be enabld",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void getRoute(Position origin, Position destination) throws ServicesException {

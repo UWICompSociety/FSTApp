@@ -76,17 +76,17 @@ public class PermissionsActivity extends AppCompatActivity {
 
     private void startMapActivity(){
 
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+      //  final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            buildAlertMessageNoGps();
-        }else{
+        //if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        //{
+          //  buildAlertMessageNoGps();
+        //}else{
             Intent intent = new Intent(this, MapActivity.class);
             intent.putExtras(getIntent());
             startActivity(intent);
             finish();
-        }
+       // }
 
 
 
