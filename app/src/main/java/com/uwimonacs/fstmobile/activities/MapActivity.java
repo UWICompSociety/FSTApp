@@ -61,6 +61,7 @@ public class MapActivity extends AppCompatActivity {
     public static final int REQUEST_CODE = 0;
     double lat;
     double lon;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class MapActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Bundle extras = getIntent().getExtras();
+
+        context = this;
 
         location = extras.getString("location");
         department = extras.getString("department");
@@ -129,10 +132,17 @@ public class MapActivity extends AppCompatActivity {
                             {
                               buildAlertMessageNoGps();
                             }else {
-                                map.setMyLocationEnabled(true);
-                                final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
-                                final Position destination = Position.fromCoordinates(lon, lat);
-                                getRoute(origin, destination);
+                                try{
+                                    map.setMyLocationEnabled(true);
+                                    final Position origin = Position.fromCoordinates(map.getMyLocation().getLongitude(), map.getMyLocation().getLatitude());
+                                    final Position destination = Position.fromCoordinates(lon, lat);
+                                    getRoute(origin, destination);
+
+                                }catch(NullPointerException n)
+                                {
+                                    Toast.makeText(context,"Location still not set\n Try clicking again",Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         }catch(ServicesException e)
                         {
