@@ -70,8 +70,8 @@ public class GalleryDetailActivity extends AppCompatActivity {
                     }
                 })
                 .start();
-        tvTitle.animate().translationY(0).setInterpolator(new DecelerateInterpolator())
-                .setDuration(240).start();
+//        tvTitle.animate().translationY(0).setInterpolator(new DecelerateInterpolator())
+//                .setDuration(240).start();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         fullscreen = false;
     }
@@ -86,8 +86,8 @@ public class GalleryDetailActivity extends AppCompatActivity {
                     }
                 })
                 .start();
-        tvTitle.animate().translationY(-tvTitle.getHeight()*3).setInterpolator(new AccelerateInterpolator())
-                .setDuration(240).start();
+//        tvTitle.animate().translationY(-tvTitle.getHeight()*3).setInterpolator(new AccelerateInterpolator())
+//                .setDuration(240).start();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         fullscreen = true;
     }
