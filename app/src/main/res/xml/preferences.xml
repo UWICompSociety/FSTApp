@@ -3,7 +3,7 @@
     <PreferenceCategory
         android:title="Push Notifications"
         android:key="pref_key_notifications_settings">
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_news"
             android:title="News Feed"
             android:summary="Notifies you when new news items are posted."
@@ -26,7 +26,7 @@
         <SwitchPreference
             android:key="pref_schol"
             android:title="Scholarships"
-            android:summary="STay up to date with the OSF offerings."
+            android:summary="Stay up to date with the OSF offerings."
             android:defaultValue="true" />
     </PreferenceCategory>
 
