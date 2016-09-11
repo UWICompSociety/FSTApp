@@ -256,6 +256,13 @@ public class MapActivity extends AppCompatActivity {
 
                 try {
                     currentRoute = response.body().getRoutes().get(0);
+
+                    for(DirectionsRoute newRoute : response.body().getRoutes()){
+                        if(newRoute.getDistance() > currentRoute.getDistance()){
+                            currentRoute = newRoute;
+                        }
+                    }
+                    
                     Toast.makeText(MapActivity.this, "Route is " + currentRoute.getDistance() + " meters long.", Toast.LENGTH_SHORT).show();
 
                     // Draw the route on the map
