@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity
 
         setNavDrawerListener();
 
-        if(!doesDatabaseAccountExist())
-            setUpSAS();
+//        if(!doesDatabaseAccountExist())
+//            setUpSAS();
 
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
 
