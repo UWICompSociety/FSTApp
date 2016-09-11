@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Notifications"
+        android:title="Push Notifications"
         android:key="pref_key_notifications_settings">
         <CheckBoxPreference
-            android:key="pref_sync"
-            android:title="Turn on Notifications"
+            android:key="pref_news"
+            android:title="News Feed"
             android:summary="Notifies you when new news items are posted."
-            android:defaultValue="false" />
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_videos"
+            android:title="Videos"
+            android:summary="Notifies you when new videos are available."
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_events"
+            android:title="Events"
+            android:summary="Subscribe to events."
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_gallery"
+            android:title="Gallery"
+            android:summary="Be notified of new photos in the gallery."
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_schol"
+            android:title="Scholarships"
+            android:summary="STay up to date with the OSF offerings."
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="Calendar"
         android:key="pref_key_notifications_settings">
     <CheckBoxPreference
-        android:key="pref_sync"
+        android:key="pref_calendar"
         android:title="Integrate with Google Calendar"
         android:summary="Integrates your timetable with Google Calendar."
         android:defaultValue="true" />

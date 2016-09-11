@@ -10,7 +10,9 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.activities.MainActivity;
+import com.uwimonacs.fstmobile.activities.Splash;
+
+import java.util.Map;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
     public FirebaseMessagingService() {
@@ -23,19 +25,21 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Map data = remoteMessage.getData();
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         String body = notification.getBody();
         String title = notification.getTitle();
-        sendNotification(title, body);
+        sendNotification(title, body, data);
     }
 
     /**
      * Sends a notification to the device when a message is received from
      * FCM
      */
-    private void sendNotification(String title, String body){
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendNotification(String title, String body, Map data){
+        Intent intent = new Intent(this, Splash.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("activity", (String) data.get("activity"));
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

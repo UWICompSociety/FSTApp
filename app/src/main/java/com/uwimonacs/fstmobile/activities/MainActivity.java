@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,9 +35,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
@@ -101,8 +104,30 @@ public class MainActivity extends AppCompatActivity
 
         tabLayout.setupWithViewPager(pager);
 
+//        Subscribe to Firebase notifications
+        if(isFirstTime()){
+            FirebaseMessaging instance = FirebaseMessaging.getInstance();
+            instance.subscribeToTopic("news");
+            instance.subscribeToTopic("events");
+            instance.subscribeToTopic("gallery");
+            instance.subscribeToTopic("schol");
 
+            System.out.println("First time subscription");
+        }
 
+    }
+
+    private boolean isFirstTime() {
+        SharedPreferences preferences =
+                getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("FirebaseNotifications", false);
+        if (!ranBefore) {
+            // first time
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("FirebaseNotifications", true);
+            editor.apply();
+        }
+        return !ranBefore;
     }
 
     @Override
