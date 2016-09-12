@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity
 
         setNavDrawerListener();
 
-//        if(!doesDatabaseAccountExist())
-//            setUpSAS();
+        if(!doesDatabaseAccountExist())
+            setUpSAS();
 
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
 
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Reset the navigation drawer to what it looked like before logging in
+     * Reset the navigation drawer to what it looked like before logging infix
      */
     public void cleanUpNavDrawer() {
         TermsAdapter terms = new TermsAdapter(this, android.R.layout.simple_spinner_item);

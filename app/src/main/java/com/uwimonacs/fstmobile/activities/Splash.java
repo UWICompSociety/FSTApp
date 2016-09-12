@@ -25,7 +25,9 @@ public class Splash extends AppCompatActivity {
             handleNotification();
         } catch (ClassNotFoundException exception){
             Intent mainActivity = new Intent(this, MainActivity.class);
+            System.out.println("Strting activity");
             startActivity(mainActivity);
+            System.out.println("Activity Started");
             finish();
         }
     }
@@ -55,12 +57,15 @@ public class Splash extends AppCompatActivity {
 
             if(launchClass != null){
                 intent.setClass(this, launchClass);
+                System.out.println("Launch class is not null");
                 startActivity(intent);
                 finish();
             }
         } else {
             Intent mainActivity = new Intent(this, MainActivity.class);
+            System.out.println("Strting activity");
             startActivity(mainActivity);
+            System.out.println("Activity Started");
             finish();
         }
     }

@@ -25,21 +25,21 @@ public class MyApplication extends com.activeandroid.app.Application {
         super.onCreate();
         ActiveAndroid.initialize(this);
         context = getApplicationContext();
-//        resources = getResources();
-//        webView = new WebView(context);
-//        webView.getSettings().setJavaScriptEnabled(true);
-//        try {
-//            sasConfig = (SASConfig) new Select().from(SASConfig.class).where("ConfigID = ?", 0).execute().get(0);
-//        } catch (Exception e){}
-//        if(sasConfig != null) {
-//            sasConfig.initialize(resources, context);
-//            sasConfig.unSerialize();
-//        }
-//        else {
-//            sasConfig = new SASConfig();
-//            sasConfig.initialize(resources, context);
-//        }
-//        webView.addJavascriptInterface(sasConfig, "sasConfig");
+        resources = getResources();
+        webView = new WebView(context);
+        webView.getSettings().setJavaScriptEnabled(true);
+        try {
+            sasConfig = (SASConfig) new Select().from(SASConfig.class).where("ConfigID = ?", 0).execute().get(0);
+        } catch (Exception e){}
+        if(sasConfig != null) {
+            sasConfig.initialize(resources, context);
+            sasConfig.unSerialize();
+        }
+        else {
+            sasConfig = new SASConfig();
+            sasConfig.initialize(resources, context);
+        }
+        webView.addJavascriptInterface(sasConfig, "sasConfig");
     }
 
     public static WebView getWebView(){
