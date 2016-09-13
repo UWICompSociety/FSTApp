@@ -47,6 +47,10 @@
         <item name="android:statusBarColor">#388E3C</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.AlertActivity">
+        <item name="android:statusBarColor">#F44336</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar.ContactsActivity">
         <item name="android:statusBarColor">#455A64</item>

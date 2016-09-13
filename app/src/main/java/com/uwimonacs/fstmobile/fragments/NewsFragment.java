@@ -19,10 +19,10 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.NewsListAdapter;
-import com.uwimonacs.fstmobile.util.ConnectUtils;
-import com.uwimonacs.fstmobile.util.Constants;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.sync.NewsSync;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
+import com.uwimonacs.fstmobile.util.Constants;
 
 import java.util.List;
 

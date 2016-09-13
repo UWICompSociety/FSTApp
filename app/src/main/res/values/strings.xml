@@ -103,6 +103,7 @@
     <string name="sas_transcript">View Transcript</string>
     <string name="sas_logout">Log out</string>
     <string name="settings">Settings</string>
+    <string name="alerts">Alerts</string>
     <string name="forgot_password">Can\'t log in?</string>
 
     <!-- Toast shown when text is copied to the clipboard -->
@@ -110,6 +111,7 @@
     <string name="title_activity_gallery">GalleryActivity</string>
     <string name="title_activity_gallery_detail">GalleryDetailActivity</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_quick_alerts">Alerts</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
 
 

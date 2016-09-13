@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,12 +47,27 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         TextView eventDescText;
         TextView eventDateText;
 
-        public EventViewHolder(View itemView) {
+        public EventViewHolder(final View itemView) {
             super(itemView);
 
             eventNameText = (TextView) itemView.findViewById(R.id.eventTitle);
             eventDescText = (TextView) itemView.findViewById(R.id.eventDesc);
             eventDateText = (TextView) itemView.findViewById(R.id.eventDate);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, eventNameText.getText().toString()
+                            + "\n\n" + eventDescText.getText().toString()
+                            + "\n\n" + eventDateText.getText().toString());
+                    shareIntent.setType("text/plain");
+                    itemView.getContext().startActivity(shareIntent);
+
+                    return true;
+                }
+            });
 
 
            /* itemView.setOnClickListener(new View.OnClickListener() {

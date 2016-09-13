@@ -31,6 +31,8 @@
 
     <style name="AppTheme.NoActionBar.EventActivity" />
 
+    <style name="AppTheme.NoActionBar.AlertActivity" />
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                     intent.putExtra("image", newsList.get(pos).getImage_url());
                     intent.putExtra("title", newsList.get(pos).getTitle());
                     intent.putExtra("story", newsList.get(pos).getStory());
+                    intent.putExtra("url", newsList.get(pos).getUrl());
 
                     v.getContext().startActivity(intent);
                 }
@@ -82,4 +84,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         this.newsList = new ArrayList<>(new_news);
         notifyDataSetChanged();
     }
+
+
 }

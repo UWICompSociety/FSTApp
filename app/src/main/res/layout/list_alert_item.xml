@@ -10,23 +10,19 @@
     android:id="@+id/event_card">
 
     <TextView
-        android:id="@+id/eventTitle"
+        android:id="@+id/alertTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="20sp"
-        tools:text="Oritentation"/>
+        android:textSize="24sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        tools:text="No School Next Week"/>
     <TextView
-        android:id="@+id/eventDesc"
-        android:paddingTop="10dp"
+        android:id="@+id/alertDesc"
+        android:paddingTop="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="General Orientation for new students"/>
-    <TextView
-        android:id="@+id/eventDate"
-        android:paddingTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Sep 8 2016"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="Attention! There will be no school next week due to an impending tropical storm."/>
 
 </LinearLayout>

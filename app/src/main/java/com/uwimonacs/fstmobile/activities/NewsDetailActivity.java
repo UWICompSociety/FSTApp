@@ -1,9 +1,10 @@
 package com.uwimonacs.fstmobile.activities;
 
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,11 @@ import com.uwimonacs.fstmobile.R;
 
 
 public class NewsDetailActivity extends AppCompatActivity {
+    private String title;
+    private String story;
+    private String image_url;
+    private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +31,10 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         final Bundle extras = getIntent().getExtras();
 
-        final String title = extras.getString("title");
-        final String story = extras.getString("story");
-        final String image_url = extras.getString("image");
+        title = extras.getString("title");
+        story = extras.getString("story");
+        image_url = extras.getString("image");
+        url = extras.getString("url");
 
         final ImageView newsHeader = (ImageView) findViewById(R.id.newsDetail_header);
         final TextView newsTitle = (TextView) findViewById(R.id.newsDetail_Topic);
@@ -37,12 +44,23 @@ public class NewsDetailActivity extends AppCompatActivity {
         newsStory.setText(story);
         Picasso.with(this).load(image_url).into(newsHeader);
     }
-    
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_news_detail, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + url);
+                shareIntent.setType("text/plain");
+                startActivity(shareIntent);
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;

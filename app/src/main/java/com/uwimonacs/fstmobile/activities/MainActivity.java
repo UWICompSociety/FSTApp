@@ -39,16 +39,19 @@ import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
+import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.models.SASConfig;
 import com.uwimonacs.fstmobile.models.Student;
 import com.uwimonacs.fstmobile.models.TimeTable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity
@@ -65,12 +68,32 @@ public class MainActivity extends AppCompatActivity
     private AccountManager mAccountManager;
     public static boolean loggedIn = false;
     private AppCompatActivity activity = this;
+    private String sharedItemUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        //Check if activity was started by a url
+        if(getIntent().getDataString() != null) {
+            sharedItemUrl = getIntent().getDataString();
+
+            List<News> newsList = new Select().all().from(News.class).execute();
+
+            //Search for and display news story
+            for(News news1: newsList){
+                if(news1.getUrl().equals(sharedItemUrl) || news1.getUrl().contains(sharedItemUrl)){
+                    final Intent intent = new Intent(this, NewsDetailActivity.class);
+                    intent.putExtra("image", news1.getImage_url());
+                    intent.putExtra("title", news1.getTitle());
+                    intent.putExtra("story", news1.getStory());
+                    startActivity(intent);
+                    break;
+                }
+            }
+        }
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -111,8 +134,6 @@ public class MainActivity extends AppCompatActivity
             instance.subscribeToTopic("events");
             instance.subscribeToTopic("gallery");
             instance.subscribeToTopic("schol");
-
-            System.out.println("First time subscription");
         }
 
     }
@@ -271,6 +292,10 @@ public class MainActivity extends AppCompatActivity
                     case R.id.schedule:
                         drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                        return true;
+                    case R.id.alerts:
+                        drawer.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), QuickAlertsActivity.class));
                         return true;
 
                     default:

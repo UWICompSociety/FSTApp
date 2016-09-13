@@ -32,6 +32,11 @@
             android:visible="false"
             android:title="Schedule" />
         <item
+            android:id="@+id/alerts"
+            android:icon="@drawable/ic_action_warning"
+            android:title="@string/alerts"
+            android:titleCondensed="@string/alerts"/>
+        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/settings"
