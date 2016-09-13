@@ -62,6 +62,22 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+            final Preference pref_alerts = findPreference("pref_alerts");
+            pref_news.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if(o == Boolean.TRUE) {
+                        FirebaseMessaging.getInstance().subscribeToTopic("alerts");
+                        System.out.println("Subscribing to alerts");
+                    }
+                    else {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("alerts");
+                        System.out.println("Unsubscribed from alerts");
+                    }
+                    return true;
+                }
+            });
+
             final Preference pref_events = findPreference("pref_events");
             pref_events.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

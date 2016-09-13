@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
         if(isFirstTime()){
             FirebaseMessaging instance = FirebaseMessaging.getInstance();
             instance.subscribeToTopic("news");
+            instance.subscribeToTopic("alerts");
             instance.subscribeToTopic("events");
             instance.subscribeToTopic("gallery");
             instance.subscribeToTopic("schol");

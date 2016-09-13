@@ -9,25 +9,25 @@
             android:summary="Notifies you when new news items are posted."
             android:defaultValue="true" />
         <SwitchPreference
+            android:key="pref_alerts"
+            android:title="Quick Alerts"
+            android:summary="Notifies you about important emergency messages from the faculty."
+            android:defaultValue="true" />
+        <SwitchPreference
             android:key="pref_videos"
             android:title="Videos"
             android:summary="Notifies you when new videos are available."
-            android:defaultValue="true" />
-        <SwitchPreference
-            android:key="pref_events"
-            android:title="Events"
-            android:summary="Subscribe to events."
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <SwitchPreference
             android:key="pref_gallery"
             android:title="Gallery"
             android:summary="Be notified of new photos in the gallery."
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <SwitchPreference
             android:key="pref_schol"
             android:title="Scholarships"
             android:summary="Stay up to date with the OSF offerings."
-            android:defaultValue="true" />
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -25,9 +25,7 @@ public class Splash extends AppCompatActivity {
             handleNotification();
         } catch (ClassNotFoundException exception){
             Intent mainActivity = new Intent(this, MainActivity.class);
-            System.out.println("Strting activity");
             startActivity(mainActivity);
-            System.out.println("Activity Started");
             finish();
         }
     }
@@ -40,6 +38,9 @@ public class Splash extends AppCompatActivity {
             switch (activity) {
                 case "News":
                     launchClass = Class.forName("com.uwimonacs.fstmobile.activities.MainActivity");
+                    break;
+                case "Alerts":
+                    launchClass = Class.forName("com.uwimonacs.fstmobile.activities.QuickAlertsActivity");
                     break;
                 case "Events":
                     launchClass = Class.forName("com.uwimonacs.fstmobile.activities.EventActivity");
@@ -57,15 +58,12 @@ public class Splash extends AppCompatActivity {
 
             if(launchClass != null){
                 intent.setClass(this, launchClass);
-                System.out.println("Launch class is not null");
                 startActivity(intent);
                 finish();
             }
         } else {
             Intent mainActivity = new Intent(this, MainActivity.class);
-            System.out.println("Strting activity");
             startActivity(mainActivity);
-            System.out.println("Activity Started");
             finish();
         }
     }
