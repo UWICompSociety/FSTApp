@@ -42,9 +42,6 @@ public class Splash extends AppCompatActivity {
                 case "Alerts":
                     launchClass = Class.forName("com.uwimonacs.fstmobile.activities.QuickAlertsActivity");
                     break;
-                case "Events":
-                    launchClass = Class.forName("com.uwimonacs.fstmobile.activities.EventActivity");
-                    break;
                 case "Gallery":
                     launchClass = Class.forName("com.uwimonacs.fstmobile.activities.GalleryActivity");
                     break;
