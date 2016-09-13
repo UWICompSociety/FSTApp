@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground" >
+<LinearLayout
     android:orientation="vertical"
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:foreground="?android:selectableItemBackground"
     android:id="@+id/event_card">
 
     <TextView
@@ -15,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="20sp"
-        tools:text="Oritentation"/>
+        tools:text="Orientation"/>
     <TextView
         android:id="@+id/eventDesc"
         android:paddingTop="10dp"
@@ -30,3 +34,4 @@
         tools:text="Sep 8 2016"/>
 
 </LinearLayout>
+</android.support.v7.widget.CardView>
