@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             final Preference pref_alerts = findPreference("pref_alerts");
-            pref_news.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            pref_alerts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     if(o == Boolean.TRUE) {
