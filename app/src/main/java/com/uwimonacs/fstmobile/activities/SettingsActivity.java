@@ -78,18 +78,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            final Preference pref_events = findPreference("pref_events");
-            pref_events.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    if(o == Boolean.TRUE)
-                        FirebaseMessaging.getInstance().subscribeToTopic("events");
-                    else
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("events");
-                    return true;
-                }
-            });
-
             final Preference pref_gallery = findPreference("pref_gallery");
             pref_gallery.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
