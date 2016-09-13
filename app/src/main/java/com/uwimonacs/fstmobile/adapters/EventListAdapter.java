@@ -53,7 +53,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             eventDateText = (TextView) itemView.findViewById(R.id.eventDate);
 
 
-           /* itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
 
@@ -75,7 +75,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
 
                 }
-            });*/
+            });
         }
     }
 
@@ -130,7 +130,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
                 // User clicked OK button
                 //add to calendar
                 if (!isEventInCal(ctxt, event.getEventId() + ""))
-                    addCalendarEvent(event);
+                 //   addCalendarEvent(event);
                 dialog.dismiss();
                 Toast.makeText(ctxt,"Event added",Toast.LENGTH_SHORT).show();
             }
@@ -159,9 +159,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         return false;
     }
 
-    public void addCalendarEvent(Event event) {
+
+
+   /* public void addCalendarEvent(Event event) {
         Calendar cal = Calendar.getInstance();
-        Uri EVENTS_URI = Uri.parse("content://com.android.calendar/" + "events"); //creates a new uri for calendar
+        Uri EVENTS_URI = Uri.parse(getCalendarUriBase(ctxt) + "events"); //creates a new uri for calendar
         ContentResolver cr = ctxt.getContentResolver();
 
         // event insert
@@ -241,6 +243,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         }
         return timeInMilliseconds;
     }
-
+*/
 
 }
+
+
