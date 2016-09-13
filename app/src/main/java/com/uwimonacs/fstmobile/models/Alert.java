@@ -20,13 +20,22 @@ public class Alert extends Model {
     @Column(name="title")
     String title;
 
+    @SerializedName("date")
+    @Column(name="date")
+    String date;
+
     @SerializedName("description")
     @Column(name="description")
     String description;
 
-    public Alert(String title, String description) {
+    public Alert(){
+        //required empty constructor
+    }
+
+    public Alert(String title,String date, String description) {
         super();
         this.title = title;
+        this.date = date;
         this.description = description;
     }
 
@@ -55,6 +64,14 @@ public class Alert extends Model {
 
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public static Alert findOrCreateFromJson(Alert newAlert) {
         int alertId = newAlert.getAlertId();
         Alert existingAlert =
@@ -74,6 +91,7 @@ public class Alert extends Model {
     private static void updateAlert(Alert oldAlert,Alert newAlert) {
         oldAlert.setTitle(newAlert.getTitle());
         oldAlert.setDescription(newAlert.getDescription());
+        oldAlert.setDate(newAlert.getDate());
         oldAlert.save();
     }
 }
