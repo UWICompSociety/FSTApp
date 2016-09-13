@@ -132,8 +132,6 @@ public class MainActivity extends AppCompatActivity
             FirebaseMessaging instance = FirebaseMessaging.getInstance();
             instance.subscribeToTopic("news");
             instance.subscribeToTopic("alerts");
-            instance.subscribeToTopic("gallery");
-            instance.subscribeToTopic("schol");
         }
 
     }
