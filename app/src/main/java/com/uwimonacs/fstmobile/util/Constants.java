@@ -22,4 +22,8 @@ public class Constants {
     public static final String EVENTS_URL = HOST_URL + "/events/";
 
 
+    //TODO: Update alerts URL
+    public static final String ALERTS_URL = HOST_URL + "";
+
+
 }
