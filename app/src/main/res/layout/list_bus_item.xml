@@ -17,7 +17,7 @@
             android:id="@+id/bus_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/ic_directions_bus_black_24dp"
+            app:srcCompat="@drawable/ic_directions_bus_black_24dp"
             />
         <TextView
             android:id="@+id/bus_route_title"
