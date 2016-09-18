@@ -5,7 +5,8 @@
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_contacts">Contacts</string>
-
+    <string name="title_activity_quick_alerts">Alerts</string>
+    <string name="title_activity_bus_routes">Bus Routes</string>
 
     <!-- Menu Option Titles -->
     <string name="action_settings">Settings</string>
@@ -104,6 +105,7 @@
     <string name="sas_logout">Log out</string>
     <string name="settings">Settings</string>
     <string name="alerts">Alerts</string>
+    <string name="bus">Shuttle Bus</string>
     <string name="forgot_password">Can\'t log in?</string>
 
     <!-- Toast shown when text is copied to the clipboard -->
@@ -111,8 +113,310 @@
     <string name="title_activity_gallery">GalleryActivity</string>
     <string name="title_activity_gallery_detail">GalleryDetailActivity</string>
     <string name="title_activity_event">EventActivity</string>
-    <string name="title_activity_quick_alerts">Alerts</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
+
+    <!--Shuttle Bus Related-->
+    <string name="bus_route_a">Campus to Liguanea \nvia Old Hope Rd</string>
+    <string name="bus_route_a_title">A</string>
+    <string name="bus_route_b">Campus to Liguanea \nvia Mona Rd</string>
+    <string name="bus_route_b_title">B</string>
+    <string name="bus_route_c">Campus to Papine</string>
+    <string name="bus_route_c_title">C</string>
+    <string name="bus_route_d">Campus to Mona Rehabilitation Centre</string>
+    <string name="bus_route_d_title">D</string>
+    <string name="bus_route_e">Campus to Surrounding Communities</string>
+    <string name="bus_route_e_title">E</string>
+
+    <string-array name="bus_route_a_stops">
+        <item>Liguanea Post Office</item>
+        <item>Richings Avenue</item>
+        <item>Sandy Park Lane</item>
+        <item>Bank of Nova Scotia</item>
+        <item>Standpipe</item>
+        <item>Waterfalls</item>
+        <item>Blue Castle Drive</item>
+        <item>Aralia Drive</item>
+        <item>Daisy Avenue</item>
+        <item>Garden Boulevard</item>
+        <item>Inter-Faculty Lecture Theatre</item>
+        <item>Faculty of Social Sciences</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall</item>
+        <item>JTEC</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Aston Preston Hall</item>
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Marlene Hamilton Hall</item>
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Irvine Hall</item>
+        <item>Mary Seacole Hall</item>
+        <item>Old Dramatic Theatre</item>
+        <item>Inter-Faculty Leature Theatre</item>
+        <item>Social Sciences</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall</item>
+        <item>Golding Avenue</item>
+        <item>Hospital</item>
+        <item>Olympia Gallery</item>
+        <item>Liguanea Post Office</item>
+    </string-array>
+    <string-array name="bus_route_a_times">
+        <item>7:30</item>
+        <item>7:33</item>
+        <item>7:34</item>
+        <item>7:36</item>
+        <item>7:38</item>
+        <item>7:39</item>
+        <item>7:41</item>
+        <item>7:42</item>
+        <item>7:44</item>
+        <item>7:46</item>
+        <item>7:48</item>
+        <item>7:50</item>
+        <item>7:51</item>
+        <item>7:51</item>
+        <item>7:54</item>
+        <item>7:55</item>
+        <item>7:56</item>
+        <item>7:56</item>
+        <item>7:57</item>
+        <item>7:58</item>
+        <item>8:00</item>
+        <item>8:01</item>
+        <item>8:02</item>
+        <item>8:02</item>
+        <item>8:04</item>
+        <item>8:05</item>
+        <item>8:06</item>
+        <item>8:07</item>
+        <item>8:08</item>
+        <item>8:09</item>
+        <item>8:09</item>
+        <item>8:11</item>
+        <item>8:12</item>
+        <item>8:13</item>
+        <item>8:16</item>
+        <item>8:30</item>
+    </string-array>
+
+    <!--TODO: Replace duplicate times-->
+
+    <string-array name="bus_route_b_stops">
+        <item>Liguanea Post Office</item>
+        <item>Richings Avenue</item>
+        <item>Sandy Park Lane</item>
+        <item>Bank of Nova Scotia</item>
+        <item>Standpipe</item>
+        <item>Ravina</item>
+        <item>JC Bottom Gate</item>
+        <item>JC Top Gate</item>
+        <item>Hope Garden</item>
+        <item>UTech Gate</item>
+        <item>Papine Market</item>
+        <item>University Hospital</item>
+        <item>Golding Circle</item>
+        <item>St. Michael\'s Theological College</item>
+        <item>Irvine Hall</item>
+        <item>Mary Seacole Hall</item>
+        <item>Old Dramatic Theatre</item>
+        <item>Inter-Faculty Lecture Theatre</item>
+        <item>Social Sciences</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall</item>
+        <item>JTEC</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Aston Preston Hall</item>
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Marlene Hamilton Hall</item>
+
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Irvine Hall</item>
+        <item>Mary Seacole Hall</item>
+        <item>Old Dramatic Theatre</item>
+        <item>Inter-Faculty Leature Theatre</item>
+        <item>Social Sciences</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall</item>
+        <item>Golding Avenue</item>
+        <item>Hospital</item>
+        <item>Olympia Gallery</item>
+        <item>Liguanea Post Office</item>
+    </string-array>
+    <string-array name="bus_route_b_times">
+        <item>8:00</item>
+        <item>8:02</item>
+        <item>8:04</item>
+        <item>8:06</item>
+        <item>8:07</item>
+        <item>8:08</item>
+        <item>8:08</item>
+        <item>8:09</item>
+        <item>8:10</item>
+        <item>8:11</item>
+        <item>8:11</item>
+        <item>8:13</item>
+        <item>8:13</item>
+        <item>8:13</item>
+        <item>8:14</item>
+        <item>8:16</item>
+        <item>8:17</item>
+        <item>8:18</item>
+        <item>8:19</item>
+        <item>8:20</item>
+        <item>8:21</item>
+        <item>8:23</item>
+        <item>8:23</item>
+        <item>8:24</item>
+        <item>8:24</item>
+        <item>8:25</item>
+        <item>8:26</item>
+        <item>8:28</item>
+        <item>8:29</item>
+        <item>8:30</item>
+        <item>8:31</item>
+        <item>8:32</item>
+        <item>8:34</item>
+        <item>8:35</item>
+        <item>8:35</item>
+        <item>8:37</item>
+        <item>8:38</item>
+        <item>8:39</item>
+        <item>8:40</item>
+        <item>8:44</item>
+        <item>8:45</item>
+        <item>8:48</item>
+        <item>9:00</item>
+
+
+    </string-array>
+
+    <string-array name="bus_route_c_stops">
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Irvine Hall</item>
+        <item>Mary Seacole Hall</item>
+        <item>Old Dramatic Theatre</item>
+        <item>Inter-Faculty Leature Theatre</item>
+        <item>Faculty of Social Sciences</item>
+        <item>Faculty of Medical Sciences</item>
+        <item>Medical Library</item>
+        <item>Department of Medicine</item>
+        <item>ABC Hall</item>
+        <item>Sickle Cell Clinic</item>
+        <item>Golding Circle</item>
+        <item>UTCWI/St. Michael\'s Seminary</item>
+        <item>University Back Gate at Irvine Hall</item>
+        <item>Accident &amp; Emergency at the University Hospital</item>
+        <item>Intensive Care at University Hospital</item>
+        <item>Faculty of Medical Sciences</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall Gate</item>
+        <item>Health Care Centre</item>
+        <item>Marlene Hamilton Hall</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Students\' Union</item>
+    </string-array>
+    <string-array name="bus_route_c_times">
+        <item>7:30</item>
+        <item>7:30</item>
+        <item>7:31</item>
+        <item>7:32</item>
+        <item>7:34</item>
+        <item>7:35</item>
+        <item>7:36</item>
+        <item>7:37</item>
+        <item>7:39</item>
+        <item>7:40</item>
+        <item>7:41</item>
+        <item>7:42</item>
+        <item>7:43</item>
+        <item>7:44</item>
+        <item>7:44</item>
+        <item>7:45</item>
+        <item>7:47</item>
+        <item>7:48</item>
+        <item>7:50</item>
+        <item>7:51</item>
+        <item>7:52</item>
+        <item>7:54</item>
+        <item>7:55</item>
+        <item>7:57</item>
+        <item>7:58</item>
+        <item>8:00</item>
+    </string-array>
+
+    <string-array name="bus_route_d_stops">
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Marlene Hamilton Hall</item>
+        <item>Students\' Union</item>
+        <item>Leslie Robinson Hall</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Irvine Hall</item>
+        <item>Mary Seacole Hall</item>
+        <item>Old Dramatic Theatre</item>
+        <item>Inter-Faculty Leature Theatre</item>
+        <item>Mona School of Business</item>
+        <item>Aqueduct</item>
+        <item>OSSD/Taylor Hall/Chancellor Hall</item>
+        <item>Irvine Hall</item>
+        <item>St. Michael\'s Theological Seminary</item>
+        <item>Hospital (Entrance)</item>
+        <item>ABC Hall</item>
+        <item>Hospital (Sickle Cell Clinic Bus Stop)</item>
+        <item>Papine</item>
+        <item>Papine Square</item>
+        <item>University Crescent</item>
+        <item>Papine Market</item>
+        <item>Hospital Gate</item>
+        <item>St. Michael\'s Theological Seminary</item>
+        <item>JTEC</item>
+        <item>Rex Nettleford Hall</item>
+        <item>Aston Preston Hall</item>
+        <item>Students\' Union</item>
+    </string-array>
+    <string-array name="bus_route_d_times">
+        <item>13:30</item>
+        <item>13:31</item>
+        <item>13:32</item>
+        <item>13:33</item>
+        <item>13:34</item>
+        <item>13:34</item>
+        <item>13:36</item>
+        <item>13:37</item>
+        <item>13:38</item>
+        <item>13:39</item>
+        <item>13:40</item>
+        <item>13:41</item>
+        <item>13:42</item>
+        <item>13:44</item>
+        <item>13:44</item>
+        <item>13:45</item>
+        <item>13:47</item>
+        <item>13:50</item>
+        <item>13:52</item>
+        <item>13:53</item>
+        <item>13:54</item>
+        <item>13:54</item>
+        <item>13:56</item>
+        <item>13:56</item>
+        <item>13:57</item>
+        <item>13:58</item>
+        <item>13:59</item>
+        <item>14:00</item>
+    </string-array>
 
 
 </resources>

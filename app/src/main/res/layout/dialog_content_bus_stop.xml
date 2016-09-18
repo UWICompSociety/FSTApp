@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="24dp"
+    tools:ignore="RtlSymmetry,RtlHardcoded">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:id="@+id/stop_detail"
+        android:paddingLeft="32dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:singleLine="true"
+        android:ellipsize="end"
+        tools:text="Bus passes here every hour"/>
+</LinearLayout>

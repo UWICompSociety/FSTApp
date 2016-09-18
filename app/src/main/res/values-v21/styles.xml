@@ -51,6 +51,16 @@
         <item name="android:statusBarColor">#F44336</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.BusRoutesActivity">
+        <item name="android:statusBarColor">#607D8B</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.BusRoutesDetailActivity">
+        <item name="android:statusBarColor">#607D8B</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar.ContactsActivity">
         <item name="android:statusBarColor">#455A64</item>

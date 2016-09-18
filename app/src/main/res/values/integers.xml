@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="bus_route_a_trips">14</integer>
+    <integer name="bus_route_b_trips">13</integer>
+    <integer name="bus_route_c_trips">14</integer>
+    <integer name="bus_route_d_trips">13</integer>
+</resources>

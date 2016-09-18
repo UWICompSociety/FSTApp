@@ -295,6 +295,10 @@ public class MainActivity extends AppCompatActivity
                         drawer.closeDrawers();
                         startActivity(new Intent(getApplicationContext(), QuickAlertsActivity.class));
                         return true;
+                    case R.id.bus:
+                        drawer.closeDrawers();
+                        startActivity(new Intent(getApplicationContext(), BusRoutesActivity.class));
+                        return true;
 
                     default:
                         drawer.closeDrawers();

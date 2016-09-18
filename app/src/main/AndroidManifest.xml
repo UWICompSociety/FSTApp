@@ -225,12 +225,27 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.QuickAlertsActivity"
+        <activity
+            android:name=".activities.QuickAlertsActivity"
             android:label="@string/title_activity_quick_alerts"
-            android:theme="@style/AppTheme.NoActionBar.AlertActivity" >
+            android:theme="@style/AppTheme.NoActionBar.AlertActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.BusRoutesActivity"
+            android:label="@string/title_activity_bus_routes"
+            android:theme="@style/AppTheme.NoActionBar.BusRoutesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.BusRoutesDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar.BusRoutesDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.BusRoutesActivity" />
         </activity>
     </application>
 
