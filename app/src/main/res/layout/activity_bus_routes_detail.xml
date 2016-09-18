@@ -27,7 +27,7 @@
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
                 android:transitionName="bus_thumbnail"
-                android:src="@drawable/ic_directions_bus_black_24dp"
+                app:srcCompat="@drawable/ic_directions_bus_black_24dp"
                 tools:targetApi="lollipop" />
 
             <View
