@@ -23,7 +23,7 @@ public class Constants {
 
 
     //TODO: Update alerts URL
-    public static final String ALERTS_URL = HOST_URL + "";
+    public static final String ALERTS_URL = HOST_URL + "/alerts/";
 
 
 }
