@@ -39,6 +39,12 @@ implements AsyncResponse, SwipeRefreshLayout.OnRefreshListener {
         new BusTask(this, this).execute();
 
     }
+    
+    @Override
+    public void onResume(){
+        super.onResume();
+        new BusTask(this, this).execute();
+    }
 
     @Override
     public void processFinish(ArrayList<Bus> buses) {
