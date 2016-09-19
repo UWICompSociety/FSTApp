@@ -160,7 +160,7 @@ public class QuickAlertsActivity extends AppCompatActivity
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            final AlertSync alertSync = new AlertSync(Constants.EVENTS_URL);
+            final AlertSync alertSync = new AlertSync(Constants.ALERTS_URL);
 
             if (!isConnected()) { // if there is no internet connection
                 return false;
