@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FaST</string>
+    <string name="app_name">FST Go</string>
 
     <!-- Activity Titles -->
     <string name="title_activity_scholarship">Scholarships and Bursaries</string>
