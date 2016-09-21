@@ -18,10 +18,10 @@ import java.util.ArrayList;
 @SuppressWarnings("ConstantConditions")
 public class BusRoutesActivity extends AppCompatActivity
 implements AsyncResponse, SwipeRefreshLayout.OnRefreshListener {
-    private ArrayList<Bus> buses;
     private RecyclerView busRoutes;
     private Toolbar toolbar;
     private BusRoutesAdapter adapter;
+    private SwipeRefreshLayout swipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,6 @@ implements AsyncResponse, SwipeRefreshLayout.OnRefreshListener {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.title_activity_bus_routes));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        setUpRecyclerView();
 
         new BusTask(this, this).execute();
 
@@ -48,18 +46,17 @@ implements AsyncResponse, SwipeRefreshLayout.OnRefreshListener {
 
     @Override
     public void processFinish(ArrayList<Bus> buses) {
-        this.buses = buses;
         adapter.updateList(buses);
+        if(swipe.isRefreshing())
+            swipe.setRefreshing(false);
     }
 
     private void initViews(){
-        buses = new ArrayList<>();
         adapter = new BusRoutesAdapter();
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipe.setOnRefreshListener(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         busRoutes = (RecyclerView) findViewById(R.id.bus_routes);
-    }
-
-    private void setUpRecyclerView(){
         busRoutes.setLayoutManager(new LinearLayoutManager(this));
         busRoutes.setAdapter(adapter);
     }
