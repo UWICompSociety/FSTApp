@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.android.comp3901.findmeuwi.ui.mapFragment.MapFrag"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bottom_sheet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_gravity="top"
+        android:background="@drawable/layout_background"
+        android:backgroundTint="@color/LightGrey"
+        android:hapticFeedbackEnabled="false"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="0dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/bottom_sheet_title"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="PLACE"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+
+                android:textColor="@color/Black"
+                android:textStyle="bold" />
+
+
+            <HorizontalScrollView
+                android:id="@+id/bottom_sheet_horizontal_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="107dp"
+                android:background="@drawable/cast_skip_ad_label_border"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/place_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/cast_skip_ad_label_border"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/place_info1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="place_info1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/Black"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/bottom_sheet_find_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_action_route"
+                    android:drawableStart="@drawable/ic_action_route"
+                    android:padding="10dp"
+                    android:textAllCaps="true"
+                    android:text="get route from here" />
+
+
+                <LinearLayout
+                    android:id="@+id/more_info_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="0.00"
+                        android:clickable="false"
+                        android:padding="5dp"
+                        app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/place_info3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:clickable="false"
+                        android:paddingTop="5dp"
+                        android:text="@string/bottomsheet_moreInfo_text"
+                        android:textColor="?attr/colorAccent"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fbPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:hapticFeedbackEnabled="true"
+        android:src="@drawable/ic_action_route"
+        app:backgroundTint="?attr/actionModeSplitBackground"
+        app:elevation="24dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/bottom_sheet_layout"
+        app:layout_anchorGravity="top|end"
+        app:rippleColor="#b6b6b6" />
+
+    <LinearLayout
+        android:id="@+id/path_buttons_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        app:layout_anchor="@+id/bottom_sheet_layout"
+        app:layout_anchorGravity="end|top">
+
+        <TextView
+            android:id="@+id/path_buttons_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:textColor="@color/Black"
+            android:text="@string/arrival_TextView_heading" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/arrival_check_fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            app:fabSize="mini"
+            app:rippleColor="#b6b6b6"
+            app:srcCompat="@drawable/ic_check_black_24dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/arrival_cancel_fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            app:fabSize="mini"
+            app:rippleColor="#b6b6b6"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/search_text_view_background"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/map_them_diaglog_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Map Theme"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+
+    <RadioGroup
+        android:id="@+id/themeRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:inputType="text"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <RadioButton
+            android:id="@+id/MapBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="MapBox"
+            android:textSize="20dip" />
+
+        <RadioButton
+            android:id="@+id/icyBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="Icy Blue"
+            android:textSize="20dip" />
+
+        <RadioButton
+            android:id="@+id/colbalt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="Cobalt"
+            android:textSize="20dip" />
+
+        <RadioButton
+            android:id="@+id/rainForest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:drawablePadding="20dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="Rainforest Fringe"
+            android:textSize="20dip" />
+    </RadioGroup>
+
+</LinearLayout>
