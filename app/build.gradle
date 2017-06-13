@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+
 
 android {
     compileSdkVersion 24
@@ -57,6 +59,26 @@ dependencies {
     compile 'com.mukesh:markdownview:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.firebase:firebase-messaging:9.4.0'
+
+
+    //google
+    compile 'com.google.maps.android:android-maps-utils:0.5'
+
+    //dependency injection
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+
+    //Google Drive Rest API
+    compile 'pub.devrel:easypermissions:0.2.1'
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.apis:google-api-services-drive:v3-rev76-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'
