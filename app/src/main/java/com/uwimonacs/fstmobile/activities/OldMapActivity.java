@@ -1,19 +1,15 @@
 package com.uwimonacs.fstmobile.activities;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
@@ -47,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends AppCompatActivity {
+public class OldMapActivity extends AppCompatActivity {
 
     private MapView mapView;
     private MapboxMap map;
@@ -197,7 +193,7 @@ public class MapActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),REQUEST_CODE);
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),REQUEST_CODE);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -250,7 +246,7 @@ public class MapActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
                 if (response.body() == null) {
-                    Toast.makeText(MapActivity.this, "No routes found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OldMapActivity.this, "No routes found", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -263,19 +259,19 @@ public class MapActivity extends AppCompatActivity {
                         }
                     }
 
-                    Toast.makeText(MapActivity.this, "Route is " + currentRoute.getDistance() + " meters long.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OldMapActivity.this, "Route is " + currentRoute.getDistance() + " meters long.", Toast.LENGTH_SHORT).show();
 
                     // Draw the route on the map
                     drawRoute(currentRoute);
                 }catch(Exception e)
                 {
-                    Toast.makeText(MapActivity.this, "Cannot Find Route", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OldMapActivity.this, "Cannot Find Route", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DirectionsResponse> call, Throwable t) {
-                Toast.makeText(MapActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OldMapActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
