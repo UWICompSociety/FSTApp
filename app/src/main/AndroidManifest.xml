@@ -249,4 +249,13 @@
         </activity>
     </application>
 
+    <!--Maps API Key-->
+    <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCTX5uOEZaPsPs2LprTJjEsbvuPTp9JzWU"/>
+
+    <!--PlayService version-->
+    <meta-data android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version"/>
+
+
 </manifest>
