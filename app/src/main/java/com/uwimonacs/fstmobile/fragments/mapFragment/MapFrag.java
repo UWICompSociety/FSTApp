@@ -735,6 +735,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
             throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
         }
     }
+
+
+
 }//End of FINDFME
 
 
