@@ -31,6 +31,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -43,10 +44,14 @@ import com.activeandroid.util.SQLiteUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.adapters.IconAdapter;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
+import com.uwimonacs.fstmobile.fragments.PlacesFragment;
+import com.uwimonacs.fstmobile.fragments.VideoFragment;
 import com.uwimonacs.fstmobile.models.News;
 import com.uwimonacs.fstmobile.models.SASConfig;
+import com.uwimonacs.fstmobile.models.Scholarship;
 import com.uwimonacs.fstmobile.models.Student;
 import com.uwimonacs.fstmobile.models.TimeTable;
 
@@ -69,6 +74,33 @@ public class MainActivity extends AppCompatActivity
     public static boolean loggedIn = false;
     private AppCompatActivity activity = this;
     private String sharedItemUrl;
+    private GridView gridView;
+    private IconAdapter iconAdapter;
+    private Intent intent;
+
+    private String [] gridTitles = {
+            "Contacts",
+            "FAQs",
+            "Videos",
+            "Map",
+            "Scholarship",
+            "Bus Schedule",
+            "Events",
+            "Gallery"
+    };
+    private int [] gridImages = {
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+            R.drawable.atom,
+    };
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,15 +149,59 @@ public class MainActivity extends AppCompatActivity
         if(!doesDatabaseAccountExist())
             setUpSAS();
 
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
 
-        pager = (ViewPager)findViewById(R.id.pager);
 
-        tabPagerAdapter = new TabPagerAdapter(this.getSupportFragmentManager());
+        gridView = (GridView)findViewById(R.id.gridview);
 
-        pager.setAdapter(tabPagerAdapter);
+        iconAdapter = new IconAdapter(MainActivity.this, gridTitles, gridImages);
 
-        tabLayout.setupWithViewPager(pager);
+        gridView.setAdapter(iconAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                switch(i){
+                    case 0:
+                        intent = new Intent(MainActivity.this, ContactsActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(MainActivity.this, FAQActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        VideoFragment videoFragment = new VideoFragment();
+                        videoFragment.setArguments(getIntent().getExtras());
+                        getSupportFragmentManager().beginTransaction().
+                                add(R.id.fragment_container, videoFragment).addToBackStack("").commit();
+                        break;
+                    case 3:
+                        PlacesFragment placesFragment = new PlacesFragment();
+                        placesFragment.setArguments(getIntent().getExtras());
+                        getSupportFragmentManager().beginTransaction().
+                                add(R.id.fragment_container, placesFragment).addToBackStack("").commit();
+                        break;
+                    case 4:
+                        intent = new Intent(MainActivity.this, ScholarshipActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        intent = new Intent(MainActivity.this, BusRoutesActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 6:
+                        intent = new Intent(MainActivity.this, EventActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 7:
+                        intent = new Intent(MainActivity.this, GalleryActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+
 
 //        Subscribe to Firebase notifications
         if(isFirstTime()){
