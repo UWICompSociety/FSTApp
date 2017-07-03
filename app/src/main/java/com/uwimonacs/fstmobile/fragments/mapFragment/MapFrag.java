@@ -140,7 +140,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
 
         //callback to activity
-        mListener.onComplete();
     }
 
     /**
@@ -211,6 +210,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         }
         goToLocation(sci_tech);
         setTheme(R.string.style_mapBox);
+
+
+        mListener.onComplete();//Activity call back listner
     }
 
     /**
@@ -437,6 +439,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 19);
         mGoogleMap.moveCamera(update);
     }
+
 
     @Override
     public String getStartText() {

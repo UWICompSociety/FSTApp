@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFragMvPView;
@@ -46,6 +47,12 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     //menu
     Menu menu;
     MenuItem menuItem;
+
+    //place
+    private String location;
+    private String department;
+    private String shortname;
+    private String fullname;
 
 
     //views
@@ -66,6 +73,14 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         setContentView(R.layout.activity_main_map);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        final Bundle extras = getIntent().getExtras();
+        location = extras.getString("location");
+        department = extras.getString("department");
+        shortname = extras.getString("shortname");
+        fullname = extras.getString("fullname");
+
+
 
         presenter = new MapActivityPresenter(this);
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MapFrag(), "mapFrag" ).commit();
@@ -329,6 +344,16 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         //getting reference to the fragment added
         mapFrag = (MapFrag) getFragmentManager().findFragmentByTag("mapFrag");
         presenter.setMapFragView((MapFragMvPView) mapFrag);
+
+        final String[] locals = location.split(",");
+        final String snip = department + " - " + shortname;
+
+        double lat = Double.parseDouble(locals[0]);
+        double lon = Double.parseDouble(locals[1]);
+
+
+
+        mapFrag.goToLocation(new LatLng(lat,lon));
     }
 
 
