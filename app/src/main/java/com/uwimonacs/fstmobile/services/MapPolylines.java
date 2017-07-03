@@ -32,6 +32,9 @@ public class MapPolylines {
     LinkedList<Polyline> descendingEdges;
 
 
+    public void destroy(){
+        instance = null;
+    }
 
 
     private final GoogleMap googleMap;
@@ -54,11 +57,11 @@ public class MapPolylines {
         this.secondFloor = new LinkedList<>();
         this.descendingEdges = new LinkedList<>();
         this.currPath = new LinkedList<>();
-
     }
 
 
     public void createGraph(){
+
         List<Edge> edges = MapPresenter.path.getEdges();
 //        List<Vertex> vertices = MapFrag.path.getNodes();
 
@@ -80,6 +83,7 @@ public class MapPolylines {
                     .color(0x33606060)
                     .width(15)
                     .zIndex(01)
+                    .visible(true)
                     .clickable(true)
                     .add(v1.getLL(),v2.getLL());
 
@@ -197,16 +201,13 @@ public class MapPolylines {
         for(Polyline line: secondFloor){
             return line.isVisible();
         }
-
         return false;
-
     }
 
     public boolean firstFloorIsVisible() {
         for(Polyline line: firstFloor){
             return line.isVisible();
         }
-
         return false;
     }
 }

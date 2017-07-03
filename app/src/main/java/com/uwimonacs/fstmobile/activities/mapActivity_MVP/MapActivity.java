@@ -66,8 +66,8 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         setContentView(R.layout.activity_main_map);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        presenter = new MapActivityPresenter(this);
 
+        presenter = new MapActivityPresenter(this);
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MapFrag(), "mapFrag" ).commit();
 
 
