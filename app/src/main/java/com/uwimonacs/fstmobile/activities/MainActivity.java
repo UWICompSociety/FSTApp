@@ -89,14 +89,14 @@ public class MainActivity extends AppCompatActivity
             "Gallery"
     };
     private int [] gridImages = {
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
-            R.drawable.atom,
+            R.drawable.ic_phone_black_24dp,
+            R.drawable.ic_help_outline_black_24dp,
+            R.drawable.ic_videocam_black_24dp,
+            R.drawable.ic_explore_black_24dp,
+            R.drawable.atom3,
+            R.drawable.ic_directions_bus_black_24dp,
+            R.drawable.ic_priority_high_black_24dp,
+            R.drawable.ic_photo_black_24dp,
     };
 
 
@@ -171,10 +171,8 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
                         break;
                     case 2:
-                        VideoFragment videoFragment = new VideoFragment();
-                        videoFragment.setArguments(getIntent().getExtras());
-                        getSupportFragmentManager().beginTransaction().
-                                add(R.id.fragment_container, videoFragment).addToBackStack("").commit();
+                        intent = new Intent(MainActivity.this, VideoListActivity.class);
+                        startActivity(intent);
                         break;
                     case 3:
                         PlacesFragment placesFragment = new PlacesFragment();
