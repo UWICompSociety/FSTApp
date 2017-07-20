@@ -32,12 +32,15 @@ import java.util.List;
 
 public class GoogleDriveAPI {
 
-    private final GoogleAccountCredential mCredential;
+//    private final static GoogleAccountCredential mCredential;
     private static final String[] SCOPES = {DriveScopes.DRIVE_METADATA_READONLY};
-    private Drive mService = null;
+
+    private static Drive mService = null;
+    private static GoogleAccountCredential mCredential = null;
+
     private Activity activity;
     private String message;
-
+    private String mAccountName = "akinyelethompson@gmail.com";
 
     public GoogleDriveAPI(Activity activity) {
         this.activity = activity;
@@ -47,14 +50,12 @@ public class GoogleDriveAPI {
                 activity.getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
-
+        mCredential.setSelectedAccountName(mAccountName);
+        getResultsFromApi();
     }
 
-
     private void getResultsFromApi() {
-        if (mCredential.getSelectedAccountName() == null) {
-//            chooseAccount();
-        } else if (!isDeviceOnline()) {
+        if (!isDeviceOnline()) {
             message = "No network connection available.";
         } else {
             new MakeRequestTask(mCredential).execute();
@@ -79,7 +80,7 @@ public class GoogleDriveAPI {
      * Placing the API calls in their own task ensures the UI stays responsive.
      */
     private class MakeRequestTask extends AsyncTask<Object, Object, Void> {
-        private Drive mService = null;
+//        mService = null;
         private Exception mLastError = null;
 
         MakeRequestTask(GoogleAccountCredential credential) {
@@ -89,6 +90,7 @@ public class GoogleDriveAPI {
                     transport, jsonFactory, credential)
                     .setApplicationName( activity.getString(R.string.app_name) )
                     .build();
+
         }
 
         @Override
@@ -128,8 +130,22 @@ public class GoogleDriveAPI {
 
 
     public List<String> getFileIDs() {
+        List<File> files = null;
+        List<String> fileId = null;
 
+        try {
+            files = retrieveAllFiles(mService);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        for (File file:files
+             ) {
+            String id=file.getId();
+            fileId.add(id);
+        }
+
+        Log.d("file ids", "getFileIDs: " + fileId);
         return null;
     }
 }
