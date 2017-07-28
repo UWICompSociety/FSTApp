@@ -140,7 +140,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
 
         //callback to activity
-        mListener.onComplete();
     }
 
     /**
@@ -165,12 +164,14 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
 
+
     /**
      * Function that tells the map what to do when its ready
      * @param googleMap
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady:");
         presenter = new MapPresenter(this,getActivity(),googleMap);
 
         setTextViews();
@@ -180,9 +181,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 //        path = Path.getInstance(dbHelper); //Initialises path object which creates graph
         mapPolylines = MapPolylines.getInstance(mGoogleMap);
         mapMarkers = MapMarker.getInstance(mGoogleMap);
-//        mapTracker = new Tracker(getActivity());
-//        mapTracker.start();
-
         mGoogleMap = googleMap;
         mUiSettings = mGoogleMap.getUiSettings();
         mGoogleMap.setOnMarkerClickListener(this);
@@ -204,11 +202,17 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mGoogleMap.setOnMapClickListener(this);
         mGoogleMap.setOnCameraMoveListener(this);
 
-        //displayGraph(); // Display the edges
-        mapPolylines.createGraph();
-        displayIcons(); // Display the node icons
+//        displayGraph(); // Display the edges
+        if(mapPolylines != null){
+            Log.d(TAG, "onMapReady: display graph");
+            mapPolylines.createGraph();
+            displayIcons(); // Display the node icons
+        }
         goToLocation(sci_tech);
         setTheme(R.string.style_mapBox);
+
+
+        mListener.onComplete();//Activity call back listner
     }
 
     /**
@@ -436,6 +440,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mGoogleMap.moveCamera(update);
     }
 
+
     @Override
     public String getStartText() {
         return  getSourceView.getText().toString();
@@ -560,6 +565,15 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
          }
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        mapPolylines.destroy();
+        mapMarkers.destroy();
+    }
+
     private void loadBottomSheet(Marker marker) {
         final Marker myMarker = marker;
         Button image_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_find_route);
@@ -631,6 +645,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: Map Frag Resumed" );
+
+//        mapPolylines.createGraph();
+//        displayIcons(); // Display the node icons
+
         //Todo reload graph lines and icons!!
     }
 
