@@ -244,4 +244,12 @@ public class MapMarker {
 
         }
     }
+
+    /**
+     * used when to destroy the previous instance of the
+     * map marker object so that a new on can be created.
+     */
+    public void destroy() {
+        instance=null;
+    }
 }//End of Marker Class
