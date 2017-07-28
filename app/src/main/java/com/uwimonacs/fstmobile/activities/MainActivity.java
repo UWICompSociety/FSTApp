@@ -44,6 +44,7 @@ import com.activeandroid.util.SQLiteUtils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.uwimonacs.fstmobile.MyApplication;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.mapActivity_MVP.MapActivity;
 import com.uwimonacs.fstmobile.adapters.IconAdapter;
 import com.uwimonacs.fstmobile.adapters.TabPagerAdapter;
 import com.uwimonacs.fstmobile.adapters.TermsAdapter;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity
             "Videos",
             "Map",
             "Scholarship",
-            "Bus Schedule",
+            "Bus",
             "Events",
             "Gallery"
     };
@@ -175,10 +176,8 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
                         break;
                     case 3:
-                        PlacesFragment placesFragment = new PlacesFragment();
-                        placesFragment.setArguments(getIntent().getExtras());
-                        getSupportFragmentManager().beginTransaction().
-                                add(R.id.fragment_container, placesFragment).addToBackStack("").commit();
+                        intent = new Intent(MainActivity.this, MapActivity.class);
+                        startActivity(intent);
                         break;
                     case 4:
                         intent = new Intent(MainActivity.this, ScholarshipActivity.class);

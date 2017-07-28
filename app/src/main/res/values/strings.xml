@@ -419,4 +419,32 @@
     </string-array>
 
 
+    <string name="map_type_none">None</string>
+    <string name="map_type_normal">Normal</string>
+    <string name="map_type_hybrid">Hybrid</string>
+    <string name="map_type_terrain">Terrain</string>
+    <string name="map_type_satellite">Satellite</string>
+
+    <string name="location_on">GPS </string>
+    <string name="location_off">GPS</string>
+
+    <string name="app_label">FindMe</string>
+    <string name="search_hint">Find ROOM</string>
+
+
+    <string name="title_activity_maps">SmartMap</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+     <string name="title_activity_navi">Navi</string>
+    <string name="action_search">Find Room</string>
+    <string name="arrival_TextView_heading">Arrived?</string>
+    <string name="bottomsheet_moreInfo_text">more info?</string>
+    <string name="destination_editText_hint">What room would you like to find?</string>
+    <string name="starting_point_editText_hint">Starting point.</string>
+    <string name="find_button_texxt">Find</string>
+
+
 </resources>

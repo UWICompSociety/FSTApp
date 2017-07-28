@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.activities.MapActivity;
 import com.uwimonacs.fstmobile.activities.PermissionsActivity;
 import com.uwimonacs.fstmobile.models.Place;
 

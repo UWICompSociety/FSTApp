@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <!--<item-->
+            <!--android:id="@+id/nav_camera"-->
+            <!--android:icon="@drawable/ic_menu_camera"-->
+            <!--android:title="Add LandMark" />-->
+        <item
+            android:id="@+id/nav_theme"
+            android:icon="@drawable/ic_color_lens_black_24dp"
+            android:title="Change Theme" />
+        <!--<item-->
+            <!--android:id="@+id/nav_slideshow"-->
+            <!--android:icon="@drawable/ic_menu_slideshow"-->
+            <!--android:title="View Rooms" />-->
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Setting" />
+
+        
+    </group>
+
+    <item
+        android:icon="@drawable/ic_eye"
+        android:title="Views">
+        <menu>
+            <item
+                android:id="@+id/nav_landmark"
+                android:icon="@drawable/point_of_interest"
+                android:title="Landmarks"
+                app:actionLayout="@layout/nav_bar_landmark_switch_"
+                />
+
+            <item
+                android:id="@+id/nav_sat_view"
+                android:icon="@drawable/ic_satellite_black_24dp"
+                android:title="Satellite"
+                app:actionLayout="@layout/nav_bar_sat_view_switch"
+                />
+
+            <item
+            android:id="@+id/nav_paths"
+            android:icon="@drawable/ic_connect_direction_path_way"
+            android:title="Floors" />
+
+
+        </menu>
+
+
+
+    </item>
+
+</menu>
