@@ -13,7 +13,10 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,9 +49,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
+import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 import com.uwimonacs.fstmobile.models.locations.Place;
 import com.uwimonacs.fstmobile.models.locations.Vertex;
 import com.uwimonacs.fstmobile.services.GoogleDriveAPI;
+import com.uwimonacs.fstmobile.services.ImageShackAPIInterface;
+import com.uwimonacs.fstmobile.services.ImageShackApiClient;
 import com.uwimonacs.fstmobile.services.MapMarker;
 import com.uwimonacs.fstmobile.services.MapPolylines;
 import com.uwimonacs.fstmobile.util.MySettings;
@@ -63,6 +70,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener{
     private static final String TAG = "com.android.comp3901";
@@ -72,6 +82,16 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     private MapPresenter presenter;
     private Animation fab_close,fab_open;
+
+
+
+    //Map recyclerview variables
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ImageShackAlbumAdapter albumAdapter;
+    private ImageShackAlbum imageShackAlbum;
+    private ImageShackAPIInterface imageShackAPIInterface;
+
 
     //Map Clients and variables
     private UiSettings mUiSettings;
@@ -123,6 +143,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         View view = inflater.inflate(R.layout.activity_map_frag, container, false);
         ButterKnife.bind(MapFrag.this,view);
         instance = this.getActivity();
+
+
+
         return view;
     }
     @Override
@@ -135,6 +158,12 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
         fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.fab_close);
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
+
+        //intialising recycler view
+        recyclerView = (RecyclerView) getView().findViewById(R.id.bottomsheet_recyclerview);
+        layoutManager = new LinearLayoutManager(instance,LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
 
         //callback to activity
     }
@@ -607,7 +636,28 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         TextView place_title = ButterKnife.findById(getActivity(),R.id.bottom_sheet_title);
         TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
-        driveServices.getFileIDs();
+//        driveServices.getFileIDs();
+
+        ImageShackAPIInterface imageShackAPIInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
+        Call<ImageShackAlbum> apiCall = imageShackAPIInterface.getAlbum("J1Zl");
+        apiCall.enqueue(new Callback<ImageShackAlbum>() {
+            @Override
+            public void onResponse(Call<ImageShackAlbum> call, Response<ImageShackAlbum> response) {
+                imageShackAlbum = response.body();
+                albumAdapter = new ImageShackAlbumAdapter(instance,imageShackAlbum);
+                recyclerView.setAdapter(albumAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<ImageShackAlbum> call, Throwable t) {
+                Log.d(TAG, "onFailure: API request failed");
+                Log.d(TAG, "onFailure: "+ t.getMessage());
+
+
+            }
+        });
+
 
         final Place place = (Place) marker.getTag();
 
@@ -749,7 +799,10 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         }
     }
 
-
+    public void setMarker(String shortname, String fullname, LatLng latLng) {
+        Place dynamicLocation = new Place(shortname,fullname,latLng.latitude,latLng.longitude, Vertex.PLACE, Vertex.UNKNOWN, 0.0, 0, 0);
+        presenter.setVertex(dynamicLocation, 3);
+    }
 
 
     /**

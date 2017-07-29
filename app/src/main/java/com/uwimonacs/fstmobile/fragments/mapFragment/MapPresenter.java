@@ -208,6 +208,26 @@ public class MapPresenter implements MapFragMvpPresenter, MyLocationService.myLo
         }
     }
 
+    /**
+     * Method used to create the location object.
+     * @param location the location that will be created
+     * @param type the type of marker(source/destionation)
+     * @return
+     */
+    public void setVertex(Vertex location, int type) {
+
+        switch (type){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                destination = location;
+                mapMarkers.addMarker(destination,2);
+                break;
+        }
+    }
+
     private void getPOI(){
         LinkedList<Vertex> currPath = path.getCurrPath();
         ArrayList<Vertex> POI = getPointsOfInterest();

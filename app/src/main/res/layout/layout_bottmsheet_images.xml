@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="5dp"
+android:background="@drawable/grid_color_selector"
+android:orientation="vertical"
+android:padding="5dp">
+<ImageView
+    android:id="@+id/bottom_sheet_image"
+    android:layout_width="150dp"
+    android:layout_height="100dp"
+    android:background="#e6e6e6"
+    android:transitionName="gallery_image"
+    tools:ignore="UnusedAttribute"/>
+
+</LinearLayout>

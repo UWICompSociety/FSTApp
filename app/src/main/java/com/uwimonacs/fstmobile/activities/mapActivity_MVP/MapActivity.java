@@ -367,7 +367,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         boolean isFound = mapFrag.searchRoom();
         if(!isFound){
             //Create a dynamic vertex to represent the location
-
+            mapFrag.setMarker(shortname,fullname,new LatLng(lat,lon));
         }
 
     }

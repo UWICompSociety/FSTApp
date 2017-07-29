@@ -55,11 +55,18 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <ImageView
-                        android:id="@+id/place_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/bottomsheet_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/place_image_view"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="50dp"-->
+                        <!--android:layout_gravity="center"/>-->
                 </LinearLayout>
             </HorizontalScrollView>
 
