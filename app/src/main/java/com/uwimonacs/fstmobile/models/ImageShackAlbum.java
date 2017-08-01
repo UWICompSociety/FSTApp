@@ -16,35 +16,21 @@ import java.util.List;
      * result : {"id":"J1Zl","title":"C5","description":"Chemistry Lecture Theater 5","creation_date":1501168813,"public":true,"password_protected":false,"is_owner":false,"is_following":false,"owner":{"username":"Akinyele","avatar":{"id":"","filename":"","server":0,"cropped":false,"x_pos":0,"y_pos":0,"x_length":0,"y_length":0},"membership":"trial","featured_photographer":false,"allow_following":null},"limit":20,"offset":0,"sort":"custom","order":"desc","total":1,"special":false,"images":[{"id":"pmqOaXrCj","server":922,"bucket":1294,"filename":"qOaXrC.jpg","direct_link":"imagizer.imageshack.com/img922/1294/qOaXrC.jpg","original_filename":"c5.jpg","title":"","album":{"id":"J1Zl","title":"C5","public":true},"creation_date":1501169187,"public":true,"hidden":false,"filesize":164,"width":960,"height":1280,"likes":0,"liked":false,"is_owner":false,"owner":{"username":"Akinyele","avatar":{"id":"","filename":"","server":0,"cropped":false,"x_pos":0,"y_pos":0,"x_length":0,"y_length":0},"membership":"trial","featured_photographer":false},"adult_content":false,"sort_order":0}]}
      */
 
-    private boolean success;
-    private int process_time;
-    private ResultBean result;
+//    private boolean success;
+//    private int process_time;
+    private ResultType result;
 
-    public boolean isSuccess() {
-        return success;
-    }
+//
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public int getProcess_time() {
-        return process_time;
-    }
-
-    public void setProcess_time(int process_time) {
-        this.process_time = process_time;
-    }
-
-    public ResultBean getResult() {
+    public ResultType getResult() {
         return result;
     }
 
-    public void setResult(ResultBean result) {
+    public void setResult(ResultType result) {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultType {
         /**
          * id : J1Zl
          * title : C5
@@ -73,14 +59,14 @@ import java.util.List;
         private boolean password_protected;
         private boolean is_owner;
         private boolean is_following;
-        private OwnerBean owner;
+        private OwnerType owner;
         private int limit;
         private int offset;
         private String sort;
         private String order;
         private int total;
         private boolean special;
-        private List<ImagesBean> images;
+        private List<ImagesType> images;
 
         public String getId() {
             return id;
@@ -146,11 +132,11 @@ import java.util.List;
             this.is_following = is_following;
         }
 
-        public OwnerBean getOwner() {
+        public OwnerType getOwner() {
             return owner;
         }
 
-        public void setOwner(OwnerBean owner) {
+        public void setOwner(OwnerType owner) {
             this.owner = owner;
         }
 
@@ -202,15 +188,15 @@ import java.util.List;
             this.special = special;
         }
 
-        public List<ImagesBean> getImages() {
+        public List<ImagesType> getImages() {
             return images;
         }
 
-        public void setImages(List<ImagesBean> images) {
+        public void setImages(List<ImagesType> images) {
             this.images = images;
         }
 
-        public static class OwnerBean {
+        public static class OwnerType {
             /**
              * username : Akinyele
              * avatar : {"id":"","filename":"","server":0,"cropped":false,"x_pos":0,"y_pos":0,"x_length":0,"y_length":0}
@@ -220,7 +206,7 @@ import java.util.List;
              */
 
             private String username;
-            private AvatarBean avatar;
+            private AvatarType avatar;
             private String membership;
             private boolean featured_photographer;
             private Object allow_following;
@@ -233,11 +219,11 @@ import java.util.List;
                 this.username = username;
             }
 
-            public AvatarBean getAvatar() {
+            public AvatarType getAvatar() {
                 return avatar;
             }
 
-            public void setAvatar(AvatarBean avatar) {
+            public void setAvatar(AvatarType avatar) {
                 this.avatar = avatar;
             }
 
@@ -265,7 +251,7 @@ import java.util.List;
                 this.allow_following = allow_following;
             }
 
-            public static class AvatarBean {
+            public static class AvatarType {
                 /**
                  * id :
                  * filename :
@@ -352,7 +338,7 @@ import java.util.List;
             }
         }
 
-        public static class ImagesBean {
+        public static class ImagesType {
             /**
              * id : pmqOaXrCj
              * server : 922
@@ -383,7 +369,7 @@ import java.util.List;
             private String direct_link;
             private String original_filename;
             private String title;
-            private AlbumBean album;
+            private AlbumType album;
             private int creation_date;
             @SerializedName("public")
             private boolean publicX;
@@ -394,7 +380,7 @@ import java.util.List;
             private int likes;
             private boolean liked;
             private boolean is_owner;
-            private OwnerBeanX owner;
+            private OwnerTypeX owner;
             private boolean adult_content;
             private int sort_order;
 
@@ -454,11 +440,11 @@ import java.util.List;
                 this.title = title;
             }
 
-            public AlbumBean getAlbum() {
+            public AlbumType getAlbum() {
                 return album;
             }
 
-            public void setAlbum(AlbumBean album) {
+            public void setAlbum(AlbumType album) {
                 this.album = album;
             }
 
@@ -534,11 +520,11 @@ import java.util.List;
                 this.is_owner = is_owner;
             }
 
-            public OwnerBeanX getOwner() {
+            public OwnerTypeX getOwner() {
                 return owner;
             }
 
-            public void setOwner(OwnerBeanX owner) {
+            public void setOwner(OwnerTypeX owner) {
                 this.owner = owner;
             }
 
@@ -558,7 +544,7 @@ import java.util.List;
                 this.sort_order = sort_order;
             }
 
-            public static class AlbumBean {
+            public static class AlbumType {
                 /**
                  * id : J1Zl
                  * title : C5
@@ -595,7 +581,7 @@ import java.util.List;
                 }
             }
 
-            public static class OwnerBeanX {
+            public static class OwnerTypeX {
                 /**
                  * username : Akinyele
                  * avatar : {"id":"","filename":"","server":0,"cropped":false,"x_pos":0,"y_pos":0,"x_length":0,"y_length":0}
@@ -604,7 +590,7 @@ import java.util.List;
                  */
 
                 private String username;
-                private AvatarBeanX avatar;
+                private AvatarTypeX avatar;
                 private String membership;
                 private boolean featured_photographer;
 
@@ -616,11 +602,11 @@ import java.util.List;
                     this.username = username;
                 }
 
-                public AvatarBeanX getAvatar() {
+                public AvatarTypeX getAvatar() {
                     return avatar;
                 }
 
-                public void setAvatar(AvatarBeanX avatar) {
+                public void setAvatar(AvatarTypeX avatar) {
                     this.avatar = avatar;
                 }
 
@@ -640,7 +626,7 @@ import java.util.List;
                     this.featured_photographer = featured_photographer;
                 }
 
-                public static class AvatarBeanX {
+                public static class AvatarTypeX {
                     /**
                      * id :
                      * filename :

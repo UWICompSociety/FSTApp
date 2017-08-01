@@ -18,7 +18,5 @@ public interface ImageShackAPIInterface {
     @GET("albums/{id}")
     Call<ImageShackAlbum> getAlbum(@Path("id") String id);
 
-
-
 }
 

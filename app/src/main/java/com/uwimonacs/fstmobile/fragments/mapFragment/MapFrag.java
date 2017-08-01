@@ -163,7 +163,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         recyclerView = (RecyclerView) getView().findViewById(R.id.bottomsheet_recyclerview);
         layoutManager = new LinearLayoutManager(instance,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         //callback to activity
     }
