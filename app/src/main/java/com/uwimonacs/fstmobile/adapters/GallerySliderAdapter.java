@@ -10,41 +10,35 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
- * Created by sylva on 8/4/2017.
+ * Created by Akinyele on 8/4/2017.
  */
 
 public class GallerySliderAdapter extends PagerAdapter {
 
     private final Context context;
     private final ArrayList<String> Urls;
-//    private final ImageShackAlbum album;
-//    private final List<ImageShackAlbum.ResultType.ImagesType> imagesType;
 
 
     public GallerySliderAdapter(Context context, ArrayList<String> Urls){
         this.context = context;
         this.Urls = Urls;
-//        this.album = album;
-//        this.imagesType = album.getResult().getImages();
     }
 
 
     @Override
     public int getCount() {
-//        return imagesType.size();
         return Urls.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
 
-        String Url = "https://git " + Urls.get(position);
+        String Url = "https://" + Urls.get(position);
 
         View imageLayout =LayoutInflater.from(context).inflate(R.layout.layout_slidingimages, view, false);
 
@@ -52,7 +46,7 @@ public class GallerySliderAdapter extends PagerAdapter {
 
         Picasso.with(context)
                 .load(Url)
-                .placeholder(R.drawable.ic_gallery_icon)
+                .placeholder(R.mipmap.ic_launcher)
                 .fit()
                 .centerCrop()
                 .into(imageView);
