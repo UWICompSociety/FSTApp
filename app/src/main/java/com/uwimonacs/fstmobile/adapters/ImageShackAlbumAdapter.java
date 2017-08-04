@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +13,12 @@ import android.widget.Toast;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.PlacesGallerySliderActivity;
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,7 +79,19 @@ public class ImageShackAlbumAdapter extends RecyclerView.Adapter<ImageShackAlbum
             public void onClick(View view) {
                 Toast.makeText(context,"clicked", Toast.LENGTH_LONG);
                 Log.d("onClick: ", images.get(position).getFilename()+ " clicked");
+                Intent intent = new Intent(context,PlacesGallerySliderActivity.class );
+
+                ArrayList<String> urls = new ArrayList<String>();
+                for (ImageShackAlbum.ResultType.ImagesType img: images
+                     ) {
+                    urls.add(img.getDirect_link());
+                }
+                intent.putExtra("URLs", urls);
+                intent.putExtra("Position", position);
+                context.startActivity(intent);
             }
+
+
         });
     }
 

@@ -74,7 +74,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener{
+public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener
+{
+
     private static final String TAG = "com.android.comp3901";
     final LatLng sci_tech = new LatLng(18.005072, -76.749544);
 
@@ -624,6 +626,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mapPolylines.destroy();
         mapMarkers.destroy();
     }
+
+
 
     /**
      * Loads the information for the current marker(room/building) selected;

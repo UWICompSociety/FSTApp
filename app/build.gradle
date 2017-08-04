@@ -90,6 +90,9 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
+    //ViewpagerIndicator icon
+    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
 
     //Google Drive Rest API
     compile 'pub.devrel:easypermissions:0.2.1'
