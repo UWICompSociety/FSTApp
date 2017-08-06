@@ -86,10 +86,10 @@ public class MapPresenter implements MapFragMvpPresenter, MyLocationService.myLo
      * It will get search through the database of class rooms and and create a destination object
      * @throws IOException
      */
-    public void geoLocate() throws IOException {
-        String cls = view.getDestText();
-        Cursor res = dbHelper.findLocation(cls);
-        setVertex(res, 2);
+    public boolean geoLocate() throws IOException {
+        String cls = view.getDestText();//get the destination text from the text field
+        Cursor res = dbHelper.findLocation(cls); // the location/s that matches the search
+        return setVertex(res, 2);
     }
 
 
@@ -169,6 +169,12 @@ public class MapPresenter implements MapFragMvpPresenter, MyLocationService.myLo
         return setVertex(res, 1);
     }
 
+    /**
+     * Method used to create the location object.
+     * @param data the location/s that will be created
+     * @param type the type of marker(source/destionation)
+     * @return
+     */
     public boolean setVertex(Cursor data, int type) {
         //TODO change method to just take the id and type;
         if (data.getCount() == 0) {
@@ -189,7 +195,6 @@ public class MapPresenter implements MapFragMvpPresenter, MyLocationService.myLo
                     view.goToLocation(start.getLL());
                     break;
                 case 2:
-                    //TODO allow destination to be building as well;
                     destination = path.getVertices().get(data.getString(0)); //takes the result and uses the id to find the location
                     mapMarkers.addMarker(destination, type);
 
@@ -200,6 +205,26 @@ public class MapPresenter implements MapFragMvpPresenter, MyLocationService.myLo
                     break;
             }
             return true;
+        }
+    }
+
+    /**
+     * Method used to create the location object.
+     * @param location the location that will be created
+     * @param type the type of marker(source/destionation)
+     * @return
+     */
+    public void setVertex(Vertex location, int type) {
+
+        switch (type){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                destination = location;
+                mapMarkers.addMarker(destination,2);
+                break;
         }
     }
 

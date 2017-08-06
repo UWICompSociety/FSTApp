@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.BottomSheetBehavior;
@@ -43,6 +44,8 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     private FragmentManager fragmentManager = getFragmentManager();
     private MapFrag mapFrag;
     private MapActivityPresenter presenter;
+    public static final int REQUEST_CODE = 0;
+
 
     //menu
     Menu menu;
@@ -67,6 +70,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     private SwitchCompat landmark_switch;
     private SwitchCompat satellite_switch;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +78,12 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        //getting intent data
         final Bundle extras = getIntent().getExtras();
         location = extras.getString("location");
         department = extras.getString("department");
         shortname = extras.getString("shortname");
         fullname = extras.getString("fullname");
-
-
 
         presenter = new MapActivityPresenter(this);
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MapFrag(), "mapFrag" ).commit();
@@ -335,9 +338,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
 
 
     /**
-     * fragment interface call back interface.
+     * fragment call back interface.
      * this method gets called when the fragment has been
-     * attached
+     * attached. Used to initial the mapFrag a class a the right
+     * moment.
      */
     @Override
     public void onComplete() {
@@ -345,6 +349,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         mapFrag = (MapFrag) getFragmentManager().findFragmentByTag("mapFrag");
         presenter.setMapFragView((MapFragMvPView) mapFrag);
 
+        //getting location data
         final String[] locals = location.split(",");
         final String snip = department + " - " + shortname;
 
@@ -352,9 +357,21 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         double lon = Double.parseDouble(locals[1]);
 
 
-
         mapFrag.goToLocation(new LatLng(lat,lon));
+
+
+        //creating marker for the location
+        mapFrag.setDestinationText(fullname);
+
+
+        boolean isFound = mapFrag.searchRoom();
+        if(!isFound){
+            //Create a dynamic vertex to represent the location
+            mapFrag.setMarker(shortname,fullname,new LatLng(lat,lon));
+        }
+
     }
 
 
 }
+
