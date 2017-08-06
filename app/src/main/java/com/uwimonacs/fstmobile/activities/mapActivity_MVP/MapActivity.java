@@ -80,11 +80,12 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
 
         //getting intent data
         final Bundle extras = getIntent().getExtras();
-        location = extras.getString("location");
-        department = extras.getString("department");
-        shortname = extras.getString("shortname");
-        fullname = extras.getString("fullname");
-
+        if(extras!=null) {
+            location = extras.getString("location");
+            department = extras.getString("department");
+            shortname = extras.getString("shortname");
+            fullname = extras.getString("fullname");
+        }
         presenter = new MapActivityPresenter(this);
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MapFrag(), "mapFrag" ).commit();
 
@@ -349,25 +350,27 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         mapFrag = (MapFrag) getFragmentManager().findFragmentByTag("mapFrag");
         presenter.setMapFragView((MapFragMvPView) mapFrag);
 
-        //getting location data
-        final String[] locals = location.split(",");
-        final String snip = department + " - " + shortname;
+        if(location!=null) {
+            //getting location data
+            final String[] locals = location.split(",");
+            final String snip = department + " - " + shortname;
 
-        double lat = Double.parseDouble(locals[0]);
-        double lon = Double.parseDouble(locals[1]);
-
-
-        mapFrag.goToLocation(new LatLng(lat,lon));
+            double lat = Double.parseDouble(locals[0]);
+            double lon = Double.parseDouble(locals[1]);
 
 
-        //creating marker for the location
-        mapFrag.setDestinationText(fullname);
+            mapFrag.goToLocation(new LatLng(lat, lon));
 
 
-        boolean isFound = mapFrag.searchRoom();
-        if(!isFound){
-            //Create a dynamic vertex to represent the location
-            mapFrag.setMarker(shortname,fullname,new LatLng(lat,lon));
+            //creating marker for the location
+            mapFrag.setDestinationText(fullname);
+
+
+            boolean isFound = mapFrag.searchRoom();
+            if (!isFound) {
+                //Create a dynamic vertex to represent the location
+                mapFrag.setMarker(shortname, fullname, new LatLng(lat, lon));
+            }
         }
 
     }
