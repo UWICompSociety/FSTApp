@@ -78,10 +78,20 @@ dependencies {
 
     //google utils
     compile 'com.google.maps.android:android-maps-utils:0.5'
+    compile 'com.google.android.gms:play-services-auth:11.0.0'
+
 
     //dependency injection
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+
+    //Retrofit API
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //ViewpagerIndicator icon
+    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 
 
     //Google Drive Rest API

@@ -3,7 +3,7 @@
 <android.support.design.widget.CoordinatorLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="com.android.comp3901.findmeuwi.ui.mapFragment.MapFrag"
+    tools:context="com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,23 +44,21 @@
             <HorizontalScrollView
                 android:id="@+id/bottom_sheet_horizontal_scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="107dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/cast_skip_ad_label_border"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
 
-                    <ImageView
-                        android:id="@+id/place_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"/>
-                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/bottomsheet_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+
+
             </HorizontalScrollView>
 
             <LinearLayout

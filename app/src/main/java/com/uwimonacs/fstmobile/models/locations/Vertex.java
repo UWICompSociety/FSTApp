@@ -10,12 +10,15 @@ import com.google.android.gms.maps.model.LatLng;
 public class Vertex {
 
     //TYPES
-    private static final String BUILDING = "BUILDING";
-    private static final String ROOM = "ROOM";
-    private static final String STAIRS = "STAIRS";
-    private static final String UNIMPORTANT = "Unimportant Node";
-    private static final String JUNCTION = "JUNCTION";
-    private static final String PLACE = "Place";
+    public static final String BUILDING = "BUILDING";
+    public static final String ROOM = "ROOM";
+    public static final String STAIRS = "STAIRS";
+    public static final String UNIMPORTANT = "Unimportant Node";
+    public static final String JUNCTION = "JUNCTION";
+    public static final String PLACE = "Place";
+
+    public static final int KNOWN = 1;
+    public static final int UNKNOWN = 0;
 
     final private String id;
     final private String name;

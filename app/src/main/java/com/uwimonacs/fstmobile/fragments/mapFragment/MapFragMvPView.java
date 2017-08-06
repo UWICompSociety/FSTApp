@@ -22,7 +22,11 @@ public interface MapFragMvPView {
 
     void removePath();
 
+    void setStartText(String startText);
+
     void clearStartText();
+
+    void setDestinationText(String Destination);
 
     void clearDestinationText();
 

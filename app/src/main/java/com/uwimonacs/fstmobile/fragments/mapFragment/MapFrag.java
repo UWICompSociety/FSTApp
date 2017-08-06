@@ -13,7 +13,10 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -46,8 +49,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
+import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 import com.uwimonacs.fstmobile.models.locations.Place;
 import com.uwimonacs.fstmobile.models.locations.Vertex;
+import com.uwimonacs.fstmobile.services.GoogleDriveAPI;
+import com.uwimonacs.fstmobile.services.ImageShackAPIInterface;
+import com.uwimonacs.fstmobile.services.ImageShackApiClient;
 import com.uwimonacs.fstmobile.services.MapMarker;
 import com.uwimonacs.fstmobile.services.MapPolylines;
 import com.uwimonacs.fstmobile.util.MySettings;
@@ -62,8 +70,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener{
+public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener
+{
+
     private static final String TAG = "com.android.comp3901";
     final LatLng sci_tech = new LatLng(18.005072, -76.749544);
 
@@ -72,12 +85,23 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     private MapPresenter presenter;
     private Animation fab_close,fab_open;
 
+
+
+    //Map recyclerview variables
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ImageShackAlbumAdapter albumAdapter;
+    private ImageShackAlbum imageShackAlbum;
+    private ImageShackAPIInterface imageShackAPIInterface;
+
+
     //Map Clients and variables
     private UiSettings mUiSettings;
     public static MapMarker mapMarkers;
     private static MapPolylines mapPolylines;
     public static BottomSheetBehavior sheetBehavior;
     private int mapTheme;
+    private GoogleDriveAPI driveServices;
 
 
     //Map Objects
@@ -95,24 +119,19 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
 
-    public MapFrag() {
-    }
+    public MapFrag() {}
 
     /************************************************************
      *                            VIEWS
      ************************************************************/
 
     //Views
-    @BindView(R.id.getSource)AutoCompleteTextView getSourceView;
-    @BindView(R.id.classSearch)
-    AutoCompleteTextView classSearchView;
-    @BindView(R.id.bottom_sheet_layout)
-    NestedScrollView nestedView;
-    @BindView(R.id.search_view_layout)
-    View searchView;
+    @BindView(R.id.getSource)AutoCompleteTextView sourceEditTextView;
+    @BindView(R.id.classSearch) AutoCompleteTextView destinationEditTextView;
+    @BindView(R.id.bottom_sheet_layout)          NestedScrollView nestedView;
+    @BindView(R.id.search_view_layout) View searchView;
 
-    @BindView(R.id.fbPath)
-    FloatingActionButton findPathBtn;
+    @BindView(R.id.fbPath)FloatingActionButton findPathBtn;
     @BindView(R.id.arrival_check_fab)FloatingActionButton arrivalFab;
     @BindView(R.id.arrival_cancel_fab)FloatingActionButton cancelArrivalFab;
     @BindView(R.id.path_buttons_layout)LinearLayout pathBtnLayout;
@@ -126,18 +145,27 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         View view = inflater.inflate(R.layout.activity_map_frag, container, false);
         ButterKnife.bind(MapFrag.this,view);
         instance = this.getActivity();
+
+
+
         return view;
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (MySettings.googleServicesCheck(this.getActivity())) {
-            Toast.makeText(this.getActivity(), "Perfect!!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this.getActivity(), "Perfect!!", Toast.LENGTH_LONG).show();
             initMap();
         }
 
         fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.fab_close);
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
+
+        //intialising recycler view
+        recyclerView = (RecyclerView) getView().findViewById(R.id.bottomsheet_recyclerview);
+        layoutManager = new LinearLayoutManager(instance,LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(false);
 
         //callback to activity
     }
@@ -151,22 +179,13 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
             mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
         }
         mapFragment.getMapAsync(this);
-//        if(mGoogleApiClient==null){
-//            mGoogleApiClient = new GoogleApiClient.Builder(this.getActivity())
-//                    .addApi(LocationServices.API)
-//                    .addConnectionCallbacks(this)
-//                    .addOnConnectionFailedListener(this)
-//                    .addApi(Places.GEO_DATA_API)
-//                    .addApi(Places.PLACE_DETECTION_API)
-//                    .enableAutoManage((FragmentActivity) this.getActivity(), this)
-//                    .build();
-//        }
     }
 
 
 
     /**
-     * Function that tells the map what to do when its ready
+     *
+     *
      * @param googleMap
      */
     @Override
@@ -177,20 +196,23 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         setTextViews();
         mGoogleMap = googleMap;
 
-        //Initialisations
+        //Map Objects Initialisations
 //        path = Path.getInstance(dbHelper); //Initialises path object which creates graph
+        mGoogleMap = googleMap;
+        driveServices = new GoogleDriveAPI(instance);
         mapPolylines = MapPolylines.getInstance(mGoogleMap);
         mapMarkers = MapMarker.getInstance(mGoogleMap);
-        mGoogleMap = googleMap;
         mUiSettings = mGoogleMap.getUiSettings();
-        mGoogleMap.setOnMarkerClickListener(this);
-        mGoogleMap.setInfoWindowAdapter(this);
 
+
+        // Map View Settings
+        mGoogleMap.setInfoWindowAdapter(this);
         mUiSettings.setMapToolbarEnabled(false);
         mUiSettings.setZoomControlsEnabled(false);
         mUiSettings.setMyLocationButtonEnabled(false);
 
         //Map Listeners
+        mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
@@ -202,8 +224,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mGoogleMap.setOnMapClickListener(this);
         mGoogleMap.setOnCameraMoveListener(this);
 
-//        displayGraph(); // Display the edges
-        if(mapPolylines != null){
+       if(mapPolylines != null){
             Log.d(TAG, "onMapReady: display graph");
             mapPolylines.createGraph();
             displayIcons(); // Display the node icons
@@ -212,7 +233,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         setTheme(R.string.style_mapBox);
 
 
-        mListener.onComplete();//Activity call back listner
+        mListener.onComplete();//Activity call back listener
     }
 
     /**
@@ -232,9 +253,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         String[] locationSugg = rooms.toArray(new String[rooms.size()]);
         ArrayAdapter<String> roomsArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, locationSugg);
 
-        getSourceView.setThreshold(1);
-        getSourceView.setAdapter(roomsArrayAdapter);
-        getSourceView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        sourceEditTextView.setThreshold(1);
+        sourceEditTextView.setAdapter(roomsArrayAdapter);
+        sourceEditTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -245,9 +266,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
             }
         });
 
-        classSearchView.setThreshold(1);
-        classSearchView.setAdapter(roomsArrayAdapter);
-        classSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        destinationEditTextView.setThreshold(1);
+        destinationEditTextView.setAdapter(roomsArrayAdapter);
+        destinationEditTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 hideKeyboard();
@@ -305,19 +326,43 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     @OnClick(R.id.locationToggle)
     public void toggleClick(View v){
+
         boolean curState= ((ToggleButton)v).isChecked();
         boolean  newState= presenter.toggleLocation(curState);
         ((ToggleButton)v).setChecked(newState);
         //toggleLocations(v);
+
+        //Toggle Source Edit Text View
+        if(newState){//GPS Enabled
+            sourceEditTextView.setHint("Location Enabled");
+            sourceEditTextView.setFocusable(false);
+        }else{
+            sourceEditTextView.setHint(R.string.starting_point_editText_hint);
+            sourceEditTextView.setFocusable(true);
+        }
+
+
     }
 
     @OnClick(R.id.findBtn)
-    public void searchRoom(View v)  {
+    public void findRoom(){
+        searchRoom();
+    }
+
+
+    /**
+     *
+     * @return true if the a location was found withing the database, false if
+     * none or more than one possible locations was found
+     */
+    public boolean searchRoom()  {
         try {
-            presenter.geoLocate();
+            return presenter.geoLocate();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     @OnClick(R.id.arrival_cancel_fab)
@@ -347,19 +392,21 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
      */
     private void togglePathBtn(){
 
-        if(findPathBtn.getVisibility() == View.VISIBLE){
-            //hide fab button
+        //check to see if the getpath button is available
+        if(findPathBtn.isClickable()){
+            //hide find path fab button
             findPathBtn.startAnimation(fab_close);
             findPathBtn.setVisibility(View.GONE);
             findPathBtn.setClickable(false);
             Log.d(TAG, "togglePathBtn: Hide find path fab");
+            Log.d(TAG, "togglePathBtn visibility: "+findPathBtn.getVisibility()+ ":"+ View.GONE);
 
             //enable path button layout
             pathBtnLayout.setVisibility(View.VISIBLE);
             pathBtnLayout.startAnimation(fab_open);
             arrivalFab.setClickable(true);
             cancelArrivalFab.setClickable(true);
-        }else{
+            }else{
             //hide path button layout
             pathBtnLayout.setVisibility(View.GONE);
             pathBtnLayout.startAnimation(fab_close);
@@ -443,12 +490,12 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     @Override
     public String getStartText() {
-        return  getSourceView.getText().toString();
+        return  sourceEditTextView.getText().toString();
     }
 
     @Override
     public String getDestText(){
-        return classSearchView.getText().toString();
+        return destinationEditTextView.getText().toString();
     }
 
     @Override
@@ -487,13 +534,19 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
     @Override
+    public void setStartText(String startText) { sourceEditTextView.setText(startText); }
+
+    @Override
     public void clearStartText() {
-        getSourceView.setText("");
+        sourceEditTextView.setText("");
     }
 
     @Override
+    public void setDestinationText(String destination){ destinationEditTextView.setText(destination); }
+
+    @Override
     public void clearDestinationText() {
-        classSearchView.setText("");
+        destinationEditTextView.setText("");
     }
 
     @Override
@@ -574,12 +627,41 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mapMarkers.destroy();
     }
 
+
+
+    /**
+     * Loads the information for the current marker(room/building) selected;
+     *
+     * @param marker
+     */
     private void loadBottomSheet(Marker marker) {
         final Marker myMarker = marker;
         Button image_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_find_route);
         TextView place_title = ButterKnife.findById(getActivity(),R.id.bottom_sheet_title);
         TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
+//        driveServices.getFileIDs();
+
+        ImageShackAPIInterface imageShackAPIInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
+        Call<ImageShackAlbum> apiCall = imageShackAPIInterface.getAlbum("J1Zl");
+        apiCall.enqueue(new Callback<ImageShackAlbum>() {
+            @Override
+            public void onResponse(Call<ImageShackAlbum> call, Response<ImageShackAlbum> response) {
+                imageShackAlbum = response.body();
+                albumAdapter = new ImageShackAlbumAdapter(instance,imageShackAlbum);
+                recyclerView.setAdapter(albumAdapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<ImageShackAlbum> call, Throwable t) {
+                Log.d(TAG, "onFailure: API request failed");
+                Log.d(TAG, "onFailure: "+ t.getMessage());
+
+
+            }
+        });
+
 
         final Place place = (Place) marker.getTag();
 
@@ -590,10 +672,14 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
                 LatLng ll = myMarker.getPosition();
 //                start = Distance.find_closest_marker(ll, path.getCNodes());
 //                isSourceSet = true;
-
-                presenter.setSource(ll, place.getLevel() );
-                presenter.getPath();
                 sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                presenter.setSource(ll, place.getLevel() );
+
+                if(presenter.getPath()){
+
+                    togglePathBtn();
+                };
+
 
             }
         });
@@ -715,6 +801,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         } else {
             mapMarkers.showJunctions(true);
         }
+    }
+
+    public void setMarker(String shortname, String fullname, LatLng latLng) {
+        Place dynamicLocation = new Place(shortname,fullname,latLng.latitude,latLng.longitude, Vertex.PLACE, Vertex.UNKNOWN, 0.0, 0, 0);
+        presenter.setVertex(dynamicLocation, 3);
     }
 
 
