@@ -20,6 +20,12 @@
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Setting" />
 
+        <item
+            android:id="@+id/nav_places"
+            android:icon="@drawable/ic_if_building_1608590"
+            android:title="Places" />
+
+
         
     </group>
 
