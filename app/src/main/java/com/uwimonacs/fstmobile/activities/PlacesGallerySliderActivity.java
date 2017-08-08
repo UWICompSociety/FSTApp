@@ -8,15 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.GallerySliderAdapter;
-import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by sylva on 8/4/2017.
+ * Created by Akinyele on 8/4/2017.
  */
 
 public class PlacesGallerySliderActivity extends AppCompatActivity {
@@ -24,8 +22,6 @@ public class PlacesGallerySliderActivity extends AppCompatActivity {
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-//    private ImageShackAlbum album;
-//    private List<ImageShackAlbum.ResultType.ImagesType> images;
     private static ArrayList<String> urls;
 
 
@@ -35,8 +31,6 @@ public class PlacesGallerySliderActivity extends AppCompatActivity {
         setContentView(R.layout.activty_gallery_viewpager);
 
         final Bundle extras = getIntent().getExtras();
-//        album = (ImageShackAlbum) extras.get("Album");
-//         images = album.getResult().getImages();
         urls = (ArrayList<String>) extras.get("URLs");
         currentPage = (int)extras.get("Position");
 

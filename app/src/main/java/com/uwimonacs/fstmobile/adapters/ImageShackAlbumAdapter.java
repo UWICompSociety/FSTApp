@@ -56,7 +56,7 @@ public class ImageShackAlbumAdapter extends RecyclerView.Adapter<ImageShackAlbum
                 .setLoggingEnabled(true);
         Picasso.with(context)
                 .load(Url)
-                .placeholder(R.drawable.ic_gallery_icon)
+                .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.ic_no_image_found)
 //                .resize(20,20)
 //                .centerCrop()
