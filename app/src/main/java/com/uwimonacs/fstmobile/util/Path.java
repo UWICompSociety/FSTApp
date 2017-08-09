@@ -203,8 +203,8 @@ public class Path {
                         res.getDouble(res.getColumnIndex(AppDbHelper.RT_FAM)),
                         res.getInt(res.getColumnIndex(AppDbHelper.RT_FLOOR)),
                         res.getString(res.getColumnIndex(AppDbHelper.RT_DESC)),
-                        res.getInt(res.getColumnIndex(AppDbHelper.RT_LANDMARK))
-                        );
+                        res.getInt(res.getColumnIndex(AppDbHelper.RT_LANDMARK)),
+                        res.getString(res.getColumnIndex(AppDbHelper.RT_CATEGORY)));
                 break;
 
             //TODO add when building have been added to the database.
@@ -222,7 +222,8 @@ public class Path {
                         res.getInt(res.getColumnIndex(AppDbHelper.B_FLOORS)),
                         res.getInt(res.getColumnIndex(AppDbHelper.B_KNOWN)),
                         res.getDouble(res.getColumnIndex(AppDbHelper.B_FAM)),
-                        res.getInt(res.getColumnIndex(AppDbHelper.B_LANDMARK)));
+                        res.getInt(res.getColumnIndex(AppDbHelper.B_LANDMARK)),
+                        res.getString(res.getColumnIndex(AppDbHelper.B_CATEGORY)));
                         break;
             case "place":
                 Location = new Place(verticesDB.getString(0),  //Vid
@@ -231,8 +232,9 @@ public class Path {
                         verticesDB.getDouble(verticesDB.getColumnIndex(AppDbHelper.V_LONG)),//longtude
                         verticesDB.getString(verticesDB.getColumnIndex(AppDbHelper.V_TYPE)),//type
                         1,0.0,
-                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LANDMARK)),
-                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LEVEL)));//Landmark
+                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LANDMARK)),//Landmark
+                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LEVEL)),
+                        "Other");
                 break;
             default:
                 Location = new Vertex(verticesDB.getString(0),  //Vid
@@ -240,8 +242,8 @@ public class Path {
                         verticesDB.getDouble(verticesDB.getColumnIndex(AppDbHelper.V_LAT)), //latitude
                         verticesDB.getDouble(verticesDB.getColumnIndex(AppDbHelper.V_LONG)),//longtude
                         verticesDB.getString(verticesDB.getColumnIndex(AppDbHelper.V_TYPE)),//type
-                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LANDMARK)),
-                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LEVEL)));//Landmark
+                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LANDMARK)),//Landmark
+                        verticesDB.getInt(verticesDB.getColumnIndex(AppDbHelper.V_LEVEL)));
                 break;
         }
 

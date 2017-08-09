@@ -14,20 +14,23 @@ public class Place extends Vertex {
 
     Integer known;
     Double familiarity;
+    String category;
 
 
 
 
-    public Place(String id, String name, double lat, double lng, String Type, Integer known, Double familiarity, int landMark, int level) {
+    public Place(String id, String name, double lat, double lng, String Type, Integer known, Double familiarity, int landMark, int level, String cat) {
         super(id, name, lat, lng, Type, landMark, level);
         this.known= known;
         this.familiarity = familiarity;
+        this.category = cat;
     }
+
+    public String getCategory(){ return category;}
 
     public boolean isKnown(){
         return known>=1;
     }
-
 
     public int getKnown() {
         return known;
