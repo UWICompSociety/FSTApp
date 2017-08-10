@@ -2,7 +2,10 @@ package com.uwimonacs.fstmobile.data;
 
 import android.database.Cursor;
 
+import com.uwimonacs.fstmobile.models.locations.Place;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kyzer on 5/24/2017.
@@ -19,6 +22,8 @@ public interface DbHelper {
     Cursor getRooms();
 
     Cursor getBuilding();
+
+    List<Place> getLocations();
 
     ArrayList<String> roomList();
 

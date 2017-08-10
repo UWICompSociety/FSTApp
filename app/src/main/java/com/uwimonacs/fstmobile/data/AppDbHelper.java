@@ -8,12 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Environment;
 
+import com.uwimonacs.fstmobile.models.locations.Place;
+import com.uwimonacs.fstmobile.models.locations.Vertex;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Akinyele on 2/4/2017.
@@ -38,6 +42,18 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     public static final String V_LANDMARK="V_Landmark";
     public static final String V_LEVEL= "level";
 
+
+    //Vertices Categories
+    public static final String CAT_Computer = "COMPUTING";
+    public static final String CAT_Engineering = "ENGINEERING";
+    public static final String CAT_Physics = "Physics";
+    public static final String CAT_Mathemactics = "MATHEMATICS";
+    public static final String CAT_Chemistry = "CHEMISTRY";
+    public static final String CAT_LifeSciene = "LIFE SCIENCES";
+    public static final String Cat_GeographyGeology = "GEOGRAPHY and GEOLOGY";
+    public static final String Cat_Hall = "Hall";
+
+
     // Database for edges on the graph.
     public static final String EDGES_TABLE ="Edges";
     public static final String E_SOURCE ="source";
@@ -58,6 +74,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     public static final String RT_FAM ="RM_Familiarity";
     public static final String RT_BUILDING ="RM_Building";
     public static final String RT_LANDMARK="RT_Landmark";
+    public static final String RT_CATEGORY = "Category";
 
     // public static final String RT_COL_8 ="image";
 
@@ -73,6 +90,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     public static final String B_KNOWN ="B_Known";
     public static final String B_FAM ="B_Familiarity";
     public static final String B_LANDMARK="B_Landmark";
+    public static final String B_CATEGORY = "Category";
 
 
     private static AppDbHelper mInstance = null;
@@ -93,6 +111,10 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     public void onCreate(SQLiteDatabase db) {
 
         //TODO CREATE TABLE RELATION FOR DB COLUMNS
+
+        /*
+         + Room Table
+         */
         db.execSQL("CREATE TABLE " + ROOM_TABLE + " ( " +
                     RT_ID + " TEXT, " +
                     RT_NAME + " TEXT, " +
@@ -103,9 +125,13 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
                     RT_FLOOR + " INT, " +
                     RT_KNOWN + " INT, " +
                     RT_FAM + " REAL, " +
+                    RT_CATEGORY + " TEXT DEFAULT 'Other', " +
                     RT_LANDMARK + " INT DEFAULT 0, " +
                    "PRIMARY KEY ("+RT_LAT+","+RT_LONG+","+RT_ID+") ); ");
 
+        /*
+         * Building Table
+         */
         db.execSQL(" CREATE TABLE " + BUILDING_TABLE + " ( " +
                 B_ID + " TEXT, " +
                 B_NAME + " TEXT, " +
@@ -116,6 +142,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
                 B_KNOWN + " INT, " +
                 B_FAM + " REAL, " +
                 B_LANDMARK + " INT DEFAULT 0, " +
+                B_CATEGORY + " TEXT DEFAULT 'Other', " +
                 "PRIMARY KEY ("+B_LAT+","+B_LONG+","+B_ID+") ); ");
 
 
@@ -3893,6 +3920,12 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
 
     /**
      *
+     * Database Queries
+     */
+
+
+    /**
+     *
      * Takes a string and query it for a room or a building withing the database.
      * @param location
      * @return returns the row/s that math or contains the query string;
@@ -3974,6 +4007,48 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
 
         res.moveToFirst();
         return res;
+    }
+
+    @Override
+    public List<Place> getLocations() {
+
+        Cursor res;
+        List<Place> places = new ArrayList<>();
+
+        res = getBuilding();
+
+        while(res.moveToNext()){
+            Place place = new Place(
+                    res.getString(res.getColumnIndex(AppDbHelper.B_ID)),
+                    res.getString(res.getColumnIndex(AppDbHelper.B_NAME)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_LAT)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_LONG)),
+                    Vertex.BUILDING,
+                    res.getInt(res.getColumnIndex(AppDbHelper.B_KNOWN)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_FAM)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.B_LANDMARK)),
+                    0,
+                    res.getString(res.getColumnIndex(AppDbHelper.B_CATEGORY)));
+            places.add(place);
+        }
+        res=getRooms();
+
+        while(res.moveToNext()){
+            Place place = new Place(
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_ID)),
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_NAME)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_LAT)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_LONG)),
+                    Vertex.ROOM,
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_KNOWN)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_FAM)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_LANDMARK)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_FLOOR)),
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_CATEGORY)));
+            places.add(place);
+        }
+
+        return places;
     }
 
     /*

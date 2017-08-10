@@ -29,7 +29,7 @@ public class Vertex {
     final private double lng;
     final private int level;
 
-/*
+    /*
     final private int level;
     final private string type;
 

@@ -1,12 +1,11 @@
-package com.uwimonacs.fstmobile.fragments;
+package com.uwimonacs.fstmobile.activities;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -17,99 +16,106 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.adapters.OldPlacesCategoriesAdapter;
-import com.uwimonacs.fstmobile.adapters.OldSearchResultsAdapter;
 import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
 import com.uwimonacs.fstmobile.adapters.SearchResultsAdapter;
+import com.uwimonacs.fstmobile.data.AppDbHelper;
+import com.uwimonacs.fstmobile.data.DbHelper;
+import com.uwimonacs.fstmobile.fragments.PlacesFragment;
+
+import com.uwimonacs.fstmobile.models.locations.Place;
+import com.uwimonacs.fstmobile.sync.PlaceSync;
 import com.uwimonacs.fstmobile.util.ConnectUtils;
 import com.uwimonacs.fstmobile.util.Constants;
-import com.uwimonacs.fstmobile.models.Place;
-import com.uwimonacs.fstmobile.sync.PlaceSync;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
-public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+/**
+ * Created by sylva on 8/8/2017.
+ */
+
+public class PlacesCategoryActivity extends AppCompatActivity {
+
+
 
     private View view;
     private List<Place> places = new ArrayList<>();
-    private OldPlacesCategoriesAdapter placesCategoriesAdapter;
+    private PlacesCategoriesAdapter placesCategoriesAdapter;
     private RecyclerView categories;
     private RecyclerView searchResultsView;
     private View resultsView;
-    private OldSearchResultsAdapter searchResultsAdapter;
+    private SearchResultsAdapter searchResultsAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
 
-    @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frag_places, container, false);
-        resultsView = inflater.inflate(R.layout.frag_places_search_results, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_places);
+//        setContentView(R.layout.frag_places_search_results);
 
         initViews();
 
-        setUpSwipeRefresh();
+//        setUpSwipeRefresh();
 
         getPlacesFromDatabase();
 
-        if (places.size() > 0) { // if there are new items present remove place holder image and text
-            img_placeholder.setVisibility(View.GONE);
-            tv_placeholder.setVisibility(View.GONE);
-        }
+//        if (places.size() > 0) { // if there are new items present remove place holder image and text
+//            img_placeholder.setVisibility(View.GONE);
+//            tv_placeholder.setVisibility(View.GONE);
+//        }
 
-        categories.setLayoutManager(new LinearLayoutManager(getContext()));
-        searchResultsView.setLayoutManager(new LinearLayoutManager(getContext()));
+        categories.setLayoutManager(new LinearLayoutManager(this));
+        searchResultsView.setLayoutManager(new LinearLayoutManager(this));
 
-        placesCategoriesAdapter = new OldPlacesCategoriesAdapter(getActivity(), places, categories);
+        placesCategoriesAdapter = new PlacesCategoriesAdapter(this, places, categories);
         categories.setAdapter(placesCategoriesAdapter);
-        searchResultsAdapter = new OldSearchResultsAdapter(getContext());
+        searchResultsAdapter = new SearchResultsAdapter(this);
         searchResultsView.setAdapter(searchResultsAdapter);
 
         setUpSearchView();
 
-        setUpProgressBar();
+//        setUpProgressBar();
 
 
-        new LoadPlacesTask().execute();
+        new PlacesCategoryActivity.LoadPlacesTask().execute();
 
-        return view;
+        return;
     }
 
-    public PlacesFragment() { /* required empty constructor */ }
+    public PlacesCategoryActivity() { /* required empty constructor */ }
 
     private void getPlacesFromDatabase(){
-        places = new Select().all().from(Place.class).execute();
+//        places = new Select().all().from(Place.class).execute();
+        DbHelper dbHelper = AppDbHelper.getInstance(this);
+        places = dbHelper.getLocations();
     }
 
-    @Override
-    public void onRefresh() {
-        new LoadPlacesTask().execute();
-    }
+//    @Override
+//    public void onRefresh() {
+//        new PlacesCategoryActivity.LoadPlacesTask().execute();
+//    }
 
     private void initViews()
     {
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        tv_placeholder = (TextView) view.findViewById(R.id.txt_notpresent);
-        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+//        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+//        tv_placeholder = (TextView) view.findViewById(R.id.txt_notpresent);
+//        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
+//        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
-        categories = (RecyclerView) view.findViewById(R.id.frag_places_recyclerview);
-        searchResultsView = (RecyclerView) view.findViewById(R.id.frag_places_search_results_recyclerview);
+        categories = (RecyclerView) findViewById(R.id.activity_places_recyclerview);
+        searchResultsView = (RecyclerView)  findViewById(R.id.activity_places_search_results_recyclerview);
     }
 
     private void setUpSearchView()
     {
-        final SearchView searchView = (SearchView) view.findViewById(R.id.frag_places_search);
+        final SearchView searchView = (SearchView) findViewById(R.id.activity_places_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -136,8 +142,8 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     newText = newText.toLowerCase();
                     final ArrayList<Place> searchResults = new ArrayList<>();
                     for (int i = 0; i < places.size(); i++) {
-                        final String shortname = places.get(i).getShortname().toLowerCase();
-                        final String fullname = places.get(i).getFullname().toLowerCase();
+                        final String shortname = places.get(i).getId().toLowerCase();
+                        final String fullname = places.get(i).getName().toLowerCase();
                         if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
                             searchResults.add(places.get(i));
                     }
@@ -151,20 +157,20 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
     }
 
-    private void setUpSwipeRefresh() {
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
-                R.color.colorPrimaryDark);
+//    private void setUpSwipeRefresh() {
+//        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
+//                R.color.colorPrimaryDark);
+//
+//        swipeRefreshLayout.setOnRefreshListener(this);
+//    }
 
-        swipeRefreshLayout.setOnRefreshListener(this);
-    }
-
-    private void setUpProgressBar() {
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.GONE);
-    }
+//    private void setUpProgressBar() {
+//        progressBar.setIndeterminate(true);
+//        progressBar.setVisibility(View.GONE);
+//    }
 
     private boolean isConnected() {
-        return ConnectUtils.isConnected(getActivity());
+        return ConnectUtils.isConnected(this);
     }
 
     private static boolean hasInternet()
@@ -184,18 +190,18 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
         final Context context;
 
         public LoadPlacesTask() {
-            this.context = getContext();
+            this.context = PlacesCategoryActivity.this;
         }
 
         @Override
         protected void onPreExecute() {
-            img_placeholder.setVisibility(View.GONE);
-            tv_placeholder.setVisibility(View.GONE);
-            if (places.size() == 0) { // check if any news are present
-                progressBar.setVisibility(View.VISIBLE);
-                if (swipeRefreshLayout.isRefreshing())
-                    progressBar.setVisibility(View.GONE);
-            }
+//            img_placeholder.setVisibility(View.GONE);
+//            tv_placeholder.setVisibility(View.GONE);
+//            if (places.size() == 0) { // check if any news are present
+//                progressBar.setVisibility(View.VISIBLE);
+//                if (swipeRefreshLayout.isRefreshing())
+//                    progressBar.setVisibility(View.GONE);
+//            }
         }
 
         @Override
@@ -214,18 +220,19 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         @Override
         protected void onPostExecute(Boolean result) {
-            swipeRefreshLayout.setRefreshing(false);
-            progressBar.setVisibility(View.GONE);
-            if (result) {
-                getPlacesFromDatabase();
-                placesCategoriesAdapter.updatePlaces(places);
-            }
-            else {
-                if (places.size() == 0) {
-                    img_placeholder.setVisibility(View.VISIBLE);
-                    tv_placeholder.setVisibility(View.VISIBLE);
+//            swipeRefreshLayout.setRefreshing(false);
+//            progressBar.setVisibility(View.GONE);
+//            if (result) {
+//                getPlacesFromDatabase();
+//                placesCategoriesAdapter.updatePlaces(places);
+//            }
+//            else {
+//                if (places.size() == 0) {
+//                    img_placeholder.setVisibility(View.VISIBLE);
+//                    tv_placeholder.setVisibility(View.VISIBLE);
                 }
-            }
-        }
+//            }
+//        }
     }
 }
+
