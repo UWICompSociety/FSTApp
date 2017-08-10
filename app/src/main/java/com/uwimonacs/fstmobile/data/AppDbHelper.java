@@ -47,11 +47,12 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     public static final String CAT_Computer = "COMPUTING";
     public static final String CAT_Engineering = "ENGINEERING";
     public static final String CAT_Physics = "Physics";
-    public static final String CAT_Mathemactics = "MATHEMATICS";
+    public static final String CAT_Mathematics = "MATHEMATICS";
     public static final String CAT_Chemistry = "CHEMISTRY";
-    public static final String CAT_LifeSciene = "LIFE SCIENCES";
-    public static final String Cat_GeographyGeology = "GEOGRAPHY and GEOLOGY";
-    public static final String Cat_Hall = "Hall";
+    public static final String CAT_LifeScience = "LIFE SCIENCES";
+    public static final String CAT_GeographyGeology = "GEOGRAPHY and GEOLOGY";
+    public static final String CAT_Hall = "Hall";
+    public static final String CAT_Biology = "BIOLOGY";
 
 
     // Database for edges on the graph.
@@ -212,7 +213,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
-        rooms.put(RT_CATEGORY)
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -224,6 +225,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,3 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -236,6 +238,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -247,6 +250,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -258,6 +262,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -269,6 +274,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -280,6 +286,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -291,6 +298,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR, 1 );
         rooms.put(RT_KNOWN, 0 );
         rooms.put(RT_FAM, 0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -303,6 +311,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -314,6 +323,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -325,6 +335,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -336,6 +347,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -347,6 +359,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR, 1);
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM, 0);
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -359,6 +372,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -370,6 +384,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -384,6 +399,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -396,6 +412,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -407,6 +424,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -418,6 +436,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -429,6 +448,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -440,6 +460,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Engineering);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -451,6 +472,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Engineering);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -462,6 +484,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Engineering);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -473,6 +496,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Engineering);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -484,6 +508,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_LifeScience);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -496,6 +521,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Mathematics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -507,6 +533,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Mathematics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -518,6 +545,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Mathematics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -529,6 +557,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Mathematics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -540,6 +569,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -552,6 +582,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -563,6 +594,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -574,6 +606,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Computer);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -585,6 +618,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -596,6 +630,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -607,6 +642,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -618,6 +654,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -629,6 +666,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -640,6 +678,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -651,6 +690,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -662,6 +702,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -674,6 +715,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -685,6 +727,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -696,6 +739,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -707,6 +751,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -718,6 +763,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -729,6 +775,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -740,6 +787,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -751,6 +799,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -762,6 +811,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -774,6 +824,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_GeographyGeology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -786,6 +837,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -797,6 +849,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -808,6 +861,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,0 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -819,6 +873,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,0 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -830,6 +885,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_GeographyGeology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -842,6 +898,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -853,6 +910,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -864,6 +922,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -875,6 +934,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -886,6 +946,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -897,6 +958,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -908,6 +970,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -919,6 +982,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Chemistry);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -930,6 +994,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -943,6 +1008,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,3 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Engineering);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -954,6 +1020,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,3 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -966,6 +1033,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -977,6 +1045,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -988,6 +1057,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,0 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -999,6 +1069,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY,CAT_Physics);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
@@ -1031,6 +1102,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         buildings.put(B_FLOORS,1);
         buildings.put(B_KNOWN,0);
         buildings.put(B_FAM,0);
+        buildings.put(RT_CATEGORY,CAT_Mathematics);
         db.insert(BUILDING_TABLE,null,buildings);
         buildings.clear();
 
@@ -1042,6 +1114,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         buildings.put(B_FLOORS,1);
         buildings.put(B_KNOWN,0);
         buildings.put(B_FAM,0);
+        buildings.put(RT_CATEGORY,CAT_Computer);
         db.insert(BUILDING_TABLE,null,buildings);
         buildings.clear();
 
@@ -1053,6 +1126,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         buildings.put(B_FLOORS,3);
         buildings.put(B_KNOWN,0);
         buildings.put(B_FAM,0);
+        buildings.put(RT_CATEGORY,CAT_Computer);
         db.insert(BUILDING_TABLE,null,buildings);
         buildings.clear();
 
@@ -1066,6 +1140,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         buildings.put(B_FLOORS,1);
         buildings.put(B_KNOWN,0);
         buildings.put(B_FAM,0);
+        buildings.put(RT_CATEGORY,CAT_Biology);
         db.insert(BUILDING_TABLE,null,buildings);
         buildings.clear();
 
