@@ -12,30 +12,29 @@ import android.widget.TextView;
 
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PermissionsActivity;
-import com.uwimonacs.fstmobile.models.locations.Place;
-
+import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
 
-public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>{
+public class OldSearchResultsAdapter extends RecyclerView.Adapter<OldSearchResultsAdapter.SearchResultsHolder>{
     private ArrayList<Place> searchResults;
     private final Context context;
 
-    public SearchResultsAdapter(Context context) {
+    public OldSearchResultsAdapter(Context context) {
         this.context = context;
         this.searchResults = new ArrayList<>();
     }
 
     @Override
-    public SearchResultsAdapter.SearchResultsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OldSearchResultsAdapter.SearchResultsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SearchResultsHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.frag_places_search_results_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final SearchResultsAdapter.SearchResultsHolder holder, final int position) {
-        holder.result.setText(searchResults.get(position).getId());
-        holder.fullname.setText(searchResults.get(position).getName());
+    public void onBindViewHolder(final OldSearchResultsAdapter.SearchResultsHolder holder, final int position) {
+        holder.result.setText(searchResults.get(position).getShortname());
+        holder.fullname.setText(searchResults.get(position).getFullname());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,10 +42,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 final Intent mapIntent = new Intent(v.getContext(), PermissionsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("places", searchResults);
-                mapIntent.putExtra("location", place.getLL());
-                mapIntent.putExtra("department", place.getCategory());
-                mapIntent.putExtra("shortname", place.getId());
-                mapIntent.putExtra("fullname", place.getName());
+                mapIntent.putExtra("location", place.getLocation());
+                mapIntent.putExtra("department", place.getDepartment());
+                mapIntent.putExtra("shortname", place.getShortname());
+                mapIntent.putExtra("fullname", place.getFullname());
                 mapIntent.putExtra("placesList", bundle);
                 v.getContext().startActivity(mapIntent);
             }

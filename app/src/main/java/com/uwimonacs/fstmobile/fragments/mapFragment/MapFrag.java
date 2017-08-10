@@ -13,7 +13,6 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -804,7 +803,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
     public void setMarker(String shortname, String fullname, LatLng latLng) {
-        Place dynamicLocation = new Place(shortname,fullname,latLng.latitude,latLng.longitude, Vertex.PLACE, Vertex.UNKNOWN, 0.0, 0, 0);
+
+        Place dynamicLocation = new Place(shortname,fullname,latLng.latitude,latLng.longitude, Vertex.PLACE, Vertex.UNKNOWN, 0.0, 0, 0, "NA");
         presenter.setVertex(dynamicLocation, 3);
     }
 

@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.PlacesCategoryActivity;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFragMvPView;
 
@@ -187,7 +188,11 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
             createLevelSelectionDialog();
         } else if (id == R.id.nav_landmark) {
             landmark_switch.setChecked(!(landmark_switch.isChecked()));
-        } else if (id == R.id.nav_sat_view){
+        } else if(id == R.id.nav_places){
+            Intent intent = new Intent(this, PlacesCategoryActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_sat_view){
             satellite_switch.setChecked(!(satellite_switch.isChecked()));
         }
 

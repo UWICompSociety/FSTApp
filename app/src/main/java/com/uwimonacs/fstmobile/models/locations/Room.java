@@ -18,6 +18,7 @@ public class Room  extends Place{
      */
 
     private String Description;
+    private final String category;
     private final int floor;
     private final String building = "NA"; //TODO remove when building are included
 
@@ -25,18 +26,18 @@ public class Room  extends Place{
 
 
 
-    public Room(String id, String rmName, double mLatitude, double mLongitude, int known, double familiarity, int floor, String desc, int landmark) {
-        super(id, rmName, mLatitude, mLongitude, "ROOM", known, familiarity, landmark, floor);
+    public Room(String id, String rmName, double mLatitude, double mLongitude, int known, double familiarity, int floor, String desc, int landmark, String cat) {
+        super(id, rmName, mLatitude, mLongitude, "ROOM", known, familiarity, landmark, floor, cat);
 
         this.floor = floor;
         this.Description = desc;
+        this.category = cat;
     }
 
     @Override
     public void updateDB(){
          AppDbHelper.getInstance(MapFrag.get()).updateRoom(super.getId(),known,familiarity);
     }
-
 
 
 

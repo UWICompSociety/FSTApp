@@ -64,6 +64,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.PlacesCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar.SASLogin"/>
+        <activity
             android:name=".activities.PlacesGallerySliderActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin"
             />
