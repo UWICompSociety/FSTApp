@@ -185,6 +185,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,2 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
+        rooms.put(RT_CATEGORY)
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 
