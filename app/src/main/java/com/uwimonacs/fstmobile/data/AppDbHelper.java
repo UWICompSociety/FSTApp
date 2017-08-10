@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.uwimonacs.fstmobile.models.locations.Place;
+import com.uwimonacs.fstmobile.models.locations.Vertex;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -4011,11 +4012,43 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     @Override
     public List<Place> getLocations() {
 
+        Cursor res;
+        List<Place> places = new ArrayList<>();
 
-        getBuilding();
-        getRooms();
+        res = getBuilding();
 
-        return null;
+        while(res.moveToNext()){
+            Place place = new Place(
+                    res.getString(res.getColumnIndex(AppDbHelper.B_ID)),
+                    res.getString(res.getColumnIndex(AppDbHelper.B_NAME)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_LAT)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_LONG)),
+                    Vertex.BUILDING,
+                    res.getInt(res.getColumnIndex(AppDbHelper.B_KNOWN)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.B_FAM)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.B_LANDMARK)),
+                    0,
+                    res.getString(res.getColumnIndex(AppDbHelper.B_CATEGORY)));
+            places.add(place);
+        }
+        res=getRooms();
+
+        while(res.moveToNext()){
+            Place place = new Place(
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_ID)),
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_NAME)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_LAT)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_LONG)),
+                    Vertex.ROOM,
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_KNOWN)),
+                    res.getDouble(res.getColumnIndex(AppDbHelper.RT_FAM)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_LANDMARK)),
+                    res.getInt(res.getColumnIndex(AppDbHelper.RT_FLOOR)),
+                    res.getString(res.getColumnIndex(AppDbHelper.RT_CATEGORY)));
+            places.add(place);
+        }
+
+        return places;
     }
 
     /*

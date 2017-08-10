@@ -13,23 +13,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PermissionsActivity;
-import com.uwimonacs.fstmobile.models.locations.Place;
-import com.uwimonacs.fstmobile.models.locations.Vertex;
-
+import com.uwimonacs.fstmobile.models.Place;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlacesCategoriesAdapter
+public class OldPlacesCategoriesAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
     private ArrayList<Place> places;
     private List<String> departments;
     private RecyclerView rv;
 
-    public PlacesCategoriesAdapter(Context context, List<Place> places, RecyclerView rv) {
+    public OldPlacesCategoriesAdapter(Context context, List<Place> places, RecyclerView rv) {
         this.places = new ArrayList<>(places);
         departments = new ArrayList<>();
         this.rv = rv;
@@ -46,13 +45,13 @@ public class PlacesCategoriesAdapter
         for (int i = 0; i < places.size(); i++) {
             boolean add = true;
             for (int j = 0; j < departments.size(); j++) {
-                if (departments.get(j).equals(places.get(i).getCategory())) {
+                if (departments.get(j).equals(places.get(i).getDepartment())) {
                     add = false;
                     break;
                 }
             }
             if (add)
-                departments.add(places.get(i).getCategory());
+                departments.add(places.get(i).getDepartment());
         }
     }
 
@@ -81,8 +80,8 @@ public class PlacesCategoriesAdapter
         final List<Place> tempPlaces = new ArrayList<>();
 
         for (int i = 0; i < places.size(); i++) {
-            if (places.get(i).getCategory().equals(department) && !places.get(i).getType().equals(Vertex.BUILDING)) {
-                placeNames.add(places.get(i).getId());
+            if (places.get(i).getDepartment().equals(department) && !places.get(i).getShortname().contains("Building")) {
+                placeNames.add(places.get(i).getShortname());
                 tempPlaces.add(places.get(i));
             }
         }
@@ -119,10 +118,10 @@ public class PlacesCategoriesAdapter
                     Intent mapIntent = new Intent(v.getContext(), PermissionsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("places", places);
-                    mapIntent.putExtra("location", place.getLL());
-                    mapIntent.putExtra("department",place.getCategory());
+                    mapIntent.putExtra("location", place.getLocation());
+                    mapIntent.putExtra("department",place.getDepartment());
                     mapIntent.putExtra("shortname",name);
-                    mapIntent.putExtra("fullname",place.getName());
+                    mapIntent.putExtra("fullname",place.getFullname());
                     mapIntent.putExtra("placesList", bundle);
                     v.getContext().startActivity(mapIntent);
                 }

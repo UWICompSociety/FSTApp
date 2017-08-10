@@ -214,7 +214,8 @@ public class Path {
                    Log.d("GET BUILDING", test);
                    assertEquals(1,res.getCount());
                }
-                Location = new Building( res.getString(res.getColumnIndex(AppDbHelper.B_ID)),
+                Location = new Building(
+                        res.getString(res.getColumnIndex(AppDbHelper.B_ID)),
                         res.getString(res.getColumnIndex(AppDbHelper.B_NAME)),
                         res.getDouble(res.getColumnIndex(AppDbHelper.B_LAT)),
                         res.getDouble(res.getColumnIndex(AppDbHelper.B_LONG)),

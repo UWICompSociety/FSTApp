@@ -57,16 +57,18 @@ public class PlacesCategoryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
+//        setContentView(R.layout.frag_places_search_results);
+
         initViews();
 
 //        setUpSwipeRefresh();
 
         getPlacesFromDatabase();
 
-        if (places.size() > 0) { // if there are new items present remove place holder image and text
-            img_placeholder.setVisibility(View.GONE);
-            tv_placeholder.setVisibility(View.GONE);
-        }
+//        if (places.size() > 0) { // if there are new items present remove place holder image and text
+//            img_placeholder.setVisibility(View.GONE);
+//            tv_placeholder.setVisibility(View.GONE);
+//        }
 
         categories.setLayoutManager(new LinearLayoutManager(this));
         searchResultsView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,7 +80,7 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
         setUpSearchView();
 
-        setUpProgressBar();
+//        setUpProgressBar();
 
 
         new PlacesCategoryActivity.LoadPlacesTask().execute();
@@ -90,11 +92,8 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
     private void getPlacesFromDatabase(){
 //        places = new Select().all().from(Place.class).execute();
-
         DbHelper dbHelper = AppDbHelper.getInstance(this);
-        dbHelper.getLocations();
-
-
+        places = dbHelper.getLocations();
     }
 
 //    @Override
@@ -106,17 +105,17 @@ public class PlacesCategoryActivity extends AppCompatActivity {
     {
 //        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
 //        tv_placeholder = (TextView) view.findViewById(R.id.txt_notpresent);
-        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+//        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
+//        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
-        categories = (RecyclerView) view.findViewById(R.id.frag_places_recyclerview);
-        searchResultsView = (RecyclerView) view.findViewById(R.id.frag_places_search_results_recyclerview);
+        categories = (RecyclerView) findViewById(R.id.activity_places_recyclerview);
+        searchResultsView = (RecyclerView)  findViewById(R.id.activity_places_search_results_recyclerview);
     }
 
     private void setUpSearchView()
     {
-        final SearchView searchView = (SearchView) view.findViewById(R.id.frag_places_search);
+        final SearchView searchView = (SearchView) findViewById(R.id.activity_places_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -140,17 +139,17 @@ public class PlacesCategoryActivity extends AppCompatActivity {
                 * Pass it to an adapter and move that RecyclerView into the layout.
                 * */
                 else {
-//                    newText = newText.toLowerCase();
-//                    final ArrayList<Place> searchResults = new ArrayList<>();
-//                    for (int i = 0; i < places.size(); i++) {
-//                        final String shortname = places.get(i).getShortname().toLowerCase();
-//                        final String fullname = places.get(i).getFullname().toLowerCase();
-//                        if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
-//                            searchResults.add(places.get(i));
-//                    }
-//                    searchResultsAdapter.updateSearchResults(searchResults);
-//                    searchResultsView.setVisibility(View.VISIBLE);
-//                    categories.setVisibility(View.GONE);
+                    newText = newText.toLowerCase();
+                    final ArrayList<Place> searchResults = new ArrayList<>();
+                    for (int i = 0; i < places.size(); i++) {
+                        final String shortname = places.get(i).getId().toLowerCase();
+                        final String fullname = places.get(i).getName().toLowerCase();
+                        if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
+                            searchResults.add(places.get(i));
+                    }
+                    searchResultsAdapter.updateSearchResults(searchResults);
+                    searchResultsView.setVisibility(View.VISIBLE);
+                    categories.setVisibility(View.GONE);
 
                 }
                 return true;
@@ -165,10 +164,10 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //        swipeRefreshLayout.setOnRefreshListener(this);
 //    }
 
-    private void setUpProgressBar() {
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.GONE);
-    }
+//    private void setUpProgressBar() {
+//        progressBar.setIndeterminate(true);
+//        progressBar.setVisibility(View.GONE);
+//    }
 
     private boolean isConnected() {
         return ConnectUtils.isConnected(this);
@@ -196,13 +195,13 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            img_placeholder.setVisibility(View.GONE);
-            tv_placeholder.setVisibility(View.GONE);
-            if (places.size() == 0) { // check if any news are present
-                progressBar.setVisibility(View.VISIBLE);
-                if (swipeRefreshLayout.isRefreshing())
-                    progressBar.setVisibility(View.GONE);
-            }
+//            img_placeholder.setVisibility(View.GONE);
+//            tv_placeholder.setVisibility(View.GONE);
+//            if (places.size() == 0) { // check if any news are present
+//                progressBar.setVisibility(View.VISIBLE);
+//                if (swipeRefreshLayout.isRefreshing())
+//                    progressBar.setVisibility(View.GONE);
+//            }
         }
 
         @Override
@@ -221,19 +220,19 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            swipeRefreshLayout.setRefreshing(false);
-            progressBar.setVisibility(View.GONE);
-            if (result) {
-                getPlacesFromDatabase();
-                placesCategoriesAdapter.updatePlaces(places);
-            }
-            else {
-                if (places.size() == 0) {
-                    img_placeholder.setVisibility(View.VISIBLE);
-                    tv_placeholder.setVisibility(View.VISIBLE);
+//            swipeRefreshLayout.setRefreshing(false);
+//            progressBar.setVisibility(View.GONE);
+//            if (result) {
+//                getPlacesFromDatabase();
+//                placesCategoriesAdapter.updatePlaces(places);
+//            }
+//            else {
+//                if (places.size() == 0) {
+//                    img_placeholder.setVisibility(View.VISIBLE);
+//                    tv_placeholder.setVisibility(View.VISIBLE);
                 }
-            }
-        }
+//            }
+//        }
     }
 }
 

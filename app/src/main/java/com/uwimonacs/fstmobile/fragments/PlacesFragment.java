@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.adapters.OldPlacesCategoriesAdapter;
+import com.uwimonacs.fstmobile.adapters.OldSearchResultsAdapter;
 import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
 import com.uwimonacs.fstmobile.adapters.SearchResultsAdapter;
 import com.uwimonacs.fstmobile.util.ConnectUtils;
@@ -36,11 +38,11 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private View view;
     private List<Place> places = new ArrayList<>();
-    private PlacesCategoriesAdapter placesCategoriesAdapter;
+    private OldPlacesCategoriesAdapter placesCategoriesAdapter;
     private RecyclerView categories;
     private RecyclerView searchResultsView;
     private View resultsView;
-    private SearchResultsAdapter searchResultsAdapter;
+    private OldSearchResultsAdapter searchResultsAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
@@ -67,9 +69,9 @@ public class PlacesFragment extends Fragment implements SwipeRefreshLayout.OnRef
         categories.setLayoutManager(new LinearLayoutManager(getContext()));
         searchResultsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        placesCategoriesAdapter = new PlacesCategoriesAdapter(getActivity(), places, categories);
+        placesCategoriesAdapter = new OldPlacesCategoriesAdapter(getActivity(), places, categories);
         categories.setAdapter(placesCategoriesAdapter);
-        searchResultsAdapter = new SearchResultsAdapter(getContext());
+        searchResultsAdapter = new OldSearchResultsAdapter(getContext());
         searchResultsView.setAdapter(searchResultsAdapter);
 
         setUpSearchView();
