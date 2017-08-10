@@ -117,13 +117,13 @@ public class PlacesCategoriesAdapter
                 @Override
                 public void onClick(View v) {
                     Intent mapIntent = new Intent(v.getContext(), PermissionsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("places", places);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("places", places);
                     mapIntent.putExtra("location", place.getLL());
                     mapIntent.putExtra("department",place.getCategory());
-                    mapIntent.putExtra("shortname",name);
+                    mapIntent.putExtra("shortname",place.getId());
                     mapIntent.putExtra("fullname",place.getName());
-                    mapIntent.putExtra("placesList", bundle);
+//                    mapIntent.putExtra("placesList", bundle);
                     v.getContext().startActivity(mapIntent);
                 }
             });
