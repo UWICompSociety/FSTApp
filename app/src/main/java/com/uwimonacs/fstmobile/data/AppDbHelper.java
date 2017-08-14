@@ -26,7 +26,7 @@ import java.util.List;
 public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     private static final String TAG = "com.android.comp3901";
 
-    public static final Integer DATABASE_VERSION = 38;
+    public static final Integer DATABASE_VERSION = 39;
     public static final String DATABASE_NAME = "findme.db";
     private static String DB_PATH = "";
 

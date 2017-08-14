@@ -65,6 +65,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -192,6 +193,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         presenter = new MapPresenter(this,getActivity(),googleMap);
 
         setTextViews();
+        getAlbums();
+
         mGoogleMap = googleMap;
 
         //Map Objects Initialisations
@@ -235,9 +238,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
 
-    private void getAlbums(){
-
-    }
 
     /**
      *  This methods sets the text views...
@@ -630,7 +630,36 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mapMarkers.destroy();
     }
 
+    private boolean getAlbum(String title){
+        List<ImagesShackAlbumList.ResultType.AlbumsType> albums = imagesShackAlbumList.getResult().getAlbums();
 
+        for (ImagesShackAlbumList.ResultType.AlbumsType album:albums
+             ) {
+            if(album.getTitle()==title){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void getAlbums(){
+
+        ImageShackAPIInterface apiInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
+        Call<ImagesShackAlbumList> call = apiInterface.getUserAlbums("Akinyele");
+        call.enqueue(new Callback<ImagesShackAlbumList>() {
+            @Override
+            public void onResponse(Call<ImagesShackAlbumList> call, Response<ImagesShackAlbumList> response) {
+                imagesShackAlbumList = response.body();
+                Log.d(TAG, "onResponse: WOORKING");
+            }
+
+            @Override
+            public void onFailure(Call<ImagesShackAlbumList> call, Throwable t) {
+                Log.d(TAG, "onFailure: FAIILING");
+            }
+        });
+
+    }
 
     /**
      * Loads the information for the current marker(room/building) selected;
@@ -644,6 +673,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
 //        driveServices.getFileIDs();
+
+
 
 
         /**
@@ -668,6 +699,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
             }
         });
+
+
 
 
         final Place place = (Place) marker.getTag();

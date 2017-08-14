@@ -1,6 +1,7 @@
 package com.uwimonacs.fstmobile.services;
 
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
+import com.uwimonacs.fstmobile.models.ImagesShackAlbumList;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface ImageShackAPIInterface {
     @GET("albums/{id}")
     Call<ImageShackAlbum> getAlbum(@Path("id") String id);
 
+    @GET("user/{user}/albums")
+    Call<ImagesShackAlbumList> getUserAlbums(@Path("user") String user);
 }
 
