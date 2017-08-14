@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -25,14 +26,16 @@ import java.util.List;
 public class PlacesCategoriesAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context context;
+    private final Activity activity;
     private ArrayList<Place> places;
     private List<String> departments;
     private RecyclerView rv;
 
-    public PlacesCategoriesAdapter(Context context, List<Place> places, RecyclerView rv) {
+    public PlacesCategoriesAdapter(Context context, Activity activity, List<Place> places, RecyclerView rv) {
         this.places = new ArrayList<>(places);
         departments = new ArrayList<>();
         this.rv = rv;
+        this.activity = activity;
         /*
         * Build a list of the names of the departments to act as the "category" names
         * for the expandable cards in the RecyclerView
@@ -125,6 +128,9 @@ public class PlacesCategoriesAdapter
                     mapIntent.putExtra("fullname",place.getName());
 //                    mapIntent.putExtra("placesList", bundle);
                     v.getContext().startActivity(mapIntent);
+                    activity.overridePendingTransition(R.anim.top_in,R.anim.bottom_out);
+                    activity.finish();
+
                 }
             });
             linearLayout.addView(textView);

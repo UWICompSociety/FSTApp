@@ -1,5 +1,6 @@
 package com.uwimonacs.fstmobile.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +19,14 @@ import com.uwimonacs.fstmobile.models.locations.Place;
 import java.util.ArrayList;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultsHolder>{
+    private Activity activity;
     private ArrayList<Place> searchResults;
     private final Context context;
 
-    public SearchResultsAdapter(Context context) {
+    public SearchResultsAdapter(Context context, Activity activity) {
         this.context = context;
         this.searchResults = new ArrayList<>();
+        this.activity = activity;
     }
 
     @Override
@@ -47,8 +50,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 mapIntent.putExtra("department", place.getCategory());
                 mapIntent.putExtra("shortname", place.getId());
                 mapIntent.putExtra("fullname", place.getName());
-                mapIntent.putExtra("placesList", bundle);
+//                mapIntent.putExtra("placesList", bundle);
+
                 v.getContext().startActivity(mapIntent);
+                activity.overridePendingTransition(R.anim.top_in,R.anim.bottom_out);
+                activity.finish();
             }
         });
     }

@@ -204,6 +204,11 @@
         <item>8:30</item>
     </string-array>
 
+
+    <string-array name="Imageshack_AlbumIDs" >
+        <item>C5:</item>
+    </string-array>
+
     <!--TODO: Replace duplicate times-->
 
     <string-array name="bus_route_b_stops">

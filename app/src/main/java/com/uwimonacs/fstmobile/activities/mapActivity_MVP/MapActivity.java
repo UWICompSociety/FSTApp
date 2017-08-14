@@ -130,7 +130,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the menu; this adds items to the action bar if it is present.
-//       getMenuInflater().inflate(R.menu.main, menu);
+       getMenuInflater().inflate(R.menu.map_menu, menu);
 //       getMenuInflater().inflate(R.menu.map_menu, menu);
 //       getMenuInflater().inflate(R.menu.theme_pop_menu,menu);
       return true;
@@ -146,12 +146,15 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         //TODO Needs fixing
       if(mapFragFrag != null){
              switch (item.getItemId()) {
-               case R.id.mapTypeNormal:
-                    mapFragFrag.setStyle("normal");
-                    break;
-                case R.id.mapTypeSatellite:
-                    mapFragFrag.setStyle("satellite");
-                    break;
+//               case R.id.mapTypeNormal:
+//                    mapFragFrag.setStyle("normal");
+//                    break;
+//                case R.id.mapTypeSatellite:
+//                    mapFragFrag.setStyle("satellite");
+//                    break;
+                 case R.id.map_menu_places:
+                     startPlacesActivity();
+                     break;
                 case R.id.style1:
                     mapFragFrag.setTheme(R.string.style_icyBlue);
                     break;
@@ -189,8 +192,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         } else if (id == R.id.nav_landmark) {
             landmark_switch.setChecked(!(landmark_switch.isChecked()));
         } else if(id == R.id.nav_places){
-            Intent intent = new Intent(this, PlacesCategoryActivity.class);
-            startActivity(intent);
+            startPlacesActivity();
         }
         else if (id == R.id.nav_sat_view){
             satellite_switch.setChecked(!(satellite_switch.isChecked()));
@@ -199,6 +201,13 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void startPlacesActivity() {
+        Intent intent = new Intent(this, PlacesCategoryActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.bottom_in,R.anim.top_out);
+        finish();
     }
 
     @Override
@@ -355,16 +364,22 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         mapFrag = (MapFrag) getFragmentManager().findFragmentByTag("mapFrag");
         presenter.setMapFragView((MapFragMvPView) mapFrag);
 
-        if(location!=null) {
+        if(shortname!=null) {
             //getting location data
-            final String[] locals = location.split(",");
-            final String snip = department + " - " + shortname;
-
-            double lat = Double.parseDouble(locals[0]);
-            double lon = Double.parseDouble(locals[1]);
 
 
-            mapFrag.goToLocation(new LatLng(lat, lon));
+
+
+
+
+//            final String[] locals = location.split(",");
+//            final String snip = department + " - " + shortname;
+//
+//            double lat = Double.parseDouble(locals[0]);
+//            double lon = Double.parseDouble(locals[1]);
+//
+//
+//            mapFrag.goToLocation(new LatLng(lat, lon));
 
 
             //creating marker for the location
@@ -372,10 +387,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
 
 
             boolean isFound = mapFrag.searchRoom();
-            if (!isFound) {
-                //Create a dynamic vertex to represent the location
-                mapFrag.setMarker(shortname, fullname, new LatLng(lat, lon));
-            }
+//            if (!isFound) {
+//                //Create a dynamic vertex to represent the location
+//                mapFrag.setMarker(shortname, fullname, new LatLng(lat, lon));
+//            }
         }
 
     }

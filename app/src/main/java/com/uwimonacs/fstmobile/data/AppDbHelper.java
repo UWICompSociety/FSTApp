@@ -46,7 +46,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
     //Vertices Categories
     public static final String CAT_Computer = "COMPUTING";
     public static final String CAT_Engineering = "ENGINEERING";
-    public static final String CAT_Physics = "Physics";
+    public static final String CAT_Physics = "PHYSICS";
     public static final String CAT_Mathematics = "MATHEMATICS";
     public static final String CAT_Chemistry = "CHEMISTRY";
     public static final String CAT_LifeScience = "LIFE SCIENCES";
@@ -837,7 +837,7 @@ public class AppDbHelper extends SQLiteOpenHelper implements DbHelper{
         rooms.put(RT_FLOOR,1 );
         rooms.put(RT_KNOWN,0 );
         rooms.put(RT_FAM,0 );
-        rooms.put(RT_CATEGORY,);
+        rooms.put(RT_CATEGORY,CAT_Biology);
         db.insert(ROOM_TABLE,null, rooms);
         rooms.clear();
 

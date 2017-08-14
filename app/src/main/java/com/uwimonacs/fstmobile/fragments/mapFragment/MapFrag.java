@@ -50,6 +50,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
+import com.uwimonacs.fstmobile.models.ImagesShackAlbumList;
 import com.uwimonacs.fstmobile.models.locations.Place;
 import com.uwimonacs.fstmobile.models.locations.Vertex;
 import com.uwimonacs.fstmobile.services.GoogleDriveAPI;
@@ -91,6 +92,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     private RecyclerView.LayoutManager layoutManager;
     private ImageShackAlbumAdapter albumAdapter;
     private ImageShackAlbum imageShackAlbum;
+    private ImagesShackAlbumList imagesShackAlbumList;
     private ImageShackAPIInterface imageShackAPIInterface;
 
 
@@ -153,7 +155,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (MySettings.googleServicesCheck(this.getActivity())) {
-//            Toast.makeText(this.getActivity(), "Perfect!!", Toast.LENGTH_LONG).show();
             initMap();
         }
 
@@ -183,8 +184,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
     /**
-     *
-     *
      * @param googleMap
      */
     @Override
@@ -233,6 +232,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
         mListener.onComplete();//Activity call back listener
+    }
+
+
+    private void getAlbums(){
+
     }
 
     /**
@@ -298,12 +302,12 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.mapTypeNormal:
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                break;
-            case R.id.mapTypeSatellite:
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                break;
+//            case R.id.mapTypeNormal:
+//                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//                break;
+//            case R.id.mapTypeSatellite:
+//                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+//                break;
             default:
                 break;
         }
@@ -641,6 +645,10 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
 //        driveServices.getFileIDs();
 
+
+        /**
+         * API Call to get Album
+         */
         ImageShackAPIInterface imageShackAPIInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
         Call<ImageShackAlbum> apiCall = imageShackAPIInterface.getAlbum("J1Zl");
         apiCall.enqueue(new Callback<ImageShackAlbum>() {

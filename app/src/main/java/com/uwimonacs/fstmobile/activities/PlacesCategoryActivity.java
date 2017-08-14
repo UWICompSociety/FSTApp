@@ -1,17 +1,26 @@
 package com.uwimonacs.fstmobile.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,6 +28,7 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.activities.mapActivity_MVP.MapActivity;
 import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
 import com.uwimonacs.fstmobile.adapters.SearchResultsAdapter;
 import com.uwimonacs.fstmobile.data.AppDbHelper;
@@ -46,12 +56,15 @@ public class PlacesCategoryActivity extends AppCompatActivity {
     private PlacesCategoriesAdapter placesCategoriesAdapter;
     private RecyclerView categories;
     private RecyclerView searchResultsView;
+    private Toolbar toolbar;
     private View resultsView;
     private SearchResultsAdapter searchResultsAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageView img_placeholder;
     private TextView tv_placeholder;
     private ProgressBar progressBar;
+
+    private final String title = "Places";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +78,7 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
         getPlacesFromDatabase();
 
+
 //        if (places.size() > 0) { // if there are new items present remove place holder image and text
 //            img_placeholder.setVisibility(View.GONE);
 //            tv_placeholder.setVisibility(View.GONE);
@@ -73,12 +87,13 @@ public class PlacesCategoryActivity extends AppCompatActivity {
         categories.setLayoutManager(new LinearLayoutManager(this));
         searchResultsView.setLayoutManager(new LinearLayoutManager(this));
 
-        placesCategoriesAdapter = new PlacesCategoriesAdapter(this, places, categories);
+        placesCategoriesAdapter = new PlacesCategoriesAdapter(this, this, places, categories);
         categories.setAdapter(placesCategoriesAdapter);
-        searchResultsAdapter = new SearchResultsAdapter(this);
+        searchResultsAdapter = new SearchResultsAdapter(this, this);
         searchResultsView.setAdapter(searchResultsAdapter);
 
-        setUpSearchView();
+
+        setUpToolBar();
 
 //        setUpProgressBar();
 
@@ -86,6 +101,13 @@ public class PlacesCategoryActivity extends AppCompatActivity {
         new PlacesCategoryActivity.LoadPlacesTask().execute();
 
         return;
+    }
+
+    private void setUpToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
+
     }
 
     public PlacesCategoryActivity() { /* required empty constructor */ }
@@ -100,6 +122,13 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //    public void onRefresh() {
 //        new PlacesCategoryActivity.LoadPlacesTask().execute();
 //    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.search,menu);
+
+        setUpSearchView(menu);
+        return true;
+    }
 
     private void initViews()
     {
@@ -108,14 +137,15 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
 //        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         categories = (RecyclerView) findViewById(R.id.activity_places_recyclerview);
         searchResultsView = (RecyclerView)  findViewById(R.id.activity_places_search_results_recyclerview);
     }
 
-    private void setUpSearchView()
+    private void setUpSearchView(Menu menu)
     {
-        final SearchView searchView = (SearchView) findViewById(R.id.activity_places_search);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search_view).getActionView();
+        searchView.setQueryHint("Search Places");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -157,6 +187,53 @@ public class PlacesCategoryActivity extends AppCompatActivity {
         });
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void circleReveal(int viewID, int posFromRight, boolean containsOverflow, final boolean isShow)
+    {
+        final View myView = findViewById(viewID);
+
+        int width=myView.getWidth();
+
+        if(posFromRight>0)
+            width-=(posFromRight*getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material))-(getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material)/ 2);
+        if(containsOverflow)
+            width-=getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_overflow_material);
+
+        int cx=width;
+        int cy=myView.getHeight()/2;
+
+        Animator anim;
+        if(isShow)
+            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0,(float)width);
+        else
+            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, (float)width, 0);
+
+        anim.setDuration((long)220);
+
+        // make the view invisible when the animation is done
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(!isShow)
+                {
+                    super.onAnimationEnd(animation);
+                    myView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        // make the view visible and start the animation
+        if(isShow)
+            myView.setVisibility(View.VISIBLE);
+
+        // start the animation
+        anim.start();
+
+
+    }
+
+
 //    private void setUpSwipeRefresh() {
 //        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary,
 //                R.color.colorPrimaryDark);
@@ -168,6 +245,24 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //        progressBar.setIndeterminate(true);
 //        progressBar.setVisibility(View.GONE);
 //    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_search_view:
+                circleReveal(R.id.menu_search_view,1,true,true);
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                circleReveal(R.id.menu_search_view,1,true,false);
+                return true;
+            default:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private boolean isConnected() {
         return ConnectUtils.isConnected(this);
@@ -233,6 +328,16 @@ public class PlacesCategoryActivity extends AppCompatActivity {
                 }
 //            }
 //        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.top_in, R.anim.bottom_out);
+        finish();
     }
 }
 

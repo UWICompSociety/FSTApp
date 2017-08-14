@@ -65,7 +65,7 @@
         </activity>
         <activity
             android:name=".activities.PlacesCategoryActivity"
-            android:theme="@style/AppTheme.NoActionBar.SASLogin"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.PlacesGallerySliderActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin"
