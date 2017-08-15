@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PlacesGallerySliderActivity;
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
+import com.uwimonacs.fstmobile.models.ImagesShackAlbumList;
 
 
 import java.util.ArrayList;
@@ -32,14 +33,14 @@ public class ImageShackAlbumAdapter extends RecyclerView.Adapter<ImageShackAlbum
 
 
     private final Context context;
-    private ImageShackAlbum imageShackAlbum;
-    private List<ImageShackAlbum.ResultType.ImagesType> images;
+    private ImagesShackAlbumList.ResultType.AlbumsType imageShackAlbum;
+    private List<ImagesShackAlbumList.ResultType.AlbumsType.ImagesType> images;
 
-    public ImageShackAlbumAdapter(Context context, ImageShackAlbum imageShackAlbum){
+    public ImageShackAlbumAdapter(Context context, ImagesShackAlbumList.ResultType.AlbumsType imageShackAlbum){
 
         this.context = context;
         this.imageShackAlbum = imageShackAlbum;
-        images = imageShackAlbum.getResult().getImages();
+        images = imageShackAlbum.getImages();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ImageShackAlbumAdapter extends RecyclerView.Adapter<ImageShackAlbum
                 Intent intent = new Intent(context,PlacesGallerySliderActivity.class );
 
                 ArrayList<String> urls = new ArrayList<String>();
-                for (ImageShackAlbum.ResultType.ImagesType img: images
+                for (ImagesShackAlbumList.ResultType.AlbumsType.ImagesType img: images
                      ) {
                     urls.add(img.getDirect_link());
                 }

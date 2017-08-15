@@ -630,16 +630,20 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mapMarkers.destroy();
     }
 
-    private boolean getAlbum(String title){
+    private ImagesShackAlbumList.ResultType.AlbumsType getAlbum(String title){
         List<ImagesShackAlbumList.ResultType.AlbumsType> albums = imagesShackAlbumList.getResult().getAlbums();
+
 
         for (ImagesShackAlbumList.ResultType.AlbumsType album:albums
              ) {
-            if(album.getTitle()==title){
-                return true;
+
+            String tit = album.getTitle().toUpperCase().replaceAll("\\s","");
+            String place = title.toUpperCase().replaceAll("\\s","");
+            if(album.getTitle().toUpperCase().replaceAll("\\s","").equals(title.toUpperCase().replaceAll("\\s",""))){
+                return album;
             }
         }
-        return false;
+        return null;
     }
 
     private void getAlbums(){
@@ -677,28 +681,30 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
 
+
+
         /**
          * API Call to get Album
          */
-        ImageShackAPIInterface imageShackAPIInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
-        Call<ImageShackAlbum> apiCall = imageShackAPIInterface.getAlbum("J1Zl");
-        apiCall.enqueue(new Callback<ImageShackAlbum>() {
-            @Override
-            public void onResponse(Call<ImageShackAlbum> call, Response<ImageShackAlbum> response) {
-                imageShackAlbum = response.body();
-                albumAdapter = new ImageShackAlbumAdapter(instance,imageShackAlbum);
-                recyclerView.setAdapter(albumAdapter);
-
-            }
-
-            @Override
-            public void onFailure(Call<ImageShackAlbum> call, Throwable t) {
-                Log.d(TAG, "onFailure: API request failed");
-                Log.d(TAG, "onFailure: "+ t.getMessage());
-
-
-            }
-        });
+//        ImageShackAPIInterface imageShackAPIInterface = ImageShackApiClient.getAPIClient().create(ImageShackAPIInterface.class);
+//        Call<ImageShackAlbum> apiCall = imageShackAPIInterface.getAlbum("J1Zl");
+//        apiCall.enqueue(new Callback<ImageShackAlbum>() {
+//            @Override
+//            public void onResponse(Call<ImageShackAlbum> call, Response<ImageShackAlbum> response) {
+//                imageShackAlbum = response.body();
+//                albumAdapter = new ImageShackAlbumAdapter(instance,imageShackAlbum);
+//                recyclerView.setAdapter(albumAdapter);
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ImageShackAlbum> call, Throwable t) {
+//                Log.d(TAG, "onFailure: API request failed");
+//                Log.d(TAG, "onFailure: "+ t.getMessage());
+//
+//
+//            }
+//        });
 
 
 
@@ -742,6 +748,17 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
         });
+
+
+        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
+        if(album!=null){
+            recyclerView.setVisibility(View.VISIBLE);
+            albumAdapter = new ImageShackAlbumAdapter(instance,album);
+            recyclerView.setAdapter(albumAdapter);
+        }else {
+            recyclerView.removeAllViews();
+            recyclerView.setVisibility(View.GONE);
+        }
 
     }
 
