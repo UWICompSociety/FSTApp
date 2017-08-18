@@ -7,13 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <android.support.v7.widget.Toolbar
+    <com.oshi.libsearchtoolbar.SearchAnimationToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#2196F3"
+        android:elevation="10dp"
+        app:title="Places"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <!--<android.support.v7.widget.SearchView-->
         <!--android:id="@+id/activity_places_search"-->
@@ -25,11 +34,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/frag_places_item"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/app_bar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_places_search_results_recyclerview"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"

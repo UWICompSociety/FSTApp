@@ -17,6 +17,8 @@
 
     <style name="AppTheme.NoActionBar.PlayerActivity" />
 
+    <style name="AppTheme.NoActionBar.PlacesCategoryActivity" />
+
     <style name="AppTheme.NoActionBar.FAQActivity" />
 
     <style name="AppTheme.NoActionBar.VideosListActivity" />

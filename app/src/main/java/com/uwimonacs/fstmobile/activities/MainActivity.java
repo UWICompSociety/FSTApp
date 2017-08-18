@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
                         break;
                     case 3:
-                        intent = new Intent(MainActivity.this, MapActivity.class);
+                        intent = new Intent(MainActivity.this, MapSplashscreen.class);
                         startActivity(intent);
                         break;
                     case 4:

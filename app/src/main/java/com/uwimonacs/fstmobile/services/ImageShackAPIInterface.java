@@ -15,11 +15,13 @@ import retrofit2.http.Path;
 
 public interface ImageShackAPIInterface {
 
+    static final int limit = 150;
+
 
     @GET("albums/{id}")
     Call<ImageShackAlbum> getAlbum(@Path("id") String id);
 
-    @GET("user/{user}/albums")
+    @GET("user/{user}/albums?limit="+limit)
     Call<ImagesShackAlbumList> getUserAlbums(@Path("user") String user);
 }
 

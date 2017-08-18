@@ -14,8 +14,11 @@ buildscript {
 
         //butterknife
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.6.0'
-        //Google REST API Client Libraries
-        classpath 'com.google.api-client:google-api-client:1.22.0'
+
+        //toolbar dependencies
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
 
     }

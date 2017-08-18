@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.oshi.libsearchtoolbar.SearchAnimationToolbar;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.mapActivity_MVP.MapActivity;
 import com.uwimonacs.fstmobile.adapters.PlacesCategoriesAdapter;
@@ -47,7 +48,7 @@ import java.util.List;
  * Created by sylva on 8/8/2017.
  */
 
-public class PlacesCategoryActivity extends AppCompatActivity {
+public class PlacesCategoryActivity extends AppCompatActivity implements SearchAnimationToolbar.OnSearchQueryChangedListener {
 
 
 
@@ -55,8 +56,8 @@ public class PlacesCategoryActivity extends AppCompatActivity {
     private List<Place> places = new ArrayList<>();
     private PlacesCategoriesAdapter placesCategoriesAdapter;
     private RecyclerView categories;
-    private RecyclerView searchResultsView;
-    private Toolbar toolbar;
+    private RecyclerView   searchResultsView;
+    private SearchAnimationToolbar toolbar;
     private View resultsView;
     private SearchResultsAdapter searchResultsAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -93,6 +94,7 @@ public class PlacesCategoryActivity extends AppCompatActivity {
         searchResultsView.setAdapter(searchResultsAdapter);
 
 
+
         setUpToolBar();
 
 //        setUpProgressBar();
@@ -104,7 +106,7 @@ public class PlacesCategoryActivity extends AppCompatActivity {
     }
 
     private void setUpToolBar() {
-        setSupportActionBar(toolbar);
+        toolbar.setSupportActionBar(PlacesCategoryActivity.this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
 
@@ -124,9 +126,7 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.search,menu);
-
-        setUpSearchView(menu);
+        getMenuInflater().inflate(R.menu.menu_places,menu);
         return true;
     }
 
@@ -137,100 +137,13 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //        img_placeholder = (ImageView) view.findViewById(R.id.img_placeholder);
 //        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (SearchAnimationToolbar) findViewById(R.id.toolbar);
+        toolbar.setOnSearchQueryChangedListener(PlacesCategoryActivity.this);
+        toolbar.setSearchHint("Search Places...");
+        toolbar.setSearchHintColor(R.color.blue);
+        toolbar.setSearchTextColor(R.color.DarkBlue);
         categories = (RecyclerView) findViewById(R.id.activity_places_recyclerview);
         searchResultsView = (RecyclerView)  findViewById(R.id.activity_places_search_results_recyclerview);
-    }
-
-    private void setUpSearchView(Menu menu)
-    {
-        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search_view).getActionView();
-        searchView.setQueryHint("Search Places");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //Do nothing
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                /*
-                * Move the original RecyclerView with the categories into the layout
-                * if the search bar is empty
-                * */
-                if (TextUtils.isEmpty(newText)) {
-                    searchResultsView.setVisibility(View.GONE);
-                    categories.setVisibility(View.VISIBLE);
-                }
-                /*
-                * Search all the places for names that contain the text that has been typed.
-                * Build a list of those names.
-                * Pass it to an adapter and move that RecyclerView into the layout.
-                * */
-                else {
-                    newText = newText.toLowerCase();
-                    final ArrayList<Place> searchResults = new ArrayList<>();
-                    for (int i = 0; i < places.size(); i++) {
-                        final String shortname = places.get(i).getId().toLowerCase();
-                        final String fullname = places.get(i).getName().toLowerCase();
-                        if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
-                            searchResults.add(places.get(i));
-                    }
-                    searchResultsAdapter.updateSearchResults(searchResults);
-                    searchResultsView.setVisibility(View.VISIBLE);
-                    categories.setVisibility(View.GONE);
-
-                }
-                return true;
-            }
-        });
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void circleReveal(int viewID, int posFromRight, boolean containsOverflow, final boolean isShow)
-    {
-        final View myView = findViewById(viewID);
-
-        int width=myView.getWidth();
-
-        if(posFromRight>0)
-            width-=(posFromRight*getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material))-(getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_material)/ 2);
-        if(containsOverflow)
-            width-=getResources().getDimensionPixelSize(R.dimen.abc_action_button_min_width_overflow_material);
-
-        int cx=width;
-        int cy=myView.getHeight()/2;
-
-        Animator anim;
-        if(isShow)
-            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0,(float)width);
-        else
-            anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, (float)width, 0);
-
-        anim.setDuration((long)220);
-
-        // make the view invisible when the animation is done
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if(!isShow)
-                {
-                    super.onAnimationEnd(animation);
-                    myView.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        // make the view visible and start the animation
-        if(isShow)
-            myView.setVisibility(View.VISIBLE);
-
-        // start the animation
-        anim.start();
-
-
     }
 
 
@@ -247,16 +160,14 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 //    }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_search_view:
-                circleReveal(R.id.menu_search_view,1,true,true);
+                toolbar.onSearchIconClick();
                 break;
             case android.R.id.home:
                 onBackPressed();
-                circleReveal(R.id.menu_search_view,1,true,false);
                 return true;
             default:
                 return true;
@@ -279,6 +190,53 @@ public class PlacesCategoryActivity extends AppCompatActivity {
         }
 
         return  hasInternet;
+    }
+
+    @Override
+    public void onSearchCollapsed() {
+
+    }
+
+    @Override
+    public void onSearchQueryChanged(String newText) {
+
+        /*
+        * Move the original RecyclerView with the categories into the layout
+        * if the search bar is empty
+        * */
+        if (TextUtils.isEmpty(newText)) {
+            searchResultsView.setVisibility(View.GONE);
+            categories.setVisibility(View.VISIBLE);
+        }
+        /*
+        * Search all the places for names that contain the text that has been typed.
+        * Build a list of those names.
+        * Pass it to an adapter and move that RecyclerView into the layout.
+        * */
+        else {
+            newText = newText.toLowerCase();
+            final ArrayList<Place> searchResults = new ArrayList<>();
+            for (int i = 0; i < places.size(); i++) {
+                final String shortname = places.get(i).getId().toLowerCase();
+                final String fullname = places.get(i).getName().toLowerCase();
+                if ((shortname.contains(newText) || fullname.contains(newText)) && !fullname.contains("building"))
+                    searchResults.add(places.get(i));
+            }
+            searchResultsAdapter.updateSearchResults(searchResults);
+            searchResultsView.setVisibility(View.VISIBLE);
+            categories.setVisibility(View.GONE);
+
+        }
+    }
+
+    @Override
+    public void onSearchExpanded() {
+
+    }
+
+    @Override
+    public void onSearchSubmitted(String query) {
+
     }
 
     private class LoadPlacesTask extends AsyncTask<Void,Void,Boolean> {
@@ -333,11 +291,17 @@ public class PlacesCategoryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.top_in, R.anim.bottom_out);
-        finish();
+
+        boolean handledByToolbar = toolbar.onBackPressed();
+
+        if (!handledByToolbar) {
+            super.onBackPressed();
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.top_in, R.anim.bottom_out);
+            finish();
+        }
+
     }
 }
 

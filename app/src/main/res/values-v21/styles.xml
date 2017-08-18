@@ -35,6 +35,14 @@
         <item name="android:statusBarColor">#1976D2</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.PlacesCategoryActivity" >
+        <item name="android:statusBarColor">#2196F3</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.MapSplashScreen">
+        <item name="android:statusBarColor">#77bbf1</item>
+    </style>
+
     <style name="AppTheme.NoActionBar.ScholarshipActivity">
         <item name="android:statusBarColor">#E64A19</item>
     </style>

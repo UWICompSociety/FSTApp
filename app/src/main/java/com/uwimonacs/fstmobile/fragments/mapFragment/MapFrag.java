@@ -30,8 +30,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,17 +49,18 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.api.client.googleapis.util.Utils;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 import com.uwimonacs.fstmobile.models.ImagesShackAlbumList;
 import com.uwimonacs.fstmobile.models.locations.Place;
 import com.uwimonacs.fstmobile.models.locations.Vertex;
-import com.uwimonacs.fstmobile.services.GoogleDriveAPI;
 import com.uwimonacs.fstmobile.services.ImageShackAPIInterface;
 import com.uwimonacs.fstmobile.services.ImageShackApiClient;
 import com.uwimonacs.fstmobile.services.MapMarker;
 import com.uwimonacs.fstmobile.services.MapPolylines;
+import com.uwimonacs.fstmobile.util.ConnectUtils;
 import com.uwimonacs.fstmobile.util.MySettings;
 import com.uwimonacs.fstmobile.util.Path;
 
@@ -103,7 +106,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     private static MapPolylines mapPolylines;
     public static BottomSheetBehavior sheetBehavior;
     private int mapTheme;
-    private GoogleDriveAPI driveServices;
 
 
     //Map Objects
@@ -200,7 +202,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         //Map Objects Initialisations
 //        path = Path.getInstance(dbHelper); //Initialises path object which creates graph
         mGoogleMap = googleMap;
-        driveServices = new GoogleDriveAPI(instance);
         mapPolylines = MapPolylines.getInstance(mGoogleMap);
         mapMarkers = MapMarker.getInstance(mGoogleMap);
         mUiSettings = mGoogleMap.getUiSettings();
@@ -630,20 +631,26 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         mapMarkers.destroy();
     }
 
+    /***
+     *
+     * @param title the title of the album that we are looking for;
+     * @return
+     */
     private ImagesShackAlbumList.ResultType.AlbumsType getAlbum(String title){
-        List<ImagesShackAlbumList.ResultType.AlbumsType> albums = imagesShackAlbumList.getResult().getAlbums();
+        try {
+            List<ImagesShackAlbumList.ResultType.AlbumsType> albums = imagesShackAlbumList.getResult().getAlbums();
 
 
-        for (ImagesShackAlbumList.ResultType.AlbumsType album:albums
-             ) {
-
-            String tit = album.getTitle().toUpperCase().replaceAll("\\s","");
-            String place = title.toUpperCase().replaceAll("\\s","");
-            if(album.getTitle().toUpperCase().replaceAll("\\s","").equals(title.toUpperCase().replaceAll("\\s",""))){
-                return album;
+            for (ImagesShackAlbumList.ResultType.AlbumsType album:albums)
+            {
+                if(album.getTitle().toUpperCase().replaceAll("\\s","").equals(title.toUpperCase().replaceAll("\\s",""))){
+                    return album;
+                }
             }
+            return null;
+        }catch (NullPointerException e){
+            return null;
         }
-        return null;
     }
 
     private void getAlbums(){
@@ -672,11 +679,16 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
      */
     private void loadBottomSheet(Marker marker) {
         final Marker myMarker = marker;
+        final LinearLayout no_image_layout = ButterKnife.findById(getActivity(),R.id.bottom_sheet_notpresent_layout);
         Button image_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_find_route);
+        final TextView notpresent_text = ButterKnife.findById(getActivity(),R.id.txt_notpresent);
+        final ProgressBar progressBar = ButterKnife.findById(getActivity(), R.id.bottom_sheet_progressbar);
+        final ImageButton refresh_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_refresh_button);
         TextView place_title = ButterKnife.findById(getActivity(),R.id.bottom_sheet_title);
         TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
+
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
-//        driveServices.getFileIDs();
+
 
 
 
@@ -725,6 +737,52 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
                     togglePathBtn();
                 };
+            }
+        });
+
+
+        /**
+         * Refresh the images by
+         */
+        refresh_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeToast("Refreshing");
+
+                refresh_button.setVisibility(View.GONE);
+                notpresent_text.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                try {
+                    Boolean hasNet = ConnectUtils.haveInternetConnectivity();
+                    if(hasNet){
+                        getAlbums();
+                        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
+                        /**
+                         *  Check if the any album was return if not hide gallery items
+                         */
+                        if(album!=null){
+                            albumAdapter = new ImageShackAlbumAdapter(instance,album);
+                            recyclerView.setAdapter(albumAdapter);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            no_image_layout.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                        }else {
+                            recyclerView.setVisibility(View.GONE);
+                            no_image_layout.setVisibility(View.VISIBLE);
+                            refresh_button.setVisibility(View.VISIBLE);
+                            notpresent_text.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }else {
+                        recyclerView.setVisibility(View.GONE);
+                        no_image_layout.setVisibility(View.VISIBLE);
+                        refresh_button.setVisibility(View.VISIBLE);
+                        notpresent_text.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -750,17 +808,24 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         });
 
 
+
         ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
+        /**
+         *  Check if the any album was return if not hide gallery items
+         */
         if(album!=null){
-            recyclerView.setVisibility(View.VISIBLE);
             albumAdapter = new ImageShackAlbumAdapter(instance,album);
             recyclerView.setAdapter(albumAdapter);
+            recyclerView.setVisibility(View.VISIBLE);
+            no_image_layout.setVisibility(View.GONE);
         }else {
             recyclerView.removeAllViews();
             recyclerView.setVisibility(View.GONE);
         }
 
     }
+
+
 
     public void setTheme(int style){
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);

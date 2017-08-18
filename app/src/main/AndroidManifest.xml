@@ -63,9 +63,12 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.MapSplashscreen"
+            android:theme="@style/AppTheme.NoActionBar.MapSplashScreen"/>
         <activity
             android:name=".activities.PlacesCategoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.PlacesCategoryActivity"/>
         <activity
             android:name=".activities.PlacesGallerySliderActivity"
             android:theme="@style/AppTheme.NoActionBar.SASLogin"
