@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.PlacesCategoryActivity;
+import com.uwimonacs.fstmobile.activities.SettingsActivity;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFragMvPView;
 
@@ -131,8 +132,6 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the menu; this adds items to the action bar if it is present.
        getMenuInflater().inflate(R.menu.map_menu, menu);
-//       getMenuInflater().inflate(R.menu.map_menu, menu);
-//       getMenuInflater().inflate(R.menu.theme_pop_menu,menu);
       return true;
     }
 
@@ -182,21 +181,29 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.nav_theme) {
-            Log.d("theme", "onNavigationItemSelected: ");
-            createThemeSelectionDialog();
-        } else if (id == R.id.nav_settings) {
+        switch(item.getItemId()){
+            case R.id.nav_theme:
+                Log.d("theme", "onNavigationItemSelected: ");
+                createThemeSelectionDialog();
+            break;
+            case  R.id.nav_paths:
+                createLevelSelectionDialog();
+            break;
+            case R.id.nav_landmark:
+                landmark_switch.setChecked(!(landmark_switch.isChecked()));
+                break;
+            case R.id.nav_places:
+                startPlacesActivity();
+                break;
+            case R.id.nav_sat_view:
+                satellite_switch.setChecked(!(satellite_switch.isChecked()));
+                break;
+            case R.id.nav_settings:
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                break;
+            default:
+        }
 
-        } else if (id == R.id.nav_paths) {
-            createLevelSelectionDialog();
-        } else if (id == R.id.nav_landmark) {
-            landmark_switch.setChecked(!(landmark_switch.isChecked()));
-        } else if(id == R.id.nav_places){
-            startPlacesActivity();
-        }
-        else if (id == R.id.nav_sat_view){
-            satellite_switch.setChecked(!(satellite_switch.isChecked()));
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -5,7 +5,7 @@
     <group android:checkableBehavior="single">
         <!--<item-->
             <!--android:id="@+id/nav_camera"-->
-            <!--android:icon="@drawable/ic_menu_camera"-->
+            <!--android:icon="@drawable/ic_menu_came    ra"-->
             <!--android:title="Add LandMark" />-->
         <item
             android:id="@+id/nav_theme"
