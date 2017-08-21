@@ -111,9 +111,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     //Map Objects
     public static GoogleMap mGoogleMap;
     public static Path path;
+    private Marker selectedMarker;
 
 
     private static Activity instance;
+
     /**
      * Method used to get the application context
      * @return
@@ -390,6 +392,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         }
     }
 
+    @OnClick(R.id.bottom_sheet_refresh_button)
+    public void bottomSheetRefresh(){
+        loadBottomSheet(selectedMarker);
+    }
+
     /**
      * method used to hide the find path button and show the
      * the arrival query buttons
@@ -429,7 +436,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        Log.d("Marker Snippet", marker.getSnippet() );
+        Log.d("Marker Snippet", marker.getSnippet());
+        selectedMarker = marker;
 
         switch (marker.getSnippet()){
             case "stairs":
@@ -686,7 +694,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         final ImageButton refresh_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_refresh_button);
         TextView place_title = ButterKnife.findById(getActivity(),R.id.bottom_sheet_title);
         TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
-
         View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
 
 
@@ -722,7 +729,12 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
         final Place place = (Place) marker.getTag();
+        place_title.setText(place.getName());
+        place_info1.setText(presenter.getPlaceInfo(place.getId()));
 
+        /**
+         *  Onclick Listener for BottomSheet route button
+         */
         image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -732,9 +744,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 //                isSourceSet = true;
                 sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 presenter.setSource(ll, place.getLevel() );
-
                 if(presenter.getPath()){
-
                     togglePathBtn();
                 };
             }
@@ -742,61 +752,8 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
 
         /**
-         * Refresh the images by
+         * Creates info dialog for the current place
          */
-        refresh_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makeToast("Refreshing");
-
-                refresh_button.setVisibility(View.GONE);
-                notpresent_text.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                try {
-                    Boolean hasNet = ConnectUtils.haveInternetConnectivity();
-                    if(hasNet){
-                        getAlbums();
-                        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
-                        /**
-                         *  Check if the any album was return if not hide gallery items
-                         */
-                        if(album!=null){
-                            albumAdapter = new ImageShackAlbumAdapter(instance,album);
-                            recyclerView.setAdapter(albumAdapter);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            no_image_layout.setVisibility(View.GONE);
-                            progressBar.setVisibility(View.GONE);
-                        }else {
-                            recyclerView.setVisibility(View.GONE);
-                            no_image_layout.setVisibility(View.VISIBLE);
-                            refresh_button.setVisibility(View.VISIBLE);
-                            notpresent_text.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }else {
-                        recyclerView.setVisibility(View.GONE);
-                        no_image_layout.setVisibility(View.VISIBLE);
-                        refresh_button.setVisibility(View.VISIBLE);
-                        notpresent_text.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
-
-
-
-//        Log.d("Marker Object", " Room Instance: ");
-        //TODO ADD BUILDING TO SECOND INFO VIEW
-        place_title.setText(place.getName());
-//        place_info1.setText(place.getInfo().toString());
-        String info = presenter.getPlaceInfo(place.getId());
-        place_info1.setText(info);
-        //TODO Start activity that shows the room info;
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -808,21 +765,100 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         });
 
 
-
-        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
         /**
-         *  Check if the any album was return if not hide gallery items
+         * Refresh the images by
          */
-        if(album!=null){
-            albumAdapter = new ImageShackAlbumAdapter(instance,album);
-            recyclerView.setAdapter(albumAdapter);
-            recyclerView.setVisibility(View.VISIBLE);
-            no_image_layout.setVisibility(View.GONE);
-        }else {
-            recyclerView.removeAllViews();
-            recyclerView.setVisibility(View.GONE);
+//        refresh_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                makeToast("Refreshing");
+//
+//                refresh_button.setVisibility(View.GONE);
+//                notpresent_text.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.VISIBLE);
+//                try {
+//                    Boolean hasNet = ConnectUtils.haveInternetConnectivity();
+//                    if(hasNet){
+//                        getAlbums();
+//                        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
+//                        /**
+//                         *  Check if the any album was return if not hide gallery items
+//                         */
+//                        if(album!=null){
+//                            albumAdapter = new ImageShackAlbumAdapter(instance,album);
+//                            recyclerView.setAdapter(albumAdapter);
+//                            recyclerView.setVisibility(View.VISIBLE);
+//                            no_image_layout.setVisibility(View.GONE);
+//                            progressBar.setVisibility(View.GONE);
+//                        }else {
+//                            recyclerView.setVisibility(View.GONE);
+//                            no_image_layout.setVisibility(View.VISIBLE);
+//                            refresh_button.setVisibility(View.VISIBLE);
+//                            notpresent_text.setVisibility(View.VISIBLE);
+//                            progressBar.setVisibility(View.GONE);
+//                        }
+//                    }else {
+//                        recyclerView.setVisibility(View.GONE);
+//                        no_image_layout.setVisibility(View.VISIBLE);
+//                        refresh_button.setVisibility(View.VISIBLE);
+//                        notpresent_text.setVisibility(View.VISIBLE);
+//                        progressBar.setVisibility(View.GONE);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+
+        //check to see if album was loaded
+        if(imagesShackAlbumList == null){
+            getAlbums();
         }
 
+
+        Thread loadImagesThread = new Thread() {
+            public void run() {
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+                    sleep(1500);
+                } catch (InterruptedException e) {
+                } finally {
+                    progressBar.setVisibility(View.GONE);
+                    final ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
+                    /**
+                     *  Check if the any album was return if not hide gallery items
+                     */
+                    if(album!=null){
+                        /**
+                         * if alblum found hide 'notpressent layout"
+                         * and set the image adapter
+                         */
+                        instance.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                albumAdapter = new ImageShackAlbumAdapter(instance,album);
+                                recyclerView.setAdapter(albumAdapter);
+                                recyclerView.setVisibility(View.VISIBLE);
+
+                                no_image_layout.setVisibility(View.GONE);
+                                refresh_button.setVisibility(View.GONE);
+                            }
+                        });
+
+
+                    }else {
+                        recyclerView.setVisibility(View.GONE);
+
+                        no_image_layout.setVisibility(View.VISIBLE);
+                        refresh_button.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        };
+
+        loadImagesThread.start();
     }
 
 
