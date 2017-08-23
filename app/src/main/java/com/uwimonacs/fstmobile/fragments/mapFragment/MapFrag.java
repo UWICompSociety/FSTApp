@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
@@ -764,6 +765,10 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
         });
 
+        //check to see if albums were loaded
+        if(imagesShackAlbumList == null){
+            getAlbums();
+        }
 
         /**
          * Refresh the images by
@@ -810,20 +815,14 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 //            }
 //        });
 
-
-        //check to see if album was loaded
-        if(imagesShackAlbumList == null){
-            getAlbums();
-        }
+        //Intitally shows progress bar for couple seconds
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
 
 
-        Thread loadImagesThread = new Thread() {
+        Handler handler = new Handler();
+        Runnable loadImagesThread = new Runnable() {
             public void run() {
-                try {
-                    progressBar.setVisibility(View.VISIBLE);
-                    sleep(1500);
-                } catch (InterruptedException e) {
-                } finally {
                     progressBar.setVisibility(View.GONE);
                     final ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(place.getId());
                     /**
@@ -855,10 +854,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
                         refresh_button.setVisibility(View.VISIBLE);
                     }
                 }
-            }
         };
 
-        loadImagesThread.start();
+        handler.postAtTime(loadImagesThread,1500);
     }
 
 
@@ -904,6 +902,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     /**
      * Customized info window
+     * Displays a image for the current selected marker
      * @param marker
      * @return
      */

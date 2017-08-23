@@ -126,6 +126,11 @@
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
+                    <ProgressBar
+                        android:id="@+id/bottom_sheet_progressbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/bottom_sheet_notpresent_layout"
@@ -137,11 +142,7 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                        <ProgressBar
-                            android:id="@+id/bottom_sheet_progressbar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone" />
+
 
                         <ImageView
                             android:id="@+id/bottom_sheet_refresh"
