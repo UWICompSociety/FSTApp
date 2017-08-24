@@ -51,8 +51,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.api.client.googleapis.util.Utils;
+import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.R2;
 import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
+
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;
 import com.uwimonacs.fstmobile.models.ImagesShackAlbumList;
 import com.uwimonacs.fstmobile.models.locations.Place;
@@ -79,8 +82,56 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener
+public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnCameraMoveListener, GoogleMap.OnMapClickListener,View.OnClickListener
 {
+
+
+    /************************************************************
+     *                            VIEWS
+     ************************************************************/
+
+    //Views
+    AutoCompleteTextView sourceEditTextView;
+    AutoCompleteTextView destinationEditTextView;
+    NestedScrollView nestedView;
+    View searchView;
+
+    FloatingActionButton findPathBtn;
+    FloatingActionButton arrivalFab;
+    FloatingActionButton cancelArrivalFab;
+    LinearLayout pathBtnLayout;
+
+
+    private void initViews(){
+        sourceEditTextView = (AutoCompleteTextView) getView().findViewById(R.id.getSource);
+        destinationEditTextView = (AutoCompleteTextView) getView().findViewById(R.id.classSearch);
+        nestedView= (NestedScrollView) getView().findViewById(R.id.bottom_sheet_layout);
+        searchView = getView().findViewById(R.id.search_view_layout) ;
+
+        findPathBtn = (FloatingActionButton) getView().findViewById(R.id.fbPath);
+                    findPathBtn.setOnClickListener(this);
+        arrivalFab = (FloatingActionButton) getView().findViewById(R.id.arrival_check_fab);
+                    arrivalFab.setOnClickListener(this);
+        cancelArrivalFab = (FloatingActionButton) getView().findViewById(R.id.arrival_cancel_fab);
+                    cancelArrivalFab.setOnClickListener(this);
+        pathBtnLayout = (LinearLayout) getView().findViewById(R.id.path_buttons_layout);
+
+
+        ImageButton bottomsheetRefressButton = (ImageButton) getView().findViewById(R.id.bottom_sheet_refresh_button);
+                bottomsheetRefressButton.setOnClickListener(this);
+
+
+        ToggleButton gpsToggleButton = (ToggleButton) getView().findViewById(R.id.locationToggle)    ;
+                gpsToggleButton.setOnClickListener(this);
+        ImageButton findRoomButton = (ImageButton) getView().findViewById(R.id.findBtn);
+                findRoomButton.setOnClickListener(this);
+
+
+
+
+    }
+
+
 
     private static final String TAG = "com.android.comp3901";
     final LatLng sci_tech = new LatLng(18.005072, -76.749544);
@@ -128,21 +179,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     public MapFrag() {}
 
-    /************************************************************
-     *                            VIEWS
-     ************************************************************/
-
-    //Views
-    @BindView(R.id.getSource)AutoCompleteTextView sourceEditTextView;
-    @BindView(R.id.classSearch) AutoCompleteTextView destinationEditTextView;
-    @BindView(R.id.bottom_sheet_layout)          NestedScrollView nestedView;
-    @BindView(R.id.search_view_layout) View searchView;
-
-    @BindView(R.id.fbPath)FloatingActionButton findPathBtn;
-    @BindView(R.id.arrival_check_fab)FloatingActionButton arrivalFab;
-    @BindView(R.id.arrival_cancel_fab)FloatingActionButton cancelArrivalFab;
-    @BindView(R.id.path_buttons_layout)LinearLayout pathBtnLayout;
-
 
     private Unbinder unbinder = Unbinder.EMPTY;
 
@@ -153,8 +189,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         ButterKnife.bind(MapFrag.this,view);
         instance = this.getActivity();
 
-
-
         return view;
     }
     @Override
@@ -163,16 +197,14 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         if (MySettings.googleServicesCheck(this.getActivity())) {
             initMap();
         }
-
+        initViews();
         fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.fab_close);
         fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
-
         //intialising recycler view
         recyclerView = (RecyclerView) getView().findViewById(R.id.bottomsheet_recyclerview);
         layoutManager = new LinearLayoutManager(instance,LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(false);
-
         //callback to activity
     }
 
@@ -331,7 +363,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     }
 
 
-    @OnClick(R.id.locationToggle)
+//    @OnClick(R.id.locationToggle)
     public void toggleClick(View v){
 
         boolean curState= ((ToggleButton)v).isChecked();
@@ -351,7 +383,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
     }
 
-    @OnClick(R.id.findBtn)
+//    @OnClick(R2.id.findBtn)
     public void findRoom(){
         searchRoom();
     }
@@ -372,20 +404,20 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         return false;
     }
 
-    @OnClick(R.id.arrival_cancel_fab)
+//    @OnClick(R2.id.arrival_cancel_fab)
     public void  cancelPathFinding(){
         presenter.cancelPathFinding();
         togglePathBtn();
     }
 
-    @OnClick(R.id.arrival_check_fab)
+//    @OnClick(R2.id.arrival_check_fab)
     public void arrival(){
         presenter.destinationArrived();
         togglePathBtn();
     }
 
 
-    @OnClick(R.id.fbPath)
+//    @OnClick(R2.id.fbPath)
     public void fabOnClick(){
         boolean path = presenter.getPath();
         if(path){
@@ -393,7 +425,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         }
     }
 
-    @OnClick(R.id.bottom_sheet_refresh_button)
+//    @OnClick(R.id.bottom_sheet_refresh_button)
     public void bottomSheetRefresh(){
         loadBottomSheet(selectedMarker);
     }
@@ -856,7 +888,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
                 }
         };
 
-        handler.postAtTime(loadImagesThread,1500);
+        handler.postAtTime(loadImagesThread,20000);
     }
 
 
@@ -916,13 +948,41 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         TextView infoTitle = (TextView) v.findViewById(R.id.info_window_title);
         infoTitle.setText(((Place)marker.getTag()).getName());
         ImageView infoImage = (ImageView) v.findViewById(R.id.info_window_image_view);
+        ImagesShackAlbumList.ResultType.AlbumsType album = getAlbum(location.getId());
 
         String filepath = Environment.getExternalStorageDirectory()+ File.separator+ location.getId();
         File f = new File(getActivity().getApplicationContext().getFilesDir(), location.getId());
         int img = getActivity().getResources().getIdentifier(location.getId().toLowerCase(),"mipmap",getActivity().getPackageName() );
-        if(f.exists()){
+
+
+        if(album!=null ){
+            String Url = "https://"+(album.getImages().get(0).getDirect_link());
+            String Url2 = "http://www.for-example.org/img/main/forexamplelogo.png";
+            Picasso.with(instance)
+                    .setLoggingEnabled(true);
+            Picasso.with(instance)
+                    .load(Url2)
+                    .placeholder(R.mipmap.ic_launcher)
+//                    .fit()
+                    .error(R.drawable.ic_no_image_found)
+                    .resize(178,210)
+//                    .centerCrop()
+                    .into(infoImage, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("onSuccess: ", "sucsess" );
+                        }
+
+                        @Override
+                        public void onError() {
+                            Log.d("onError: ", "error ");
+                        }
+                    });
+        }
+        else if(f.exists()){
             presenter.setPic(infoImage,filepath);
-        }else if(img >0){
+        }
+        else if(img >0){
             infoImage.setImageResource(img);
         }
         else{
@@ -964,6 +1024,35 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
 
         Place dynamicLocation = new Place(shortname,fullname,latLng.latitude,latLng.longitude, Vertex.PLACE, Vertex.UNKNOWN, 0.0, 0, 0, "NA");
         presenter.setVertex(dynamicLocation, 3);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+        //Fragment Onclick Listeners
+        switch (v.getId()){
+            case R.id.locationToggle:
+                toggleClick(getView().findViewById( R.id.locationToggle));
+                break;
+            case R.id.arrival_cancel_fab:
+                cancelPathFinding();
+                break;
+            case R.id.arrival_check_fab:
+                arrival();
+                break;
+            case R.id.fbPath:
+                fabOnClick();
+                break;
+            case R.id.findBtn:
+                findRoom();
+                break;
+            case R.id.bottom_sheet_refresh_button:
+                loadBottomSheet(selectedMarker);
+                break;
+            default:
+                break;
+        }
     }
 
 

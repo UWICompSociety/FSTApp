@@ -174,24 +174,22 @@ public class MapMarker {
         }
     }
 
-
-
     //TODO No longer need this method
-    public void addPointOfInterestMarker(Vertex knownPoint){
-
-        MarkerOptions known_place_options;
-        known_place_options = new MarkerOptions()
-                .position(knownPoint.getLL())
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.chat_bubble))
-                .snippet("POI")
-                .title(knownPoint.getName());
-        marker.setTag(knownPoint);
-        marker = mGoogleMap.addMarker(known_place_options);
-
-        knownMarkers.add(marker);
-
-
-    }
+//    public void addPointOfInterestMarker(Vertex knownPoint){
+//
+//        MarkerOptions known_place_options;
+//        known_place_options = new MarkerOptions()
+//                .position(knownPoint.getLL())
+//                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.chat_bubble))
+//                .snippet("POI")
+//                .title(knownPoint.getName());
+//        marker.setTag(knownPoint);
+//        marker = mGoogleMap.addMarker(known_place_options);
+//
+//        knownMarkers.add(marker);
+//
+//
+//    }
 
 
 

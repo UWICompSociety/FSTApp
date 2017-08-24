@@ -9,7 +9,7 @@ import com.uwimonacs.fstmobile.R;
 import com.uwimonacs.fstmobile.activities.mapActivity_MVP.MapActivity;
 
 /**
- * Created by sylva on 8/18/2017.
+ * Created by Akinyele on 8/18/2017.
  */
 
 public class MapSplashscreen extends AppCompatActivity {
@@ -24,10 +24,7 @@ public class MapSplashscreen extends AppCompatActivity {
         Thread thread = new Thread(){
             public void run(){
                 try{
-
-                    sleep(2000);
-
-
+                     sleep(2000);
                 }catch(InterruptedException e){}
                 finally {
                     startActivity(mapIntent);

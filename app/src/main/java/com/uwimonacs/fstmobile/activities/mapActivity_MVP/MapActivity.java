@@ -30,8 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.maps.model.LatLng;
 import com.uwimonacs.fstmobile.R;
+import com.uwimonacs.fstmobile.R2;
 import com.uwimonacs.fstmobile.activities.PlacesCategoryActivity;
 import com.uwimonacs.fstmobile.activities.SettingsActivity;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
@@ -61,12 +61,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
 
 
     //views
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
-    @BindView(R.id.toolbar)
+
     Toolbar toolbar;
+    DrawerLayout drawer;
+    NavigationView navigationView;
 
     //inner views
     private SwitchCompat landmark_switch;
@@ -78,6 +76,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_map);
         ButterKnife.bind(this);
+
+        initViews();
+
+
         setSupportActionBar(toolbar);
 
         //getting intent data
@@ -114,9 +116,15 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
 
    }
 
+    private void initViews() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawer = (DrawerLayout) findViewById(R.id.map_drawer_layout) ;
+        navigationView = (NavigationView) findViewById(R.id.nav_view) ;
+    }
+
     @Override
     public void onBackPressed() {
-        drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer= (DrawerLayout) findViewById(R.id.map_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if(mapFrag.sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN ){

@@ -450,6 +450,7 @@
     <string name="destination_editText_hint">What room would you like to find?</string>
     <string name="starting_point_editText_hint">Starting point.</string>
     <string name="find_button_texxt">Find</string>
+    <string name="map_radioButton">RadioButton</string>
 
 
 </resources>
