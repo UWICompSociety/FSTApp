@@ -53,7 +53,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.api.client.googleapis.util.Utils;
 import com.squareup.picasso.Picasso;
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.R2;
 import com.uwimonacs.fstmobile.adapters.ImageShackAlbumAdapter;
 
 import com.uwimonacs.fstmobile.models.ImageShackAlbum;

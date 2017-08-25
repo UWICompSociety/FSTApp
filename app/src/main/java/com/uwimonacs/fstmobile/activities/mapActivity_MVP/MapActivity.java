@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 
 import com.uwimonacs.fstmobile.R;
-import com.uwimonacs.fstmobile.R2;
 import com.uwimonacs.fstmobile.activities.PlacesCategoryActivity;
 import com.uwimonacs.fstmobile.activities.SettingsActivity;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
