@@ -151,7 +151,7 @@ public class SASLoginActivity extends AccountAuthenticatorActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         //enable wifi
-                        final WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                        final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                         wifiManager.setWifiEnabled(true);
                         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
                     }

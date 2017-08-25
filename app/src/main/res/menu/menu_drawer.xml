@@ -35,11 +35,13 @@
             android:id="@+id/alerts"
             android:icon="@drawable/ic_action_warning"
             android:title="@string/alerts"
+            android:visible="false"
             android:titleCondensed="@string/alerts"/>
         <item
             android:id="@+id/bus"
             android:icon="@drawable/ic_directions_bus_black_24dp"
             android:title="@string/bus"
+            android:visible="false"
             android:titleCondensed="@string/bus"/>
         <item
             android:id="@+id/settings"
