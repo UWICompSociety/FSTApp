@@ -37,9 +37,6 @@ import com.uwimonacs.fstmobile.activities.SettingsActivity;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFrag;
 import com.uwimonacs.fstmobile.fragments.mapFragment.MapFragMvPView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MapActivity extends AppCompatActivity implements MapActivityMvpView, MapFrag.OnCompleteListener,RadioGroup.OnCheckedChangeListener, NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener ,CompoundButton.OnCheckedChangeListener{
 
     private static final String TAG = "com.android.comp3901";
@@ -75,7 +72,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_map);
-        ButterKnife.bind(this);
+
 
         initViews();
 
@@ -105,13 +102,13 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
         menuItem = menu.findItem(R.id.nav_landmark);
         View action_view = MenuItemCompat.getActionView(menuItem);
 
-        landmark_switch = ButterKnife.findById(action_view,R.id.drawer_landmark_switch);
+        landmark_switch = (SwitchCompat) action_view.findViewById(R.id.drawer_landmark_switch);
         landmark_switch.setOnCheckedChangeListener(this);
 
         menuItem = menu.findItem(R.id.nav_sat_view);
         View sat_view = MenuItemCompat.getActionView(menuItem);
 
-        satellite_switch = ButterKnife.findById(sat_view, R.id.drawer_satellite_switch);
+        satellite_switch = (SwitchCompat) sat_view.findViewById( R.id.drawer_satellite_switch);
         satellite_switch.setOnCheckedChangeListener(this);
 
    }
@@ -286,10 +283,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
             floor_dialog.show();
         }
 
-        Switch GroundFloor = ButterKnife.findById(view, R.id.ground_switch);
-        Switch FirstFloor = ButterKnife.findById(view, R.id.first_floor_switch);
-        Switch SecondFloor = ButterKnife.findById(view, R.id.second_floor_switch);
-        Switch ThirdFloor = ButterKnife.findById(view, R.id.third_floor_switch);
+        Switch GroundFloor =(Switch) view.findViewById( R.id.ground_switch);
+        Switch FirstFloor =(Switch) view.findViewById( R.id.first_floor_switch);
+        Switch SecondFloor =(Switch) view.findViewById( R.id.second_floor_switch);
+        Switch ThirdFloor =(Switch) view.findViewById( R.id.third_floor_switch);
 
         //Initialising Check Widgets
         GroundFloor.setChecked(presenter.groundFloorState());
@@ -317,11 +314,11 @@ public class MapActivity extends AppCompatActivity implements MapActivityMvpView
             theme_selection_dialog.show();
         }
 
-        RadioGroup themeRadioGroup = ButterKnife.findById(view, R.id.themeRadioGroup);
-        RadioButton mapBoxTheme = ButterKnife.findById(view, R.id.MapBox);
-        RadioButton icyBlue = ButterKnife.findById(view, R.id.icyBlue);
-        RadioButton cobalt = ButterKnife.findById(view, R.id.colbalt);
-        RadioButton rainForest = ButterKnife.findById(view, R.id.rainForest);
+        RadioGroup themeRadioGroup =(RadioGroup) view.findViewById( R.id.themeRadioGroup);
+        RadioButton mapBoxTheme =(RadioButton) view.findViewById( R.id.MapBox);
+        RadioButton icyBlue = (RadioButton) view.findViewById( R.id.icyBlue);
+        RadioButton cobalt = (RadioButton) view.findViewById( R.id.colbalt);
+        RadioButton rainForest = (RadioButton) view.findViewById( R.id.rainForest);
 
         themeRadioGroup.setOnCheckedChangeListener(this);
         switch (presenter.getTheme())

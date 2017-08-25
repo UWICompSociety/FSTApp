@@ -74,10 +74,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -180,13 +176,11 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     public MapFrag() {}
 
 
-    private Unbinder unbinder = Unbinder.EMPTY;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_map_frag, container, false);
-        ButterKnife.bind(MapFrag.this,view);
         instance = this.getActivity();
 
         return view;
@@ -491,9 +485,9 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     private void create_info_dialog(Vertex v) {
         AlertDialog.Builder info_dialog = new AlertDialog.Builder(getActivity(), AlertDialog.BUTTON_POSITIVE);
         View room_info_view = getActivity().getLayoutInflater().inflate(R.layout.dialog_place_info, null);
-        TextView info_text = ButterKnife.findById(room_info_view,R.id.place_dialog_info);
-        Switch known_switch =  ButterKnife.findById(room_info_view,R.id.place_info_known_swittch);
-        Button dissmiss =  ButterKnife.findById(room_info_view,R.id.plac_info_dismiss);
+        TextView info_text =(TextView) room_info_view.findViewById(R.id.place_dialog_info);
+        Switch known_switch =(Switch)  room_info_view.findViewById(R.id.place_info_known_swittch);
+        Button dissmiss = (Button) room_info_view.findViewById(R.id.plac_info_dismiss);
 
         final Place place = ((Place) v );
 
@@ -637,7 +631,6 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
     @Override
     public void onMapClick(LatLng latLng) {
@@ -720,14 +713,14 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
      */
     private void loadBottomSheet(Marker marker) {
         final Marker myMarker = marker;
-        final LinearLayout no_image_layout = ButterKnife.findById(getActivity(),R.id.bottom_sheet_notpresent_layout);
-        Button image_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_find_route);
-        final TextView notpresent_text = ButterKnife.findById(getActivity(),R.id.txt_notpresent);
-        final ProgressBar progressBar = ButterKnife.findById(getActivity(), R.id.bottom_sheet_progressbar);
-        final ImageButton refresh_button = ButterKnife.findById(getActivity(),R.id.bottom_sheet_refresh_button);
-        TextView place_title = ButterKnife.findById(getActivity(),R.id.bottom_sheet_title);
-        TextView place_info1 = ButterKnife.findById(getActivity(),R.id.place_info1);
-        View moreInfo = ButterKnife.findById(getActivity(),R.id.more_info_layout);
+        final LinearLayout no_image_layout = (LinearLayout) getView().findViewById(R.id.bottom_sheet_notpresent_layout);
+        Button find_routeBtn = (Button) getView().findViewById(R.id.bottom_sheet_find_route);
+        final TextView notpresent_text =(TextView) getView().findViewById(R.id.txt_notpresent);
+        final ProgressBar progressBar = (ProgressBar)getView().findViewById( R.id.bottom_sheet_progressbar);
+        final ImageButton refresh_button =(ImageButton) getView().findViewById(R.id.bottom_sheet_refresh_button);
+        TextView place_title = (TextView) getView().findViewById(R.id.bottom_sheet_title);
+        TextView place_info1 = (TextView)getView().findViewById(R.id.place_info1);
+        View moreInfo = getView().findViewById(R.id.more_info_layout);
 
 
 
@@ -768,7 +761,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
         /**
          *  Onclick Listener for BottomSheet route button
          */
-        image_button.setOnClickListener(new View.OnClickListener() {
+        find_routeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onInfoWindowLongClick: PRESSED");

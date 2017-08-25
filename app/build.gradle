@@ -1,12 +1,22 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.butterknife'
-
 
 android {
 
+    signingConfigs {
+        config {
+            keyAlias 'fst_keystore'
+            keyPassword 'pelican2016'
+            storeFile file('C:/Users/sylva/Desktop/fstkeystore.jks')
+            storePassword 'pelican2016'
+        }
+        config1 {
+            keyAlias 'fst_keystore'
+            keyPassword 'pelican2016'
+            storeFile file('C:/Users/sylva/Desktop/fstkeystore.jks')
+            storePassword 'pelican2016'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
-
     defaultConfig {
         applicationId "com.uwimonacs.fstmobile"
         minSdkVersion 16
@@ -18,15 +28,20 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
+            debuggable true
+            minifyEnabled true
         }
     }
-
     dexOptions {
         javaMaxHeapSize "4g"
     }
-
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/DEPENDENCIES.txt'
@@ -40,7 +55,6 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
-
 }
 
 repositories {
@@ -52,8 +66,6 @@ repositories {
 
 
 dependencies {
-
-
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
@@ -87,7 +99,7 @@ dependencies {
     //dependency injection
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-//Retrofit API
+    //Retrofit API
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     //ViewpagerIndicator icon
