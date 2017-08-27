@@ -451,6 +451,7 @@
     <string name="starting_point_editText_hint">Starting point.</string>
     <string name="find_button_texxt">Find</string>
     <string name="map_radioButton">RadioButton</string>
+    <string name="InfoWindowText">Place</string>
 
 
 </resources>

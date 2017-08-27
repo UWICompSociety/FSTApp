@@ -953,7 +953,7 @@ public class MapFrag extends Fragment implements MapFragMvPView, OnMapReadyCallb
             Picasso.with(instance)
                     .setLoggingEnabled(true);
             Picasso.with(instance)
-                    .load(Url2)
+                    .load(Url)
                     .placeholder(R.mipmap.ic_launcher)
 //                    .fit()
                     .error(R.drawable.ic_no_image_found)
